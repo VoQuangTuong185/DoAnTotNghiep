@@ -31,6 +31,8 @@ export class HomePageComponent {
   lstCate: MenuItem[] = [];
   activeCate: any;
   addCart = new AddCart();
+  products: any[] = [];
+  quantityCurrentProductInCard: number = 0;
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
@@ -120,16 +122,19 @@ export class HomePageComponent {
         });
       });
   }
-  onTabChange(event: any) {
-    console.log(event.index); // log ra chỉ số của tab mới được chọn
-    console.log(event.originalEvent); // log ra sự kiện gốc (MouseEvent) được kích hoạt bởi người dùng
-  }
   createImgPath = (serverPath: string, cateId?: number) => {
     if (cateId && cateId === -1) return serverPath;
     return CoreConstants.apiUrl() + `/${serverPath}`;
   };
   openDetailPopup(data: any) {
     this.currentProduct = data;
+    this.websiteAPIService.getCartByUserID(Number(this.userData.id)).subscribe((res: any) => {
+      this.products = res.data;
+      let currentProduct = this.products.filter(x => x.productId == this.currentProduct.id);
+      if (currentProduct != null &&  currentProduct[0].quanity > 0){
+        this.quantityCurrentProductInCard = currentProduct[0].quanity;
+      }    
+    });   
     this.displayDetailPopup = true;
   }
   hideDetailPopup() {
@@ -141,6 +146,10 @@ export class HomePageComponent {
     this.feedbackContent = '';
   }
   addToCart(selectedProduct: any) {
+    if (selectedProduct.quanity < (this.quantityCurrentProductInCard + this.quantityAddToCart)){
+      this.messageService.add({ key:'bc', severity: 'error', summary: 'Error', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
+      return;
+    }
     this.addCart.ProductId = selectedProduct.id;
     this.addCart.UserId = Number(this.userData.id);
     this.addCart.Quanity = this.quantityAddToCart;

@@ -1,4 +1,5 @@
-﻿using Optional;
+﻿using DoAnTotNghiep.DTO;
+using Optional;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
@@ -31,5 +32,6 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> CancelOrder(int orderId);
         Task<Option<bool, string>> ConfirmOrder(int orderId);
         Task<Option<bool, string>> SuccessOrder(int orderId);
+        Task<Option<bool, string>> UpdateCart(UpdateCart cart);
     }
 }

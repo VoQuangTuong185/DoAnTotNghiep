@@ -20,22 +20,5 @@ namespace THUCTAPTOTNGHIEP.Controllers
             _messageBusClient = messageBusClient;
             _ILog = Log.GetInstance;
         }
-        [HttpPost("test")]
-        public async Task<ApiResult> CreateCategory(MailPublishedDto mailPublishedDto)
-        {
-            var result = new ApiResult();
-            //Send Async Message
-            try
-            {
-                mailPublishedDto.Event = "Mail_Published";
-                _messageBusClient.PublishMail(mailPublishedDto);
-            }
-            catch (Exception ex)
-            {
-                _ILog.LogException($"--> Could not send asynchronously: {ex.Message}");
-            }
-
-            return result;
-        }
     }
 }

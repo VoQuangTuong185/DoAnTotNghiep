@@ -6,6 +6,7 @@ import { CoreConstants } from '../core/src/lib/core.constant';
 import { CartDTO } from '../data/cartDTO.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressService } from '../data/Address.service';
+import { UpdateCart } from '../data/UpdateCart.model';
 
 @Component({
   selector: 'app-cart',
@@ -30,7 +31,6 @@ export class CartComponent implements OnInit {
   existedWard: any;
   selectedPayment: string = '';
   userId!: number;
-  isCreateOrderSuccess: boolean = false;
   methods: any[] = [
     { name: 'Thanh toán khi nhân hàng', key: 'A' },
     { name: 'Thanh toán qua ngân hàng', key: 'M' },
@@ -109,10 +109,7 @@ export class CartComponent implements OnInit {
     this.showConfirmOrder = true;
   }
   loadDataUser() {
-    this.userId = Number(
-      JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]))
-        .id
-    );
+    this.userId = Number(JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1])).id);
     this.websiteAPIService.getInfoUser(this.userId).subscribe((res: any) => {
       if (res.isSuccess) {
         this.currentUser = res.data;
@@ -139,7 +136,7 @@ export class CartComponent implements OnInit {
           .inActiveCart(selectedProduct)
           .subscribe((res: any) => {
             if (res.data) {
-              this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message, life: 3000, });
+              this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message, life: 3000});
               this.getCartByUserID();
             } else {
               this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
@@ -180,6 +177,21 @@ export class CartComponent implements OnInit {
   changeValuePayment(event: any) {
     this.selectedPayment = event;
   }
+  updateCart(value: any, productId: number, oldQuantity: number){
+    let updateCart = new UpdateCart(Number(this.userData.id), productId, value);
+    updateCart.UserId = Number(this.userData.id);
+    updateCart.ProductId = productId;
+    updateCart.Quantity = value;
+    this.websiteAPIService.updateCart(updateCart).subscribe((res: any) => {
+      if (res.data) {
+        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message});
+        this.getCartByUserID();
+      } else {
+        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
+        this.products[this.products.findIndex(x => x.productId == productId)].quanity = oldQuantity -1;
+      }
+    });
+  }
   confirmOrder() {
     this.confirmationService.confirm({
       message: 'Are you sure to confirm order ?',
@@ -195,21 +207,20 @@ export class CartComponent implements OnInit {
           .subscribe((res: any) => {
             if (res.data) {
               this.showConfirmOrder = false;
-              this.isCreateOrderSuccess = true;
               this.websiteAPIService
                 .deleteAllCartAfterOrder(Number(this.userData.id))
                 .subscribe((res: any) => {
                   if (res.data) {
-                    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message});
-                    this.isCreateOrderSuccess = false;
-                    this.getCartByUserID();
+                    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message});                
                   } else {
                     this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
-                  }
+                  }                
                 });
             } else {
               this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message});
             }
+            this.getCartByUserID();
+            this.showConfirmOrder = false;
           });
       },
     });    

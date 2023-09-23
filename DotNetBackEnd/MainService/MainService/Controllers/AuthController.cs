@@ -69,7 +69,7 @@ namespace WebAppAPI.Controllers
                         });                       
                         var newToken = GenerateRefreshToken();
                         string token = CreateToken(loginUser.FirstOrDefault(), role, newToken);                      
-                        SetRefreshToken(newToken,loginUser.FirstOrDefault());
+                        SetRefreshToken(newToken);
                         result.Data = token;
                         result.IsSuccess = true;
                     }
@@ -143,7 +143,7 @@ namespace WebAppAPI.Controllers
                         });
                         var refreshToken = GenerateRefreshToken();
                         string token = CreateToken(loginUser.FirstOrDefault(), role, refreshToken);                      
-                        SetRefreshToken(refreshToken, loginUser.FirstOrDefault());
+                        SetRefreshToken(refreshToken);
                         result.Data = token;
                     }
                 }
@@ -197,7 +197,7 @@ namespace WebAppAPI.Controllers
             };
             return refreshToken;
         }
-        private void SetRefreshToken(RefreshToken newRefreshToken, User user)
+        private void SetRefreshToken(RefreshToken newRefreshToken)
         {
             var cookieOptions = new CookieOptions
             {

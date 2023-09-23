@@ -12,7 +12,6 @@ export class AddressService {
   constructor(private httpClient: HttpClient) { 
   }
 
-
   getProvices(): Observable<any> {
     return this.httpClient.get(this.ProvincesUri).pipe(
       retry(3)
