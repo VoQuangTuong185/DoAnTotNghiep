@@ -1,0 +1,20 @@
+.main-order {
+  width: 100%;
+  padding: 20px;
+  background-color: #f0f3f8;
+}
+
+.card {
+  width: 100%;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+:host ::ng-deep{
+  .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    background-color: #22c55e;
+    color: white;
+    border-radius: 25px;
+    height: 40px;
+  }
+}

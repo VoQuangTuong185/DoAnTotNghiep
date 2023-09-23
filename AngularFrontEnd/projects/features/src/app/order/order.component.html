@@ -1,0 +1,49 @@
+<div class="main-order">
+  <div class="card">
+    <p-tabView
+      styleClass="tabview-custom"
+      (onChange)="handleChangeViewOrder($event)"
+    >
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <span>Wait for confirmation</span>
+        </ng-template>
+        <app-listOrder
+          *ngIf="currentOrder == enumData.statusOrder.wait.value"
+          [statusOrderCode]="enumData.statusOrder.wait.code"
+        />
+        <!-- <app-waitOrder /> -->
+      </p-tabPanel>
+
+      <p-tabPanel header="Processing">
+        <ng-template pTemplate="header">
+          <span>Processing</span>
+        </ng-template>
+        <app-listOrder
+          *ngIf="currentOrder == enumData.statusOrder.processing.value"
+          [statusOrderCode]="enumData.statusOrder.processing.code"
+        />
+      </p-tabPanel>
+
+      <p-tabPanel header="success">
+        <ng-template pTemplate="header">
+          <span>Success</span>
+        </ng-template>
+        <app-listOrder
+          *ngIf="currentOrder == enumData.statusOrder.success.value"
+          [statusOrderCode]="enumData.statusOrder.success.code"
+        />
+      </p-tabPanel>
+
+      <p-tabPanel header="cancel">
+        <ng-template pTemplate="header">
+          <span>Cancel</span>
+        </ng-template>
+        <app-listOrder
+          *ngIf="currentOrder == enumData.statusOrder.cancel.value"
+          [statusOrderCode]="enumData.statusOrder.cancel.code"
+        />
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

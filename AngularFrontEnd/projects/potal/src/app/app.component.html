@@ -1,0 +1,160 @@
+<div class="main-body">
+  <div class="block">
+      <div>
+          <div class="menu">
+              <nav *ngIf="currentTab?.includes('admin')" class="routing">
+                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Home</b></a>                 
+                  <a [routerLink]="['/admin/admin-category']" routerLinkActive="active"><b>Category</b></a>
+                  <a [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Brand</b></a>
+                  <a [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>User</b></a>
+                  <a [routerLink]="['/admin/admin-order']" routerLinkActive="active"><b>Order</b></a>
+              </nav>
+              <nav *ngIf="currentTab?.includes('/user')" class="routing">
+                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Home</b></a>
+                  <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active"><b>Admin</b></a>
+                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Cart</b></a>
+                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/order']" routerLinkActive="active"><b>Order</b></a>                 
+              </nav>
+          </div>
+      </div>
+      <div class="logan d-flex-center">
+        TUONG STATIONERY STORE 2023
+      </div>
+      <div>
+          <span *ngIf="!this.userData.isLoggedIn" class="user-info">Please <b>login</b>!</span>
+          <span *ngIf="this.userData.isLoggedIn" class="user-info">Hi <b>{{ loginName }}</b> <i class="small-text">({{ role }})</i></span>
+          <button *ngIf="this.userData.isLoggedIn" pButton label="Profile" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
+          <button *ngIf="!this.userData.isLoggedIn" pButton label="Login" class="p-button-rounded p-button-round user-button" [routerLink]="['/user/login-user']"></button>
+          <button *ngIf="this.userData.isLoggedIn" pButton label="Logout" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>
+      </div>
+  </div>
+  <form [formGroup]="editUserForm" (ngSubmit)="confirmEditUser()">
+      <p-dialog [(visible)]="displayEditUserPopup" [style]="{ width: '36vw' }" header="Profile Information" [modal]="true" styleClass="p-fluid" class="profile">
+          <ng-template pTemplate="content">
+              <table>
+                  <tr>
+                      <td>
+                          <div class="mr-3">
+                              <mat-form-field appearance="outline">
+                                  <mat-label>Name</mat-label>
+                                  <input matInput formControlName="Name" name="Name" required="" />
+                              </mat-form-field>
+                          </div>
+                      </td>
+                      <td>
+                          <div>
+                              <mat-form-field appearance="outline">
+                                  <mat-label>Login Name</mat-label>
+                                  <input matInput formControlName="LoginName" name="LoginName" required="" />
+                              </mat-form-field>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <div class="mr-3">
+                              <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                                  <mat-label>Email</mat-label>
+                                  <input matInput formControlName="Email" name="Email" required="" />
+                              </mat-form-field>
+                          </div>
+                      </td>
+                      <td>
+                          <div>
+                              <mat-form-field appearance="outline">
+                                  <mat-label>Telephone</mat-label>
+                                  <input matInput formControlName="TelNum" name="TelNum" required="" />
+                              </mat-form-field>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <div class="mr-3">
+                              <mat-form-field appearance="fill">
+                                  <mat-label>Provinces</mat-label>
+                                  <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
+                                      <mat-option *ngFor="let province of provices" [value]="province">
+                                          {{ province.name }}
+                                      </mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
+                                      Please choose your province!
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                      </td>
+                      <td>
+                          <div>
+                              <mat-form-field appearance="fill">
+                                  <mat-label>District</mat-label>
+                                  <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
+                                      <mat-option *ngFor="let district of districts" [value]="district">
+                                          {{ district.name }}
+                                      </mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
+                                      Please choose your district!
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <div class="mr-3">
+                              <mat-form-field appearance="fill">
+                                  <mat-label>Ward</mat-label>
+                                  <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
+                                      <mat-option *ngFor="let ward of wards" [value]="ward">
+                                          {{ ward.name }}
+                                      </mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
+                                      Please choose your district!
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                      </td>
+                      <td>
+                          <div>
+                              <mat-form-field>
+                                  <mat-label>House number,</mat-label>
+                                  <textarea matInput rows="1" formControlName="Streets"></textarea>
+                                  <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
+                                      Please enter your number and street!
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+          </ng-template>
+          <ng-template pTemplate="footer">
+              <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
+              <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-success" [disabled]="editUserForm.invalid"></button>
+          </ng-template>
+      </p-dialog>
+  </form>
+  <p-dialog header="Confirm Change Email" [(visible)]="displayChangeMailPopup" [style]="{ width: '450px' }" [baseZIndex]="10000" class="confirm-change-email">
+      <div class="example-container">
+          <div>
+              <mat-form-field appearance="outline">
+                  <mat-label>Enter email</mat-label>
+                  <input matInput [(ngModel)]="confirmEmail" [disabled]="IsReceiveConfirmCode" />
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              </mat-form-field>
+          </div>
+          <div>
+              <mat-form-field appearance="outline">
+                  <mat-label>Enter code</mat-label>
+                  <input matInput [(ngModel)]="confirmCode" />
+              </mat-form-field>
+          </div>
+      </div>
+      <p-button *ngIf="IsReceiveConfirmCode" class="center loginButton" label="Confirm" (click)="confirmChangeEmail()"></p-button>
+  </p-dialog>
+  <div><router-outlet></router-outlet></div>
+</div>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-toast position="bottom-center" key="bc"></p-toast>

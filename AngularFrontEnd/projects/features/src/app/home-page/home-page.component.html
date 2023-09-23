@@ -1,0 +1,122 @@
+<div class="main">
+  <div class="card">
+      <p-carousel [value]="loginedDataProduct" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="6000" [responsiveOptions]="responsiveOptions">
+          <ng-template pTemplate="header">
+              <h1 class="ml-3 mt-1"><b>Top Seller</b></h1>
+          </ng-template>
+          <ng-template let-product pTemplate="item">
+              <div class="product-item">
+                  <div class="list-item">
+                      <div class="item" (click)="openDetailPopup(product)" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);">
+                          <img width="100%" height="100%" [src]="createImgPath(product.image)" alt="Image" style="border-radius: 20px;" />
+                          <div class="discount"><p>-{{ product.discount }}%</p></div>
+                          <div class="border-text">
+                            <div pTooltip="{{ product.productName }}" tooltipPosition="bottom" class="long-text">{{ product.productName }}</div>
+                            <span>{{ product.price - (product.price * product.discount) / 100 | currency : "VND" }}</span><br/>
+                            <span>Sold: {{ product.soldQuantity }}</span><br/>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </ng-template>
+      </p-carousel>
+  </div>
+  <div class="categories">
+      <p-card header="Category">
+          <div class="card">
+              <p-tabMenu [model]="lstCate" [activeItem]="activeCate">
+                  <ng-template pTemplate="item" let-item let-i="index">
+                      <img [src]="createImgPath(item.image, item.id)" alt="Image" height="40" style="margin-right: 10px; border-radius: 10px;" (click)="handleChangeCate(item.id)" />
+                      <p (click)="handleChangeCate(item.id)">{{ item.categoryName }}</p>
+                  </ng-template>
+              </p-tabMenu>
+          </div>
+          <div>
+              <div class="list-item">
+                  <div class="item" *ngFor="let item of lstProduct" (click)="openDetailPopup(item)">
+                      <img width="100%" height="100%" [src]="createImgPath(item.image)" alt="Image" style="border-radius: 20px;" />
+                      <div class="discount"><p>-{{ item.discount }}%</p></div>
+                      <div class="border-text">
+                        <div pTooltip="{{ item.productName }}" tooltipPosition="bottom" class="long-text">{{ item.productName }}</div>
+                        <span>{{ item.price - (item.price * item.discount) / 100 | currency : "VND" }}</span><br/>
+                        <span>Sold: {{ item.soldQuantity }}</span><br/>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </p-card>
+  </div>
+</div>
+
+<app-footer />
+
+<p-dialog [(visible)]="displayDetailPopup" [style]="{ width: '700px' }" header="Product Detail" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+      <img [src]="createImgPath(currentProduct.image)" alt="product picture" style="max-height: 400px; max-width: 400px; height: auto; width: auto;" class="center" />
+      <br />
+      <table>
+          <tr>
+              <td class="padding-table">
+                  <h4>Product Name: <b>{{ currentProduct.productName }}</b></h4>
+              </td>
+              <td>
+                  <h4>Brand: <b>{{ currentProduct.brand.brandName }}</b></h4>
+              </td>
+          </tr>
+          <tr>
+              <td class="padding-table">
+                  <h4>Category: <b>{{ currentProduct.category.categoryName }}</b></h4>
+              </td>
+              <td>
+                  <h4>Discount: <b>{{ currentProduct.discount }}%</b></h4>                 
+              </td>
+          </tr>
+          <tr>
+              <td class="padding-table">                 
+                  <h4>Original Price: <b>{{ currentProduct.price | currency : "VND"}}</b></h4> 
+              </td>
+              <td>
+                  <h4>Price: <b>{{ currentProduct.price - (currentProduct.price * currentProduct.discount) / 100 | currency : "VND" }}</b></h4>
+              </td>
+          </tr>
+          <tr>
+            <td class="padding-table">                 
+                <h4>Available: <b>{{ currentProduct.quanity }}</b></h4> 
+            </td>
+            <td>
+                <h4>Sold: <b>{{ currentProduct.soldQuantity }}</b></h4>
+            </td>
+          </tr>        
+          <tr>
+              <td class="padding-table">
+                  <h4>Description: <b>{{ currentProduct.description }}</b></h4>
+              </td>
+              <td>
+                  <h4>
+                      Quantity:
+                      <p-inputNumber
+                          [(ngModel)]="quantityAddToCart"
+                          [showButtons]="true"
+                          buttonLayout="horizontal"
+                          inputId="horizontal"
+                          spinnerMode="horizontal"
+                          [step]="1"
+                          decrementButtonClass="p-button-danger"
+                          incrementButtonClass="p-button-success"
+                          incrementButtonIcon="pi pi-plus"
+                          decrementButtonIcon="pi pi-minus"
+                          [min]="1"
+                          [max]="currentProduct.quanity"
+                          [style]="{ width: '150px' }"
+                      >
+                      </p-inputNumber>
+                  </h4>
+              </td>
+          </tr>
+      </table>
+  </ng-template>
+  <ng-template pTemplate="footer">
+      <button pButton pRipple label="Add to cart" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
+      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,44 @@
+.main {
+  width: 100%;
+  background-color: #f0f3f8;
+}
+
+.cart {
+  width: 100%;
+  background: #f0f3f8;
+  padding: 0 2rem;
+  border-radius: 10px;
+  position: absolute;
+}
+
+.btnBuy {
+  margin-left: 45%;
+}
+:host ::ng-deep {
+  .p-carousel .p-carousel-indicators {
+    padding: 0.25rem;
+  }
+  .p-fluid p-inputnumber {
+    width: 0px;
+  }
+  .p-datatable .p-datatable-footer,.p-datatable .p-datatable-header{
+    background-color: #f0f3f8;
+  }
+}
+.product-image {
+  border-radius: 16px;
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  cursor: pointer;
+}
+
+::ng-deep .input-styling input {
+  width: 40px !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 999999 !important ;
+}

@@ -1,0 +1,117 @@
+<p-toast position="top-center" key="tc"></p-toast>
+<p-toast position="bottom-center" key="bc"></p-toast>
+<form [formGroup]="loginForm" (submit)="login()">
+<p-dialog header="Login Account" [(visible)]="displayLoginPopUp" [style]="{width: '25vw'}" [baseZIndex]="10000" [resizable]="true">
+  <div class="example-container">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Login name</mat-label>
+        <input matInput formControlName = "LoginUser" name = "LoginUser" required="">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName = "Password" name = "Password" required="" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>     
+    </div> 
+    </div>
+    <p-button class="center loginButton" label="Login" type="submit"></p-button> 
+    <a class="center" routerLink="../register-user">You don't have an account?</a>
+    <a class="center forgotPassword" (click)="openForgotPopup()">Forgot password?</a>
+</p-dialog>
+</form>
+<p-dialog header="Forgot Password" [(visible)]="displayForgotPopup" [style]="{width: '25vw'}" [baseZIndex]="10000" (onHide)="openLoginPopUp()">
+  <div class="example-container">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter email</mat-label>
+        <input matInput [(ngModel)]="confirmEmail" [disabled]="IsReceiveConfirmCode">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter code</mat-label>
+        <input matInput [(ngModel)]="confirmCode" [disabled]="!IsReceiveConfirmCode">
+      </mat-form-field>     
+    </div> 
+    </div>
+    <p-button *ngIf="!IsReceiveConfirmCode" class="center loginButton" label="Send code" (click)="sendForgetCode()"></p-button> 
+    <p-button *ngIf="IsReceiveConfirmCode" class="center loginButton" label="Confirm" (click)="confirmForgetPassword()"></p-button>
+</p-dialog>
+
+<p-dialog header="Forgot Password" [(visible)]="displayChangePasswordPopup" [style]="{width: '25vw'}" [baseZIndex]="10000" (onHide)="openLoginPopUp()">
+  <div class="example-container">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter email</mat-label>
+        <input matInput [(ngModel)]="confirmEmail">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter password</mat-label>
+        <input matInput [(ngModel)]="newPassword" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>     
+    </div> 
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter password</mat-label>
+        <input matInput [(ngModel)]="newConfirmPassword" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>     
+    </div> 
+    </div>
+    <p-button class="center loginButton" label="Change password" (click)="changePassword()"></p-button> 
+</p-dialog>
+
+<p-toast position="bottom-center" key="c" (onClose)="onRejectLoginPage()" [style]="{width: '20vw'}" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+      <div class="p-flex p-flex-column" style="flex: 1">
+          <div>
+              <i class="pi pi-exclamation-triangle center" style="font-size: 3rem"></i>
+              <span class="center">{{message.summary}}</span>
+              <p class="center" style="color: black;">{{message.detail}}</p>
+          </div>
+          <div class="row confirmDialog">
+            <div class="col">
+              <button type="button" pButton (click)="onConfirmLoginPage()" label="Yes" class="p-button-success ml-3 mt-3"></button>
+            </div>
+            <div class="col">
+              <button type="button" pButton (click)="onRejectLoginPage()" label="No" class="p-button-secondary mt-3" style="float: right;"></button>
+            </div>
+          </div>         
+      </div>
+  </ng-template>
+</p-toast>
+
+<p-toast position="bottom-center" key="login" (onClose)="onRejectLoginCoursePage()" [style]="{width: '22vw'}" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+      <div class="p-flex p-flex-column" style="flex: 1">
+          <div>
+              <i class="pi pi-exclamation-triangle center mb-3" style="font-size: 3rem"></i>              
+              <p class="center">{{message.detail}}</p>
+              <span class="center" style="color: black;">{{message.summary}}</span>
+          </div>
+          <div class="row confirmDialog">
+            <div class="col">
+              <button type="button" pButton (click)="onConfirmCoursePage()" label="Yes" class="p-button-success ml-3 mt-3"></button>
+            </div>
+            <div class="col">
+              <button type="button" pButton (click)="onRejectLoginCoursePage()" label="No" class="p-button-secondary mt-3" style="float: right;"></button>
+            </div>
+          </div>         
+      </div>
+  </ng-template>
+</p-toast>

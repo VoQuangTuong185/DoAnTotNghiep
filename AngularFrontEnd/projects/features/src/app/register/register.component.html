@@ -1,0 +1,159 @@
+<p-toast position="top-center" key="tc"></p-toast>
+<form [formGroup]="loginForm" (submit)="register()">
+    <p-dialog header="Register Account" [(visible)]="displayRegisterPopUp" [style]="{width: '37vw'}" [baseZIndex]="10000">
+      <div class="example-container">
+        <table>
+          <tr>
+            <td>
+              <div class="mr-5">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter your full name</mat-label>
+                  <input matInput formControlName = "Name" name = "Name" required="">             
+                </mat-form-field>
+            </div>
+            </td>
+            <td>
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter login name</mat-label>
+                  <input matInput formControlName = "LoginName" name = "LoginName" required="">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                </mat-form-field>
+            </div>
+            </td>
+          </tr>
+          <tr>
+            <td>                  
+              <div class="mr-5">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter email</mat-label>
+                  <input matInput formControlName = "Email" name = "Email" required="" email>
+                </mat-form-field>
+            </div>
+          </td>
+            <td>
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter Telephone Number</mat-label>
+                  <input matInput formControlName = "TelNum" name = "TelNum" required="">
+                </mat-form-field>
+            </div>
+          </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="mr-5">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter password</mat-label>
+                  <input matInput formControlName = "Password" name = "Password" required="" [type]="hide ? 'password' : 'text'">
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+            </div>
+            </td>
+            <td>
+              <div>
+                <mat-form-field appearance="fill">
+                  <mat-label>Provinces</mat-label>
+                  <mat-select formControlName="Provinces">
+                      <mat-option *ngFor="let province of provices" [value]="province">
+                      {{province.name}}
+                      </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="loginForm.get('Provinces')?.hasError('required')">
+                    Please choose your province!
+                  </mat-error>
+                </mat-form-field>
+              </div> 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="mr-5">
+                <mat-form-field appearance="fill">
+                  <mat-label>District</mat-label>
+                  <mat-select formControlName="Districts">
+                      <mat-option *ngFor="let district of districts" [value]="district" >
+                      {{district.name}}
+                      </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="loginForm.get('Districts')?.hasError('required')">
+                    Please choose your district!
+                  </mat-error>
+              </mat-form-field>
+              </div>
+            </td>
+            <td>
+              <mat-form-field appearance="fill">
+                <mat-label>Ward</mat-label>
+                <mat-select formControlName="Wards">
+                    <mat-option *ngFor="let ward of wards" [value]="ward">
+                    {{ward.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="loginForm.get('Wards')?.hasError('required')">
+                  Please choose your ward!
+                </mat-error>
+            </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+            </div>   
+            </td>
+            <td>
+              <mat-form-field>
+                <mat-label>House number and street</mat-label>
+                <textarea matInput rows="1" formControlName="Address"></textarea>
+                <mat-error *ngIf="loginForm.get('Address')?.hasError('required')">
+                  Please enter your number and street!
+                </mat-error>
+            </mat-form-field>
+            </td>
+          </tr>
+        </table>          
+        </div>
+        <p-button class="center registerButton" label="Register" type="submit" [disabled]="!loginForm.invalid"></p-button> 
+        <a class="center" routerLink="../login-user">Already have an account?</a>
+    </p-dialog>
+    </form>
+
+<p-dialog header="Confirm Register" [(visible)]="displayConfirmPopUp" [style]="{width: '25vw'}" [baseZIndex]="10000">
+    <div class="example-container">
+      <div>
+          <mat-form-field appearance="outline" class="confirm">
+            <mat-label>Enter email</mat-label>
+            <input matInput [(ngModel)]="confirmEmail" [disabled]="true" >
+          </mat-form-field>
+        </div>
+      <div>
+        <mat-form-field appearance="outline" class="confirm">
+          <mat-label>Enter confirm code</mat-label>
+          <input matInput required="" [(ngModel)]="confirmCode">
+        </mat-form-field>
+      </div> 
+    </div>
+    <div><a *ngIf="registerSuccessfully" routerLink="/app-login">Click here or wait 3 seconds to login</a></div>
+    <p-button class="center" label="Confirm" (click)="confirmRegister()"></p-button> 
+</p-dialog>
+<p-toast position="bottom-center" key="c" (onClose)="onRejectLoginPage()" [style]="{width: '20vw'}" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+      <div class="p-flex p-flex-column" style="flex: 1">
+          <div>
+              <i class="pi pi-exclamation-triangle center" style="font-size: 3rem"></i>
+              <span class="center">{{message.summary}}</span>
+              <p class="center" style="color: black;">{{message.detail}}</p>
+          </div>
+          <div class="row confirmDialog">
+            <div class="col">
+              <button type="button" pButton (click)="onConfirmLoginPage()" label="Yes" class="p-button-success ml-3 mt-3"></button>
+            </div>
+            <div class="col">
+              <button type="button" pButton (click)="onRejectLoginPage()" label="No" class="p-button-secondary mt-3" style="float: right;"></button>
+            </div>
+          </div>         
+      </div>
+  </ng-template>
+</p-toast>

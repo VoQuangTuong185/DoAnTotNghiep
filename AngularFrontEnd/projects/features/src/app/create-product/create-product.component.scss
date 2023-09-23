@@ -1,0 +1,22 @@
+:host ::ng-deep{
+    .small-input.mat-mdc-text-field-wrapper{
+        width: 12vw !important;
+    }
+    .mat-mdc-text-field-wrapper{
+        width: 25vw;
+    }
+    .p-calendar{
+        width: 25vw;
+        height: 2.5vw;
+    }
+}
+.back-button{
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
+}
+.courseImage{
+    width: 200px;
+    height: 112px;
+    border-radius: 16px;
+    display: block;
+}

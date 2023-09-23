@@ -1,0 +1,50 @@
+@import '~primeng/resources/primeng.min.css';
+@import '~primeng/resources/themes/bootstrap4-light-blue/theme.css';
+@import '~primeicons/primeicons.css';
+@import 'material-icons/iconfont/material-icons.css';
+.ui-popup-custom .ui-dialog .ui-dialog-titlebar {
+    height: 33.5px;
+    vertical-align: middle;
+    padding: 0.5em;
+}
+.ui-dialog-wrapper{
+    overflow: auto;
+}
+.ui-dialog-top .ui-dialog {
+    margin: 10vh !important;
+}
+.ui-popup-custom.ui-widget { 
+   font-family: "BoschSans-Light";
+}
+.ui-popup-custom.very-large.ui-widget {
+    width: 1600px;
+}
+.ui-popup-custom.large.ui-widget {
+    width: 1200px;
+}
+.ui-popup-custom.medium.ui-widget {
+    width: 900px;
+}
+.ui-popup-custom.small.ui-widget {
+    width: 600px;
+}
+
+.ui-popup-custom.ui-dialog {
+    max-height: 80vh;
+    min-height: 250px;
+}
+.ui-dialog .ui-dialog-content{
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.visible.ui-dialog .ui-dialog-content{
+    overflow: visible;
+}
+
+.p-dialog .p-dialog-footer{
+    display: flex;
+    flex-direction: row-reverse;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,60 @@
+<div>
+  <div>
+    <h2 class="title">ORDER DETAIL</h2>
+  </div>
+
+  <div class="order-info">
+    <p><b>Customer Name : </b>{{ this.data.customerName }}</p>
+    <p><b>Customer Email : </b>{{ this.data.email }}</p>
+    <p><b>Address : </b>{{ this.data.address }}</p>
+    <p><b>Order date : </b>{{ this.data.orderDate | date : "dd MMM yyyy" }}</p>
+    <p><b>Payment : </b>{{ this.data.payment }}</p>
+    <p><b>Total product : </b>{{ this.data.productCount }}</p>
+    <p><b>Total bill : </b>{{ this.data.totalBill | currency : "VND" }}</p>
+  </div>
+  <div class="table-product">
+    <p-table [value]="lstProduct" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Discount</th>
+          <th>Total money</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>
+            <img
+              [src]="createImgPath(product.image)"
+              [alt]="product.productName"
+              width="100"
+              class="shadow-4 product-image"
+            />
+          </td>
+          <td>{{ product.productName }}</td>
+          <td>{{ product.price  | currency : "VND"}} </td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.discount }} %</td>
+          <td>
+            {{
+              getTotalMoney(product.price, product.quantity, product.discount) | currency : "VND"
+            }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-button
+    label="Close"
+    icon="pi pi-times"
+    (click)="closeDialog()"
+    [style]="{
+      left: '50%',
+      'margin-top': '20px',
+      transform: 'translate(-50%, -50%)'
+    }"
+  ></p-button>
+</div>

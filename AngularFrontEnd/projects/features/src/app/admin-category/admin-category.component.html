@@ -1,0 +1,93 @@
+<button pButton icon="pi pi-calendar-plus" label="Create" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
+    (click)="openCreateCategoryPopup()"></button>
+<p-accordion>
+    <p-accordionTab header="Category Manages" class="center" [selected]="true">
+        <div class="search-box">
+            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Search" 
+            matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+        </div>  
+        <div class="displayUsers">
+            <p-table #tdt [value]="dataCategories" [columns]="productsDataCols" responsiveLayout="scroll" class="table-content" [paginator]="true" [rows]="rows"
+                [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first"
+                [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
+                [globalFilterFields]="['id','categoryName','description','isActive']"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
+                            [style.width]="col.width + '%'">
+                            <span>{{ col.header }}</span>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-columns="columns" let-rowIndex="rowIndex" let-rowData>
+                    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+                        <td *ngFor="let col of columns">
+                        <span [ngSwitch]="col.type">
+                            <span *ngSwitchCase="'button'" class="button"> 
+                                <td>
+                                    <button pButton icon="pi pi-pencil" pTooltip="Edit Category" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                                        (click)="openEditCategoryPopup(rowData['id'])"></button>                    
+                                    <button pButton icon="pi pi-list" pTooltip="Products of Category" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2"
+                                        [routerLink]="['./admin-product', rowData['id']]"></button>
+                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'InActive':'Active'" tooltipPosition="bottom" (click)="inActiveCategory(rowData)"
+                                    [ngClass]="rowData.isActive ? 'p-button-rounded p-button-danger mr-2' : 'p-button-rounded p-button-info mr-2'"  
+                                   ></button>
+                                </td> 
+                            </span>
+                            <span *ngSwitchCase="'image'">
+                                <img [src]="createImgPath(rowData[col.field])" alt="product picture" class="categoryImage">  
+                            </span> 
+                            <span *ngSwitchCase="'isActive'" pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}>  
+                            </span> 
+                            <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}</span> 
+                        </span>                   
+                        </td>
+                    </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="13">No data found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        </p-accordionTab>
+</p-accordion>
+
+<form [formGroup]="categoryForm">
+    <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="Create Category" [modal]="true" styleClass="p-fluid" class="profile">
+            <ng-template pTemplate="content">
+                <div class="category">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Id</mat-label>
+                        <input matInput formControlName = "Id" name = "Id">                              
+                    </mat-form-field>
+                </div>
+                <div class="category">
+                    <mat-form-field appearance="outline">     
+                        <mat-label>Category Name</mat-label>
+                        <input matInput formControlName = "CategoryName" name = "CategoryName" required="">        
+                    </mat-form-field>  
+                </div>
+                <div class="category">
+                    <mat-form-field appearance="outline" formControlName = "Description" name = "Description" required=""> 
+                        <mat-label>Description</mat-label>   
+                        <input matInput formControlName = "Description" name = "Description"> 
+                    </mat-form-field> 
+                </div>    
+                <app-upload-image-category (onUploadFinished)="uploadFinished($event)"></app-upload-image-category>
+                <img [src]="createImgPath(this.categoryForm.controls['Image'].value)" alt="product picture" class="courseImage">         
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="pt-2">
+                    <button *ngIf="!isEdit" pButton label="Create" [disabled]="!categoryForm.valid" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
+                    <button *ngIf="isEdit" pButton label="Save" class="p-button-rounded p-button-success" [disabled]="!categoryForm.valid" (click)="confirmForm(true)"></button>           
+                    <button pButton label="Cancel" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
+                </div>
+            </ng-template>
+    </p-dialog>
+</form>
+<app-footer />

@@ -1,0 +1,86 @@
+<button pButton icon="pi pi-calendar-plus" label="Create" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
+    (click)="openCreateCategoryPopup()"></button>
+<p-accordion>
+    <p-accordionTab header="Brand Manages" class="center" [selected]="true">
+        <div class="search-box">
+            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Search" 
+            matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+        </div>  
+        <div class="displayUsers">
+            <p-table #tdt [value]="dataBrand" [columns]="brandsDataCols" responsiveLayout="scroll" class="table-content" [paginator]="true" [rows]="rows"
+                [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first"
+                [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
+                [globalFilterFields]="['id','brandName','description','isActive']"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
+                            [style.width]="col.width + '%'">
+                            <span>{{ col.header }}</span>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-columns="columns" let-rowIndex="rowIndex" let-rowData>
+                    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+                        <td *ngFor="let col of columns">
+                        <span [ngSwitch]="col.type">
+                            <span *ngSwitchCase="'button'" class="button"> 
+                                <td>
+                                    <button pButton icon="pi pi-pencil" pTooltip="Edit Category" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                                        (click)="openEditBrandPopup(rowData['id'])"></button>        
+                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'InActive':'Active'" tooltipPosition="bottom" (click)="inActiveBrand(rowData)"
+                                    [ngClass]="rowData.isActive ? 'p-button-rounded p-button-danger mr-2' : 'p-button-rounded p-button-info mr-2'"  
+                                   ></button>
+                                </td> 
+                            </span>
+                            <span *ngSwitchCase="'isActive'" pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}>  
+                            </span> 
+                            <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}</span> 
+                        </span>                   
+                        </td>
+                    </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="13">No data found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        </p-accordionTab>
+</p-accordion>
+
+<form [formGroup]="brandForm">
+    <p-dialog [(visible)]="displayEditBrandPopup" [style]="{width: '450px'}" header="Brand Category" [modal]="true" styleClass="p-fluid" class="profile">
+            <ng-template pTemplate="content">
+                <div *ngIf="isEdit" class="category">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Id</mat-label>
+                        <input matInput formControlName = "Id" name = "Id">                              
+                    </mat-form-field>
+                </div>
+                <div class="category">
+                    <mat-form-field appearance="outline">     
+                        <mat-label>Brand Name</mat-label>
+                        <input matInput formControlName = "BrandName" name = "BrandName" required="">        
+                    </mat-form-field>  
+                </div>
+                <div class="category">
+                    <mat-form-field appearance="outline" required=""> 
+                        <mat-label>Description</mat-label>   
+                        <input matInput formControlName = "Description" name = "Description"> 
+                    </mat-form-field> 
+                </div>       
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="pt-2">
+                    <button *ngIf="!isEdit" pButton label="Create" [disabled]="!brandForm.valid" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
+                    <button *ngIf="isEdit" pButton label="Save" class="p-button-rounded p-button-success" [disabled]="!brandForm.valid" (click)="confirmForm(true)"></button>           
+                    <button pButton label="Cancel" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
+                </div>
+            </ng-template>
+    </p-dialog>
+</form>
+<app-footer />

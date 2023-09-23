@@ -1,0 +1,139 @@
+.menu nav {
+  padding: 0.5rem 2rem 0.5rem 0rem;
+  a {
+    color: #555555;
+    font-weight: 400;
+    font-size: medium;
+    margin-right: 1rem;
+    text-decoration: none;
+  }
+  a.active {
+    background-color: #22c55e;
+    border-radius: 999px;
+    color: white;
+    height: 1.5rem;
+    padding: 3px 20px;
+  }
+}
+.menu {
+  display: flex;
+}
+.main-body {
+  margin: 0 auto;
+  min-height: 60%;
+  display: flex;
+  flex-direction: column;
+}
+.block {
+  --height: 4.5rem;
+  align-items: center;
+  background-color: #fff;
+  display: flex !important;
+  font-size: 1.4rem;
+  height: var(--height);
+  left: 0;
+  padding: 0 28px;
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: 20;
+}
+.d-flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.logan {
+  flex: 1 1;
+  font-weight: 700;
+}
+.routing {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+}
+.user-button {
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 9px 20px;
+  height: 1.5rem;
+  margin-left: 1rem;
+}
+::ng-deep {
+  .p-confirm-dialog-reject {
+    background-color: #808080;
+    border: #808080;
+  }
+  .p-confirm-dialog-reject.p-button:enabled:hover {
+    background-color: #555555;
+    border: #555555;
+  }
+}
+:host ::ng-deep {
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    background-color: darkgray !important;
+    color: while !important;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    box-shadow: none;
+  }
+  .p-accordion {
+    padding: 1.5rem;
+  }
+  .p-dialog .p-dialog-footer {
+    padding: 0.5rem;
+  }
+  .p-dialog .p-dialog-header {
+    padding: 0.5rem;
+  }
+  .p-paginator .p-paginator-current {
+    color: black;
+  }
+  p-paginator.p-element.ng-star-inserted {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .profile .mat-mdc-form-field {
+    width: 32.5vh;
+  }
+  .confirm-change-email .mat-mdc-form-field{
+    width: 25.5rem;
+  }
+}
+.small-text {
+  padding-left: 0.25rem;
+  font-size: medium;
+  vertical-align: top;
+  color: #0d00ff;
+  font-weight: 600;
+}
+.user-info {
+  display: block;
+  padding-bottom: 0.25rem;
+  font-size: large;
+  padding-left: 1rem;
+}
+.center {
+  justify-content: center;
+  display: flex;
+  text-decoration: none;
+  color: green;
+}
+::ng-deep .cdk-overlay-container {
+  z-index: 999999 !important ;
+}
+
+.input-search {
+  width: 350px;
+  position: absolute;
+  top: 18px;
+  left: auto;
+  right: 350px;
+  z-index: 2;
+  border-radius: 15px;
+}
+
+////////////////////////////
