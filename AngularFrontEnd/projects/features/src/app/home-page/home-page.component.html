@@ -48,11 +48,11 @@
   </div>
 </div>
 
-<app-footer />
+<app-footer/>
 
 <p-dialog [(visible)]="displayDetailPopup" [style]="{ width: '700px' }" header="Product Detail" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="content">
-      <img [src]="createImgPath(currentProduct.image)" alt="product picture" style="max-height: 400px; max-width: 400px; height: auto; width: auto;" class="center" />
+      <img [src]="createImgPath(currentProduct.image)" alt="product picture" style="max-height: 400px; max-width: 400px; height: auto; width: auto;" class="center detail-image" />
       <br />
       <table>
           <tr>

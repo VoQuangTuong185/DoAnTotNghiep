@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Castle.Core.Internal;
 using CategoryService.AsyncDataServices;
+using DoAnTotNghiep.DTO;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis;
@@ -262,8 +263,24 @@ namespace WebAppAPI.Services.Business
                     .FlatMapAsync(async req =>
                     {
                         var existedProductInCart = _unitOfWork.Repository<Cart>().GetNoTracking(x => x.UserId == order.UserId).Include(x => x.product).ThenInclude(x => x.category).ToList();
-
                         var listProduct = _unitOfWork.Repository<Product>().Get(x => existedProductInCart.Select(x => x.product.Id).ToList().Contains(x.Id)).ToList();
+                        bool isOverQuantity = false;
+                        existedProductInCart.ForEach(async x =>
+                        {
+                            var existedProduct = listProduct.Where(y => y.Id == x.ProductId).FirstOrDefault();
+                            if (existedProduct.Quanity < x.Quantity)
+                            {
+                                isOverQuantity = true;
+                                x.Quantity = existedProduct.Quanity;
+                            }
+                        });
+
+                        if (isOverQuantity)
+                        {
+                            _unitOfWork.Repository<Cart>().UpdateRange(existedProductInCart);
+                            await _unitOfWork.SaveChangesAsync();
+                            return Optional.Option.None<bool, string>("Expected quantity is more than current quantity of product!");
+                        }
 
                         var insertOrder = new Order();
                         insertOrder.UserId = order.UserId;
@@ -281,12 +298,12 @@ namespace WebAppAPI.Services.Business
                         
                         existedProductInCart.ForEach(async x =>
                         {
+                            var existedProduct = listProduct.Where(y => y.Id == x.ProductId).FirstOrDefault();
                             var insertOderDtail = new OrderDetail();
                             insertOderDtail.ProductId = x.ProductId;
                             insertOderDtail.Price = x.product.Price;
                             insertOderDtail.OrderId = recentlyOrder.Id;
-                            insertOderDtail.Quantity = x.Quantity;
-                            var existedProduct = listProduct.Where(y => y.Id == x.ProductId).FirstOrDefault();
+                            insertOderDtail.Quantity = x.Quantity;                           
                             if (existedProduct != null)
                             {
                                 existedProduct.Quanity = existedProduct.Quanity - x.Quantity;
@@ -489,6 +506,27 @@ namespace WebAppAPI.Services.Business
                     }
                     return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
                 });
+        }
+        public async Task<Option<bool, string>> UpdateCart(UpdateCart cart)
+        {
+            return await (cart)
+                    .SomeNotNull().WithException("Null input")
+                    .FlatMapAsync(async req =>
+                    {
+                        var existedCart = _unitOfWork.Repository<Cart>().FirstOrDefault(x => x.UserId == cart.UserId && x.ProductId == cart.ProductId);
+                        var existedProduct = _unitOfWork.Repository<Product>().FirstOrDefault(x => x.Id == cart.ProductId && x.IsActive);
+                        if (existedProduct.Quanity < cart.Quantity)
+                        {
+                            return Optional.Option.None<bool, string>("Expected quantity is more than current quantity of product!");
+                        }
+                        existedCart.Quantity = cart.Quantity;
+                        _unitOfWork.Repository<Cart>().Update(existedCart);
+                        if (await _unitOfWork.SaveChangesAsync())
+                        {
+                            return Optional.Option.Some<bool, string>(true);
+                        }
+                        return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                    });
         }
         #region Private
         double handleTotalBill(List<Cart> listCarts)

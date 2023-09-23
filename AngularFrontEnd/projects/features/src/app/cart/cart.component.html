@@ -40,6 +40,7 @@
                           decrementButtonIcon="pi pi-minus"
                           [min]="1"
                           styleClass="input-styling"
+                          (ngModelChange)="updateCart($event, product.productId, product.quanity)"
                       ></p-inputNumber>
                   </td>
                   <td>{{ product.price | currency : "VND" }}</td>

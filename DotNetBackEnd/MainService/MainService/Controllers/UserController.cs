@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DoAnTotNghiep.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -209,6 +210,32 @@ namespace WebAppAPI.Controllers
                 (await _IUserService.InActiveCart(cart)).Match(res =>
                 {
                     result.Message = "Remove product successfully!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpPost("update-cart")]
+        public async Task<ApiResult> UpdateCart(UpdateCart cart)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IUserService.UpdateCart(cart)).Match(res =>
+                {
+                    result.Message = "Update quantity successfully!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -449,6 +476,6 @@ namespace WebAppAPI.Controllers
                 _ILog.LogException(ex.Message);
             }
             return result;
-        }
+        }        
     }
 }

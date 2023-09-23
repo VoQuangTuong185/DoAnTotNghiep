@@ -100,14 +100,10 @@ export class RegisterComponent {
   }
   getDistrictsOfProvice(): void {
     this.wards = [];
-    this.addressService.getDistrictsOfProvince(this.provinceSelected.code).pipe(
-      finalize(() => console.log('districts',this.districts))
-    ).subscribe(data => this.districts = data.districts)
+    this.addressService.getDistrictsOfProvince(this.provinceSelected.code).subscribe(data => this.districts = data.districts)
   }
   getWardsOfDistrict(): void {
-    this.addressService.getWardsOfDistrict(this.districtSelected.code).pipe(
-      finalize(() => console.log('wards', this.wards))
-    ).subscribe(data => this.wards = data.wards)
+    this.addressService.getWardsOfDistrict(this.districtSelected.code).subscribe(data => this.wards = data.wards)
   }
   hideBasicDialog() {
     this.displayRegisterPopUp = false;

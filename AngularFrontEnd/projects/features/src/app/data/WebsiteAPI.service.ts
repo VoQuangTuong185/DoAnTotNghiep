@@ -11,6 +11,7 @@ import { CategoryDTO } from './CategoryDTO.model';
 import { AddCart } from './addCart.model';
 import { CartDTO } from './cartDTO.model';
 import { CreateOrder } from './createOrder.model';
+import { UpdateCart } from './UpdateCart.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -49,6 +50,7 @@ export class WebsiteAPIService{
     private urlGetCancelOrderByUserID = 'get-cancel-order-by-user-id?userId=';
     private urlDeleteAllCartAfterOrder = 'delete-all-cart-after-order-by-user-id?userId=';
     private urlInActiveCart = 'inactive-cart';
+    private urlUpdateCart = 'update-cart';
     private urlCreateOrder = 'create-order';
     private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
     private urlCancelOrder = 'cancel-order?orderId=';
@@ -159,6 +161,9 @@ export class WebsiteAPIService{
     }
     inActiveCart(cart: CartDTO){
         return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlInActiveCart, cart);
+    }
+    updateCart(cart: UpdateCart){
+        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlUpdateCart, cart);
     }
     createOrder(order: CreateOrder){
         return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlCreateOrder, order);
