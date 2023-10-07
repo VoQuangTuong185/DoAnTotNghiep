@@ -9,7 +9,7 @@ using WebAppAPI.Data;
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
+namespace DoAnTotNghiep.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230713140523_Initial")]

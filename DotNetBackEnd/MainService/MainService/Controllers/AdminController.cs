@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using THUCTAPTOTNGHIEP.DTO;
+using DoAnTotNghiep.DTO;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Services.Business;

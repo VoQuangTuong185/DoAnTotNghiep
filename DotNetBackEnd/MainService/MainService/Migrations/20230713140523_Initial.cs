@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
-{
+namespace DoAnTotNghiep.Migrations
+{   
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

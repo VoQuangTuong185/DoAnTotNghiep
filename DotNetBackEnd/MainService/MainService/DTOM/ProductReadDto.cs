@@ -1,7 +1,7 @@
-﻿using THUCTAPTOTNGHIEP.Models.Entities;
+﻿using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Models.Entities;
 
-namespace THUCTAPTOTNGHIEP.DTOM
+namespace DoAnTotNghiep.DTOM
 {
     public class ProductReadDto
     {

@@ -1,11 +1,11 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using THUCTAPTOTNGHIEP.EventProcessing;
+using DoAnTotNghiep.EventProcessing;
 using System.Text;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Business;
 
-namespace THUCTAPTOTNGHIEP.AsyncDataServices
+namespace DoAnTotNghiep.AsyncDataServices
 {
     public class MessageBusSubscriber : BackgroundService
     {

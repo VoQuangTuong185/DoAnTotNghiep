@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 using RBVH.HRL.Services.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
-using THUCTAPTOTNGHIEP.AsyncDataServices;
-using THUCTAPTOTNGHIEP.Data;
-using THUCTAPTOTNGHIEP.EventProcessing;
-using THUCTAPTOTNGHIEP.SyncDataServices.Grpc;
+using DoAnTotNghiep.AsyncDataServices;
+using DoAnTotNghiep.Data;
+using DoAnTotNghiep.EventProcessing;
+using DoAnTotNghiep.SyncDataServices.Grpc;
 using WebAppAPI.Data;
 using WebAppAPI.Extensions;
 using WebAppAPI.Services.Model;
@@ -38,7 +38,6 @@ namespace WebAppAPI
             services.AddControllers();
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -52,7 +51,7 @@ namespace WebAppAPI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "THUC TAP TOT NGHIEP - API MANAGEMENT", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DO AN TOT NGHIEP - MAIN SERVICE - API MANAGEMENT", Version = "v1" });
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
@@ -81,7 +80,7 @@ namespace WebAppAPI
             services.AddDbContext<ApplicationDbContext>(
                 options => 
                 { 
-                    options.UseSqlServer(Configuration.GetConnectionString("ThucTapTotNghiep"));
+                    options.UseSqlServer(Configuration.GetConnectionString("DoAnTotNghiep"));
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 });
             services.AddScoped<IProductRepo, ProductRepo>();
@@ -118,7 +117,7 @@ namespace WebAppAPI
             });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"{Config.BackEndUrl}/swagger/v1/swagger.json", "THUC TAP TOT NGHIEP API V1");
+                c.SwaggerEndpoint($"{Config.BackEndUrl}/swagger/v1/swagger.json", "DO AN TOT NGHIEP - MAIN SERVICE - API MANAGEMENT V1");
                 c.RoutePrefix = string.Empty;
             });
             app.UseEndpoints(endpoints =>

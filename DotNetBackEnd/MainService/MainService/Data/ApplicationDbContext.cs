@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using System.Data;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
 

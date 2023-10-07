@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using THUCTAPTOTNGHIEP.Data;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.Data;
+using DoAnTotNghiep.DTOM;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 
-namespace THUCTAPTOTNGHIEP.Controllers
+namespace DoAnTotNghiep.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

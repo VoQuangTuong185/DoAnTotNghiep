@@ -9,7 +9,7 @@ using WebAppAPI.Data;
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
+namespace DoAnTotNghiep.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230807190845_add-IsActive-to-Category-table")]
@@ -24,7 +24,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.Category", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -436,7 +436,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("THUCTAPTOTNGHIEP.Models.Entities.Category", "category")
+                    b.HasOne("DoAnTotNghiep.Models.Entities.Category", "category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -484,7 +484,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.Category", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });

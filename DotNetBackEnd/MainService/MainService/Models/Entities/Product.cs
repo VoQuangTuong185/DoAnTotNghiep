@@ -1,4 +1,4 @@
-﻿using THUCTAPTOTNGHIEP.Models.Entities;
+﻿using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Models.Bases;
 
 namespace WebAppAPI.Models.Entities

@@ -1,12 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.ComponentModel.Design;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Data;
 using WebAppAPI.Models.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace THUCTAPTOTNGHIEP.Data
+namespace DoAnTotNghiep.Data
 {
     public class ProductRepo : IProductRepo
     {

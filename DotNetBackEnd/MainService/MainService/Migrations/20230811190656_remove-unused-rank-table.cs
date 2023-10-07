@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
+namespace DoAnTotNghiep.Migrations
 {
     public partial class removeunusedranktable : Migration
     {

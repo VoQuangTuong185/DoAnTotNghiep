@@ -2,12 +2,12 @@
 using CategoryService.AsyncDataServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.DTOM;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
 
-namespace THUCTAPTOTNGHIEP.Controllers
+namespace DoAnTotNghiep.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

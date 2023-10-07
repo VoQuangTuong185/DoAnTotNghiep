@@ -1,4 +1,4 @@
-﻿namespace THUCTAPTOTNGHIEP.DTOM
+﻿namespace DoAnTotNghiep.DTOM
 {
     public class ProductCreateDto
     {

@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.Data;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.Data;
+using DoAnTotNghiep.DTOM;
 using System.Text.Json;
 using System.Drawing.Design;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Business;
 
-namespace THUCTAPTOTNGHIEP.EventProcessing
+namespace DoAnTotNghiep.EventProcessing
 {
     public class EventProcessor : IEventProcessor
     {

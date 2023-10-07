@@ -14,7 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.DTOM;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;

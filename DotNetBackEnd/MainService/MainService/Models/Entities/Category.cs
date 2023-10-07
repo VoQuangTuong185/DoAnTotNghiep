@@ -3,7 +3,7 @@ using WebAppAPI.Models.Bases;
 using WebAppAPI.Models.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace THUCTAPTOTNGHIEP.Models.Entities
+namespace DoAnTotNghiep.Models.Entities
 {
     public class Category : DbEntity
     {

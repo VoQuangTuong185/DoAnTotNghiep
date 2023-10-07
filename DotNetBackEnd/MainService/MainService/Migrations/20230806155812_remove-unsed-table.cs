@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
+namespace DoAnTotNghiep.Migrations
 {
     public partial class removeunsedtable : Migration
     {
