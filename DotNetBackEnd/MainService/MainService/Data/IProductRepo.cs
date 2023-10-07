@@ -1,9 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Models.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace THUCTAPTOTNGHIEP.Data
+namespace DoAnTotNghiep.Data
 {
     public interface IProductRepo
     {

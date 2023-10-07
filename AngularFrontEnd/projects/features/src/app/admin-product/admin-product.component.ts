@@ -24,14 +24,14 @@ export class AdminProductComponent {
     private ActiveRoute : ActivatedRoute,
     ){
     this.productsDataCols = [
-      { header : 'ID', field : 'id', width:2, type:'string'},
-      { header : 'Image', field : 'image', width:5, type:'image'},
+      { header : 'STT', field : 'id', width:2, type:'string'},
+      { header : 'Hình ảnh', field : 'image', width:5, type:'image'},
       { header : 'Product Name', field : 'productName', width:10, type:'string'},
       { header : 'Price', field : 'price', width:3, type:'money'},
       { header : 'Discount', field : 'discount', width:3, type:'percent'},
-      { header : 'Description', field : 'description', width:3, type:'string'},
+      { header : 'Mô tả', field : 'description', width:3, type:'string'},
       { header : 'Sold', field : 'soldQuantity', width:3, type:'string'},
-      { header : 'Status', field : 'isActive', width:3, type:'boolean'},
+      { header : 'Trạng thái', field : 'isActive', width:3, type:'boolean'},
       { header : 'Action', field : 'action', width:1, type:'button'},
       ];
       this.ActiveRoute.params.subscribe((params) =>{
@@ -50,19 +50,19 @@ export class AdminProductComponent {
   }
   inActiveProduct(selectedProduct:any){
     let action ='';
-    selectedProduct.isActive ? action = 'InActive' : action = 'Active';
+    selectedProduct.isActive ? action = 'ẩn': action = 'hiện';
     this.confirmationService.confirm({
       message: 'Are you sure ' + action + ' course ' + selectedProduct.productName + ' ?',
-      header: 'Confirm',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle', 
       accept: () => {
         this.websiteAPIService.inActiveProduct(selectedProduct.id).subscribe((res:any) => {
           if(res.data){
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: res.message, life: 3000});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
             this.loadDataAllProduct();
           }
           else {
-            this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
           }
         });    
       }

@@ -112,11 +112,11 @@ export class AdminListOrderComponent implements OnInit {
             key: 'bc',
             severity: 'info',
             summary: 'Confirmed',
-            detail: 'Cancel order successfully',
+            detail: 'Huỷ order successfully',
           });
           return
         }
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
       });
   }
 
@@ -131,11 +131,11 @@ export class AdminListOrderComponent implements OnInit {
             key: 'bc',
             severity: 'info',
             summary: 'Confirmed',
-            detail: 'Confirm order successfully',
+            detail: 'Xác nhận order successfully',
           });
           return
         }
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
       });
   }
 
@@ -170,11 +170,11 @@ export class AdminListOrderComponent implements OnInit {
             key: 'bc',
             severity: 'info',
             summary: 'Confirmed',
-            detail: 'Successful',
+            detail: 'Thành công',
           });
           return
         }
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
       });
   }
 

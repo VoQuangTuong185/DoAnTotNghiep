@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.DTOM;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.DTOM;
+using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using CategoryService;
-using THUCTAPTOTNGHIEP.DTO;
+using DoAnTotNghiep.DTO;
 
 namespace WebAppAPI.Services.Model
 {

@@ -1,23 +1,29 @@
 <p-toast position="top-center" key="tc"></p-toast>
-<form [formGroup]="loginForm" (submit)="register()">
-    <p-dialog header="Register Account" [(visible)]="displayRegisterPopUp" [style]="{width: '37vw'}" [baseZIndex]="10000">
+<form [formGroup]="registerForm" (submit)="register()">
+    <p-dialog header="Đăng ký" [(visible)]="displayRegisterPopUp" [style]="{width: '37vw'}" [baseZIndex]="10000">
       <div class="example-container">
         <table>
           <tr>
             <td>
               <div class="mr-5">
                 <mat-form-field appearance="outline">
-                  <mat-label>Enter your full name</mat-label>
-                  <input matInput formControlName = "Name" name = "Name" required="">             
+                  <mat-label>Họ và tên</mat-label>
+                  <input matInput formControlName = "Name" name = "Name" required="">     
+                  <mat-error *ngIf="registerForm.get('Name')?.hasError('required')">
+                    Hãy nhập họ và tên!
+                  </mat-error>        
                 </mat-form-field>
             </div>
             </td>
             <td>
               <div>
                 <mat-form-field appearance="outline">
-                  <mat-label>Enter login name</mat-label>
+                  <mat-label>Tài khoản</mat-label>
                   <input matInput formControlName = "LoginName" name = "LoginName" required="">
                   <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-error *ngIf="registerForm.get('LoginName')?.hasError('required')">
+                    Hãy nhập Tài khoản!
+                  </mat-error> 
                 </mat-form-field>
             </div>
             </td>
@@ -26,16 +32,28 @@
             <td>                  
               <div class="mr-5">
                 <mat-form-field appearance="outline">
-                  <mat-label>Enter email</mat-label>
+                  <mat-label>Địa chỉ email</mat-label>
                   <input matInput formControlName = "Email" name = "Email" required="" email>
+                  <mat-error *ngIf="registerForm.get('Email')?.hasError('required')">
+                    Hãy nhập địa chỉ email!
+                  </mat-error>
                 </mat-form-field>
             </div>
           </td>
             <td>
               <div>
                 <mat-form-field appearance="outline">
-                  <mat-label>Enter Telephone Number</mat-label>
-                  <input matInput formControlName = "TelNum" name = "TelNum" required="">
+                  <mat-label>Số điện thoại</mat-label>
+                  <input matInput formControlName = "TelNum" name = "TelNum">
+                  <mat-error *ngIf="registerForm.get('TelNum')?.hasError('required')">
+                    Hãy nhập số điện thoại!
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('TelNum')?.hasError('minlength')">
+                    Định dạng số điện thoại chưa chính xác!
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('TelNum')?.hasError('maxlength')">
+                    Định dạng số điện thoại chưa chính xác!
+                  </mat-error>
                 </mat-form-field>
             </div>
           </td>
@@ -44,25 +62,28 @@
             <td>
               <div class="mr-5">
                 <mat-form-field appearance="outline">
-                  <mat-label>Enter password</mat-label>
+                  <mat-label>Mật khẩu</mat-label>
                   <input matInput formControlName = "Password" name = "Password" required="" [type]="hide ? 'password' : 'text'">
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
+                  <mat-error *ngIf="registerForm.get('Password')?.hasError('required')">
+                    Hãy nhập mật khẩu!
+                  </mat-error>
                 </mat-form-field>
             </div>
             </td>
             <td>
               <div>
                 <mat-form-field appearance="fill">
-                  <mat-label>Provinces</mat-label>
+                  <mat-label>Tỉnh</mat-label>
                   <mat-select formControlName="Provinces">
                       <mat-option *ngFor="let province of provices" [value]="province">
                       {{province.name}}
                       </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="loginForm.get('Provinces')?.hasError('required')">
-                    Please choose your province!
+                  <mat-error *ngIf="registerForm.get('Provinces')?.hasError('required')">
+                    Hãy chọn tỉnh!
                   </mat-error>
                 </mat-form-field>
               </div> 
@@ -72,28 +93,28 @@
             <td>
               <div class="mr-5">
                 <mat-form-field appearance="fill">
-                  <mat-label>District</mat-label>
+                  <mat-label>Huyện</mat-label>
                   <mat-select formControlName="Districts">
                       <mat-option *ngFor="let district of districts" [value]="district" >
                       {{district.name}}
                       </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="loginForm.get('Districts')?.hasError('required')">
-                    Please choose your district!
+                  <mat-error *ngIf="registerForm.get('Districts')?.hasError('required')">
+                    Hãy chọn huyện!
                   </mat-error>
               </mat-form-field>
               </div>
             </td>
             <td>
               <mat-form-field appearance="fill">
-                <mat-label>Ward</mat-label>
+                <mat-label>Xã</mat-label>
                 <mat-select formControlName="Wards">
                     <mat-option *ngFor="let ward of wards" [value]="ward">
                     {{ward.name}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="loginForm.get('Wards')?.hasError('required')">
-                  Please choose your ward!
+                <mat-error *ngIf="registerForm.get('Wards')?.hasError('required')">
+                  Hãy chọn xã!
                 </mat-error>
             </mat-form-field>
             </td>
@@ -105,22 +126,24 @@
             </td>
             <td>
               <mat-form-field>
-                <mat-label>House number and street</mat-label>
+                <mat-label>Số nhà, đường</mat-label>
                 <textarea matInput rows="1" formControlName="Address"></textarea>
-                <mat-error *ngIf="loginForm.get('Address')?.hasError('required')">
-                  Please enter your number and street!
+                <mat-error *ngIf="registerForm.get('Address')?.hasError('required')">
+                  Hãy nhập số nhà, đường!
                 </mat-error>
             </mat-form-field>
             </td>
           </tr>
         </table>          
         </div>
-        <p-button class="center registerButton" label="Register" type="submit" [disabled]="!loginForm.invalid"></p-button> 
-        <a class="center" routerLink="../login-user">Already have an account?</a>
+        <p-button class="center registerButton" label="Đăng ký" type="submit" [disabled]="!registerForm.invalid"></p-button> 
+        <span class="center">
+          <a class="hyper-link" routerLink="../login-user">Bạn đã có tài khoản?</a>
+        </span> 
     </p-dialog>
     </form>
 
-<p-dialog header="Confirm Register" [(visible)]="displayConfirmPopUp" [style]="{width: '25vw'}" [baseZIndex]="10000">
+<p-dialog header="Xác nhận đăng ký" [(visible)]="displayConfirmPopUp" [style]="{width: '25vw'}" [baseZIndex]="10000">
     <div class="example-container">
       <div>
           <mat-form-field appearance="outline" class="confirm">
@@ -136,7 +159,7 @@
       </div> 
     </div>
     <div><a *ngIf="registerSuccessfully" routerLink="/app-login">Click here or wait 3 seconds to login</a></div>
-    <p-button class="center" label="Confirm" (click)="confirmRegister()"></p-button> 
+    <p-button class="center" label="Xác nhận" (click)="confirmRegister()"></p-button> 
 </p-dialog>
 <p-toast position="bottom-center" key="c" (onClose)="onRejectLoginPage()" [style]="{width: '20vw'}" [baseZIndex]="5000">
   <ng-template let-message pTemplate="message">
@@ -148,7 +171,7 @@
           </div>
           <div class="row confirmDialog">
             <div class="col">
-              <button type="button" pButton (click)="onConfirmLoginPage()" label="Yes" class="p-button-success ml-3 mt-3"></button>
+              <button type="button" pButton (click)="onConfirmLoginPage()" label="Đồng ý" class="p-button-success ml-3 mt-3"></button>
             </div>
             <div class="col">
               <button type="button" pButton (click)="onRejectLoginPage()" label="No" class="p-button-secondary mt-3" style="float: right;"></button>

@@ -1,4 +1,4 @@
-﻿namespace THUCTAPTOTNGHIEP.EventProcessing
+﻿namespace DoAnTotNghiep.EventProcessing
 {
     public interface IEventProcessor
     {

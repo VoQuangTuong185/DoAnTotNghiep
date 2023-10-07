@@ -55,6 +55,15 @@ export class LoginComponent {
     this.displayLoginPopUp = true;
   }
   login() {
+    if(this.loginForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để đăng nhập!',
+      });
+      return;
+    }
     this.authService
       .login(this.loginForm.getRawValue())
       .subscribe((res: any) => {
@@ -74,14 +83,14 @@ export class LoginComponent {
             key: 'bc',
             severity: 'success',
             summary: '',
-            detail: 'Login successfully, navigating to home...',
+            detail: 'Đăng nhập thành công, đang chuyển hướng đến trang chủ...',
           });
           setTimeout(()=>{ this.router.navigate(['user/home-page']); }, 2000)          
         } else {
           this.messageService.add({
             key: 'bc',
             severity: 'error',
-            summary: 'Error',
+            summary: 'Lỗi',
             detail: res.data,
           });
         }
@@ -99,8 +108,8 @@ export class LoginComponent {
           this.messageService.add({
             key: 'bc',
             severity: 'info',
-            summary: 'Info',
-            detail: 'Confirm forget password code was sent!',
+            summary: 'Thông tin',
+            detail: 'Mã xác nhận quên mật khẩu đã được gửi đi!',
           });
           this.IsReceiveConfirmCode = true;
           this.confirmCodeSent = res.data;
@@ -108,8 +117,8 @@ export class LoginComponent {
           this.messageService.add({
             key: 'bc',
             severity: 'error',
-            summary: 'Error',
-            detail: 'Not existed this email, try again!',
+            summary: 'Lỗi',
+            detail: 'Không tìm thấy email này, hãy thử lại!',
           });
         }
       });
@@ -120,15 +129,15 @@ export class LoginComponent {
       this.messageService.add({
         key: 'bc',
         severity: 'info',
-        summary: 'Info',
-        detail: 'Correct code, please enter new password!',
+        summary: 'Thông tin',
+        detail: 'Xác nhận thành công, hãy nhập mật khẩu mới!',
       });
     } else {
       this.messageService.add({
         key: 'bc',
         severity: 'error',
-        summary: 'Error',
-        detail: 'Wrong confirm code, try again!',
+        summary: 'Lỗi',
+        detail: 'Xác nhận không thành công, hãy thử lại!',
       });
     }
   }
@@ -137,8 +146,8 @@ export class LoginComponent {
       this.messageService.add({
         key: 'bc',
         severity: 'error',
-        summary: 'Error',
-        detail: 'Passwords you entered does not match, try again!',
+        summary: 'Lỗi',
+        detail: 'Mật khẩu xác nhận không khớp, hãy thử lại!',
       });
       return;
     }
@@ -152,22 +161,22 @@ export class LoginComponent {
             key: 'tc',
             severity: 'info',
             summary: 'success',
-            detail: 'Change password successfully!',
+            detail: 'Đổi mật khẩu thành công!',
           });
           this.displayLoginPopUp = false;
           this.messageService.add({
             key: 'c',
             sticky: true,
             severity: 'success',
-            summary: 'Are you sure?',
-            detail: 'Go to login page now',
+            summary: 'Xác nhận?',
+            detail: 'Quay về trang đăng nhập',
           });
         } else {
           this.messageService.add({
             key: 'bc',
             severity: 'error',
-            summary: 'Error',
-            detail: 'Change password fail, try again!',
+            summary: 'Lỗi',
+            detail: 'Đổi mật khẩu thất bại, hãy thử lại!',
           });
         }
       });
@@ -188,5 +197,8 @@ export class LoginComponent {
   }
   onRejectLoginCoursePage() {
     this.messageService.clear();
+  }
+  hideLogin(){
+    this.router.navigate(['user/home-page']);
   }
 }

@@ -92,7 +92,7 @@ export class HomePageComponent {
       this.messageService.add({
         key: 'bc',
         severity: 'error',
-        summary: 'Error',
+        summary: 'Lỗi',
         detail: res.message,
       });
     });
@@ -117,7 +117,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'error',
-          summary: 'Error',
+          summary: 'Lỗi',
           detail: res.message,
         });
       });
@@ -131,7 +131,7 @@ export class HomePageComponent {
     this.websiteAPIService.getCartByUserID(Number(this.userData.id)).subscribe((res: any) => {
       this.products = res.data;
       let currentProduct = this.products.filter(x => x.productId == this.currentProduct.id);
-      if (currentProduct != null &&  currentProduct[0].quanity > 0){
+      if (currentProduct.length > 0 &&  currentProduct[0].quanity > 0){
         this.quantityCurrentProductInCard = currentProduct[0].quanity;
       }    
     });   
@@ -147,7 +147,7 @@ export class HomePageComponent {
   }
   addToCart(selectedProduct: any) {
     if (selectedProduct.quanity < (this.quantityCurrentProductInCard + this.quantityAddToCart)){
-      this.messageService.add({ key:'bc', severity: 'error', summary: 'Error', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
+      this.messageService.add({ key:'bc', severity: 'error', summary: 'Lỗi', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
       return;
     }
     this.addCart.ProductId = selectedProduct.id;
@@ -159,7 +159,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'success',
-          summary: 'Successful',
+          summary: 'Thành công',
           detail: res.message,
           life: 3000,
         });
@@ -168,7 +168,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'error',
-          summary: 'Error',
+          summary: 'Lỗi',
           detail: res.message,
         });
       }

@@ -1,34 +1,61 @@
 ﻿using CategoryService.Data.Entities;
+using Optional;
+using Optional.Async.Extensions;
 
 namespace CategoryService.Data
 {
     public class CategoryRepo : ICategoryRepo
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context;       
         public CategoryRepo(AppDbContext context)
         {
             _context = context;
         }
-        public void CreateCategory(Category category)
+        public async Task<Option<bool, string>> CreateCategory(Category category)
         {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-            _context.Categories.Add(category);
+            return await (category)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    var existedCategoryName = _context.Categories.FirstOrDefault(c => c.CategoryName.ToUpper().TrimStart().TrimEnd() == category.CategoryName.ToUpper().TrimStart().TrimEnd());
+                    if (existedCategoryName != null)
+                    {
+                        return Option.None<bool, string>("Đã tồn tại danh mục này. Hãy thử lại!");
+                    }
+                    _context.Categories.Add(category);
+                    if (SaveChanges())
+                    {
+                        return Option.Some<bool, string>(true);
+                    }
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                });
         }
-        public Category UpdateCategory(Category category)
+        public async Task<Option<bool, string>> UpdateCategory(Category category)
         {
-            var existedCategory = _context.Categories.FirstOrDefault(c => c.Id == category.Id);
-            if (existedCategory != null)
-            {
-                existedCategory.CategoryName = category.CategoryName;
-                existedCategory.Description = category.Description;
-                existedCategory.Image = category.Image;
-            }
-            _context.Categories.Update(existedCategory);
-            SaveChanges();
-            return existedCategory;
+            return await (category)
+               .SomeNotNull().WithException("Null input")
+               .FlatMapAsync(async req =>
+               {
+                   var allCategory = GetAllCategories("admin");
+                   var existedCategoryName = allCategory.FirstOrDefault(c => c.CategoryName.ToUpper().TrimStart().TrimEnd() == category.CategoryName.ToUpper().TrimStart().TrimEnd() && c.Id != category.Id);
+                   if (existedCategoryName != null)
+                   {
+                       return Option.None<bool, string>("Đã tồn tại danh mục này. Hãy thử lại!");
+                   }
+                   var existedCategory = allCategory.FirstOrDefault(c => c.Id == category.Id);
+                   if (existedCategory != null)
+                   {
+                       existedCategory.CategoryName = category.CategoryName;
+                       existedCategory.Description = category.Description;
+                       existedCategory.Image = category.Image;
+                   }
+                   _context.Categories.Update(existedCategory);
+                   if (SaveChanges())
+                   {
+                       return Option.Some<bool, string>(true);
+                   }
+                   return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+               });
         }
         public IEnumerable<Category> GetAllCategories(string type)
         {

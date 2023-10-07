@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 
-namespace THUCTAPTOTNGHIEP.SyncDataServices.Grpc
+namespace DoAnTotNghiep.SyncDataServices.Grpc
 {
     public interface ICategoryDataClient
     {

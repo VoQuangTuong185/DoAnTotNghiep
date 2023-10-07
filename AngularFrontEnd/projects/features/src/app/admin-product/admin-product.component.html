@@ -13,7 +13,7 @@
                 [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
                 [globalFilterFields]="['id','productName','price','discount','description','soldQuantity']"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
@@ -40,7 +40,7 @@
                             </span>  
                             <span *ngSwitchCase="'money'" pTooltip="{{rowData[col.field] | number}}" tooltipPosition="bottom">{{ rowData[col.field] | number }}</span> 
                             <span *ngSwitchCase="'percent'" pTooltip="{{rowData[col.field]}}%" tooltipPosition="bottom">{{ rowData[col.field] }}%</span> 
-                            <span *ngSwitchCase="'date'" pTooltip="{{rowData[col.field] | date: 'dd MMM yyyy'}}" tooltipPosition="bottom">{{ rowData[col.field] | date: 'dd MMM yyyy' }}</span> 
+                            <span *ngSwitchCase="'date'" pTooltip="{{rowData[col.field] | date: 'hh:mm:ss a, dd/MM/yyyy'}}" tooltipPosition="bottom">{{ rowData[col.field] | date: 'hh:mm:ss a, dd/MM/yyyy' }}</span> 
                             <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}</span> 
                         </span>                   
                         </td>

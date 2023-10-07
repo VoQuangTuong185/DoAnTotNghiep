@@ -2,7 +2,7 @@
   <div class="card">
       <p-carousel [value]="loginedDataProduct" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="6000" [responsiveOptions]="responsiveOptions">
           <ng-template pTemplate="header">
-              <h1 class="ml-3 mt-1"><b>Top Seller</b></h1>
+              <h1 class="ml-3 mt-1"><b>Top bán chạy trong tháng</b></h1>
           </ng-template>
           <ng-template let-product pTemplate="item">
               <div class="product-item">
@@ -22,7 +22,7 @@
       </p-carousel>
   </div>
   <div class="categories">
-      <p-card header="Category">
+      <p-card header="Danh mục">
           <div class="card">
               <p-tabMenu [model]="lstCate" [activeItem]="activeCate">
                   <ng-template pTemplate="item" let-item let-i="index">
@@ -50,50 +50,50 @@
 
 <app-footer/>
 
-<p-dialog [(visible)]="displayDetailPopup" [style]="{ width: '700px' }" header="Product Detail" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="displayDetailPopup" [style]="{ width: '700px' }" header="Chi tiết sản phẩm" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="content">
       <img [src]="createImgPath(currentProduct.image)" alt="product picture" style="max-height: 400px; max-width: 400px; height: auto; width: auto;" class="center detail-image" />
       <br />
       <table>
           <tr>
               <td class="padding-table">
-                  <h4>Product Name: <b>{{ currentProduct.productName }}</b></h4>
+                  <h4>Sản phẩm: <b>{{ currentProduct.productName }}</b></h4>
               </td>
               <td>
-                  <h4>Brand: <b>{{ currentProduct.brand.brandName }}</b></h4>
+                  <h4>Nhãn hiệu: <b>{{ currentProduct.brand.brandName }}</b></h4>
               </td>
           </tr>
           <tr>
               <td class="padding-table">
-                  <h4>Category: <b>{{ currentProduct.category.categoryName }}</b></h4>
+                  <h4>Danh mục: <b>{{ currentProduct.category.categoryName }}</b></h4>
               </td>
               <td>
-                  <h4>Discount: <b>{{ currentProduct.discount }}%</b></h4>                 
+                  <h4>Giảm giá: <b>{{ currentProduct.discount }}%</b></h4>                 
               </td>
           </tr>
           <tr>
               <td class="padding-table">                 
-                  <h4>Original Price: <b>{{ currentProduct.price | currency : "VND"}}</b></h4> 
+                  <h4>Giá gốc: <b>{{ currentProduct.price | currency : "VND"}}</b></h4> 
               </td>
               <td>
-                  <h4>Price: <b>{{ currentProduct.price - (currentProduct.price * currentProduct.discount) / 100 | currency : "VND" }}</b></h4>
+                  <h4>Giá sau khuyến mãi: <b>{{ currentProduct.price - (currentProduct.price * currentProduct.discount) / 100 | currency : "VND" }}</b></h4>
               </td>
           </tr>
           <tr>
             <td class="padding-table">                 
-                <h4>Available: <b>{{ currentProduct.quanity }}</b></h4> 
+                <h4>Có sẵn: <b>{{ currentProduct.quanity }}</b></h4> 
             </td>
             <td>
-                <h4>Sold: <b>{{ currentProduct.soldQuantity }}</b></h4>
+                <h4>Đã bán: <b>{{ currentProduct.soldQuantity }}</b></h4>
             </td>
           </tr>        
           <tr>
               <td class="padding-table">
-                  <h4>Description: <b>{{ currentProduct.description }}</b></h4>
+                  <h4>Mô tả: <b>{{ currentProduct.description }}</b></h4>
               </td>
               <td>
                   <h4>
-                      Quantity:
+                      Số lượng:
                       <p-inputNumber
                           [(ngModel)]="quantityAddToCart"
                           [showButtons]="true"
@@ -116,7 +116,7 @@
       </table>
   </ng-template>
   <ng-template pTemplate="footer">
-      <button pButton pRipple label="Add to cart" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
-      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
+      <button pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
+      <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
   </ng-template>
 </p-dialog>

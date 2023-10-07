@@ -1,4 +1,4 @@
-﻿namespace THUCTAPTOTNGHIEP.DTO
+﻿namespace DoAnTotNghiep.DTO
 {
     public class BrandDTO
     {

@@ -3,126 +3,141 @@
       <div>
           <div class="menu">
               <nav *ngIf="currentTab?.includes('admin')" class="routing">
-                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Home</b></a>                 
-                  <a [routerLink]="['/admin/admin-category']" routerLinkActive="active"><b>Category</b></a>
-                  <a [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Brand</b></a>
-                  <a [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>User</b></a>
-                  <a [routerLink]="['/admin/admin-order']" routerLinkActive="active"><b>Order</b></a>
+                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>                 
+                  <a [routerLink]="['/admin/admin-category']" routerLinkActive="active"><b>Danh mục</b></a>
+                  <a [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Nhãn hàng</b></a>
+                  <a [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>Tài khoản</b></a>
+                  <a [routerLink]="['/admin/admin-order']" routerLinkActive="active"><b>Đơn hàng</b></a>
               </nav>
               <nav *ngIf="currentTab?.includes('/user')" class="routing">
-                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Home</b></a>
-                  <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active"><b>Admin</b></a>
-                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Cart</b></a>
-                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/order']" routerLinkActive="active"><b>Order</b></a>                 
+                  <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>
+                  <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active" style="color: red;"><b>Quản trị</b></a>
+                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Giỏ hàng</b></a>
+                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/order']" routerLinkActive="active"><b>Đơn hàng</b></a>                 
               </nav>
           </div>
       </div>
       <div class="logan d-flex-center">
-        TUONG STATIONERY STORE 2023
+        VĂN PHÒNG PHẨM 2023
       </div>
       <div>
-          <span *ngIf="!this.userData.isLoggedIn" class="user-info">Please <b>login</b>!</span>
-          <span *ngIf="this.userData.isLoggedIn" class="user-info">Hi <b>{{ loginName }}</b> <i class="small-text">({{ role }})</i></span>
-          <button *ngIf="this.userData.isLoggedIn" pButton label="Profile" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
-          <button *ngIf="!this.userData.isLoggedIn" pButton label="Login" class="p-button-rounded p-button-round user-button" [routerLink]="['/user/login-user']"></button>
-          <button *ngIf="this.userData.isLoggedIn" pButton label="Logout" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>
+          <span *ngIf="!this.userData.isLoggedIn" class="user-info"><b>Đăng nhập ngay</b>!</span>
+          <span *ngIf="this.userData.isLoggedIn" class="user-info">Xin chào <b>{{ loginName }}</b> <i class="small-text">({{ role }})</i></span>
+          <button *ngIf="this.userData.isLoggedIn" pButton label="Thông tin cá nhân" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
+          <button *ngIf="!this.userData.isLoggedIn" pButton label="Đăng nhập" class="p-button-rounded p-button-round user-button" [routerLink]="['/user/login-user']"></button>
+          <button *ngIf="this.userData.isLoggedIn" pButton label="Đăng xuất" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>
       </div>
   </div>
   <form [formGroup]="editUserForm" (ngSubmit)="confirmEditUser()">
-      <p-dialog [(visible)]="displayEditUserPopup" [style]="{ width: '36vw' }" header="Profile Information" [modal]="true" styleClass="p-fluid" class="profile">
+      <p-dialog [(visible)]="displayEditUserPopup" [style]="{ width: '36vw' }" header="Thông tin cá nhân" [modal]="true" styleClass="p-fluid" class="profile">
           <ng-template pTemplate="content">
               <table>
                   <tr>
                       <td>
                           <div class="mr-3">
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Name</mat-label>
-                                  <input matInput formControlName="Name" name="Name" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Họ và tên</mat-label>
+                                <input matInput formControlName="Name" name="Name" required="" />
+                                <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
+                                Hãy nhập họ và tên!
+                                </mat-error>    
+                            </mat-form-field>  
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Login Name</mat-label>
-                                  <input matInput formControlName="LoginName" name="LoginName" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Tài khoản</mat-label>
+                                <input matInput formControlName="LoginName" name="LoginName" required="" />
+                                <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('required')">
+                                Hãy nhập Tài khoản!
+                                </mat-error> 
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-3">
-                              <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
-                                  <mat-label>Email</mat-label>
-                                  <input matInput formControlName="Email" name="Email" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                                <mat-label>Địa chỉ email</mat-label>
+                                <input matInput formControlName="Email" name="Email" required="" />
+                                <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
+                                Hãy nhập địa chỉ email!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Telephone</mat-label>
-                                  <input matInput formControlName="TelNum" name="TelNum" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Số điện thoại</mat-label>
+                                <input matInput formControlName="TelNum" name="TelNum"/>
+                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
+                                Định dạng số điện thoại chưa chính xác!
+                                </mat-error>
+                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('maxlength')">
+                                Định dạng số điện thoại chưa chính xác!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-3">
-                              <mat-form-field appearance="fill">
-                                  <mat-label>Provinces</mat-label>
-                                  <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
-                                      <mat-option *ngFor="let province of provices" [value]="province">
-                                          {{ province.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
-                                      Please choose your province!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Tỉnh</mat-label>
+                                <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
+                                    <mat-option *ngFor="let province of provices" [value]="province">
+                                        {{ province.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
+                                Hãy chọn tỉnh!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="fill">
-                                  <mat-label>District</mat-label>
-                                  <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
-                                      <mat-option *ngFor="let district of districts" [value]="district">
-                                          {{ district.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
-                                      Please choose your district!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Huyện</mat-label>
+                                <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
+                                    <mat-option *ngFor="let district of districts" [value]="district">
+                                        {{ district.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
+                                Hãy chọn huyện!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-3">
-                              <mat-form-field appearance="fill">
-                                  <mat-label>Ward</mat-label>
-                                  <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
-                                      <mat-option *ngFor="let ward of wards" [value]="ward">
-                                          {{ ward.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
-                                      Please choose your district!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Xã</mat-label>
+                                <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
+                                    <mat-option *ngFor="let ward of wards" [value]="ward">
+                                        {{ ward.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
+                                Hãy chọn xã!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <div>
                               <mat-form-field>
-                                  <mat-label>House number,</mat-label>
+                                  <mat-label>Số nhà, đường</mat-label>
                                   <textarea matInput rows="1" formControlName="Streets"></textarea>
                                   <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
-                                      Please enter your number and street!
+                                    Hãy nhập số nhà, đường!
                                   </mat-error>
                               </mat-form-field>
                           </div>
@@ -131,12 +146,12 @@
               </table>
           </ng-template>
           <ng-template pTemplate="footer">
-              <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
-              <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-success" [disabled]="editUserForm.invalid"></button>
+              <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
+              <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success"></button>
           </ng-template>
       </p-dialog>
   </form>
-  <p-dialog header="Confirm Change Email" [(visible)]="displayChangeMailPopup" [style]="{ width: '450px' }" [baseZIndex]="10000" class="confirm-change-email">
+  <p-dialog header="Xác nhận thay đổi địa chỉ email" [(visible)]="displayChangeMailPopup" [style]="{ width: '450px' }" [baseZIndex]="10000" class="confirm-change-email">
       <div class="example-container">
           <div>
               <mat-form-field appearance="outline">
@@ -152,7 +167,7 @@
               </mat-form-field>
           </div>
       </div>
-      <p-button *ngIf="IsReceiveConfirmCode" class="center loginButton" label="Confirm" (click)="confirmChangeEmail()"></p-button>
+      <p-button *ngIf="IsReceiveConfirmCode" class="center loginButton" label="Xác nhận" (click)="confirmChangeEmail()"></p-button>
   </p-dialog>
   <div><router-outlet></router-outlet></div>
 </div>

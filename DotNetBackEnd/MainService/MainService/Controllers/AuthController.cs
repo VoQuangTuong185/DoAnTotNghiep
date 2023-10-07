@@ -81,7 +81,7 @@ namespace WebAppAPI.Controllers
                 }
                 else
                 {
-                    result.Data = "Invalid Refresh Token.";
+                    result.Data = "Refresh Token không hợp lệ";
                     result.IsSuccess = false;
                     result.HttpStatusCode = 401;
                 }
@@ -119,7 +119,7 @@ namespace WebAppAPI.Controllers
                 {
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
-                    result.Data =  "User not found.";
+                    result.Data =  "Không tìm thấy tài khoản";
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace WebAppAPI.Controllers
                     {
                         result.IsSuccess = false;
                         result.HttpStatusCode = 400;
-                        result.Data = "Wrong password.";
+                        result.Data = "Sai mật khẩu";
                     }
                     else
                     {

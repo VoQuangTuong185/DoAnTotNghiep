@@ -14,7 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.DTOM;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
@@ -175,7 +175,7 @@ namespace WebAppAPI.Services.Business
                     var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName == user.LoginName && x.Id != user.Id);
                     if (existedLoginName)
                     {
-                        return Optional.Option.None<bool, string>("Login Name is Existed, try another!");
+                        return Optional.Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
                     }
                     else
                     {
@@ -192,7 +192,7 @@ namespace WebAppAPI.Services.Business
                     {
                         return Optional.Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("An error occurs while editing. Please try again later!");
+                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> AddCart(AddCart addCart)
@@ -221,7 +221,7 @@ namespace WebAppAPI.Services.Business
                     {
                         return Optional.Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("An error occurs while editing. Please try again later!");
+                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<IEnumerable<CartDTO>> GetCartByUserID(int userId)
@@ -253,7 +253,7 @@ namespace WebAppAPI.Services.Business
                         {
                             return Optional.Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<Option<bool, string>> CreateOrder(CreateOrder order)
@@ -279,7 +279,7 @@ namespace WebAppAPI.Services.Business
                         {
                             _unitOfWork.Repository<Cart>().UpdateRange(existedProductInCart);
                             await _unitOfWork.SaveChangesAsync();
-                            return Optional.Option.None<bool, string>("Expected quantity is more than current quantity of product!");
+                            return Optional.Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
                         }
 
                         var insertOrder = new Order();
@@ -320,7 +320,7 @@ namespace WebAppAPI.Services.Business
                             _messageBusClient.PublishMail(mailInformation);
                             return Optional.Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<Option<bool, string>> DeleteAllCartAfterOrder(int userId)
@@ -335,7 +335,7 @@ namespace WebAppAPI.Services.Business
                        {
                            return Optional.Option.Some<bool, string>(true);
                        }
-                       return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                       return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                    });
 
         }
@@ -454,7 +454,7 @@ namespace WebAppAPI.Services.Business
                         _messageBusClient.PublishMail(mailInformation);
                         return Optional.Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> ConfirmOrder(int orderId)
@@ -474,7 +474,7 @@ namespace WebAppAPI.Services.Business
                         _messageBusClient.PublishMail(mailInformation);
                         return Optional.Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> SuccessOrder(int orderId)
@@ -504,7 +504,7 @@ namespace WebAppAPI.Services.Business
                         _messageBusClient.PublishMail(mailInformation);
                         return Optional.Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> UpdateCart(UpdateCart cart)
@@ -517,7 +517,7 @@ namespace WebAppAPI.Services.Business
                         var existedProduct = _unitOfWork.Repository<Product>().FirstOrDefault(x => x.Id == cart.ProductId && x.IsActive);
                         if (existedProduct.Quanity < cart.Quantity)
                         {
-                            return Optional.Option.None<bool, string>("Expected quantity is more than current quantity of product!");
+                            return Optional.Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
                         }
                         existedCart.Quantity = cart.Quantity;
                         _unitOfWork.Repository<Cart>().Update(existedCart);
@@ -525,7 +525,7 @@ namespace WebAppAPI.Services.Business
                         {
                             return Optional.Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("An error occurs while updating. Please try again later!");
+                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         #region Private

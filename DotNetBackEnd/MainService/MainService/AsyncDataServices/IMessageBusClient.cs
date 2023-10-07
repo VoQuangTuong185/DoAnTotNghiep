@@ -1,4 +1,4 @@
-﻿using THUCTAPTOTNGHIEP.DTOM;
+﻿using DoAnTotNghiep.DTOM;
 
 namespace CategoryService.AsyncDataServices
 {

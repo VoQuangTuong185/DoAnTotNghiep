@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
-using THUCTAPTOTNGHIEP.DTOM;
+using DoAnTotNghiep.DTOM;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 

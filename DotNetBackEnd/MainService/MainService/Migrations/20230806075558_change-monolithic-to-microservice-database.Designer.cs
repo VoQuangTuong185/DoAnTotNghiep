@@ -9,7 +9,7 @@ using WebAppAPI.Data;
 
 #nullable disable
 
-namespace THUCTAPTOTNGHIEP.Migrations
+namespace DoAnTotNghiep.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230806075558_change-monolithic-to-microservice-database")]
@@ -24,7 +24,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.CategoryM", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.CategoryM", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                     b.ToTable("CategorieMs");
                 });
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.ProductM", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.ProductM", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -466,7 +466,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.ProductM", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.ProductM", b =>
                 {
                     b.HasOne("WebAppAPI.Models.Entities.Brand", "brand")
                         .WithMany()
@@ -493,7 +493,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("THUCTAPTOTNGHIEP.Models.Entities.ProductM", null)
+                    b.HasOne("DoAnTotNghiep.Models.Entities.ProductM", null)
                         .WithMany("P_carts")
                         .HasForeignKey("ProductMId");
 
@@ -552,7 +552,7 @@ namespace THUCTAPTOTNGHIEP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("THUCTAPTOTNGHIEP.Models.Entities.CategoryM", null)
+                    b.HasOne("DoAnTotNghiep.Models.Entities.CategoryM", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryMId");
 
@@ -598,12 +598,12 @@ namespace THUCTAPTOTNGHIEP.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.CategoryM", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.CategoryM", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("THUCTAPTOTNGHIEP.Models.Entities.ProductM", b =>
+            modelBuilder.Entity("DoAnTotNghiep.Models.Entities.ProductM", b =>
                 {
                     b.Navigation("P_carts");
                 });

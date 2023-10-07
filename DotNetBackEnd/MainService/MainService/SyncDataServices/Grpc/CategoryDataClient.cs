@@ -2,12 +2,12 @@
 using CategoryService;
 using Grpc.Net.Client;
 using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.Models.Entities;
+using DoAnTotNghiep.Models.Entities;
 using CategoryService;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Business;
 
-namespace THUCTAPTOTNGHIEP.SyncDataServices.Grpc
+namespace DoAnTotNghiep.SyncDataServices.Grpc
 {
     public class CategoryDataClient : ICategoryDataClient
     {

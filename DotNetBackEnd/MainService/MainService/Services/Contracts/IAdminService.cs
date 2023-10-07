@@ -1,5 +1,5 @@
 ﻿using Optional;
-using THUCTAPTOTNGHIEP.DTO;
+using DoAnTotNghiep.DTO;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 
@@ -21,7 +21,7 @@ namespace WebAppAPI.Services.Contracts
         Task<IEnumerable<Brand>> GetAllBrand(string type);
         Task<Brand> GetExistedBrand(int BrandId);
         Task<Product> GetExistedProduct(int ProductId);
-        Task<bool> CreateBrand(CreateBrandDTO brand);
+        Task<Option<bool, string>> CreateBrand(CreateBrandDTO brand);
         Task<Option<bool, string>> UpdateBrand(BrandDTO brand);
         Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId);
         Task<IEnumerable<OrderDTO>> GetWaitingOrder();

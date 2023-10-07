@@ -6,18 +6,17 @@
     >
       <p-tabPanel>
         <ng-template pTemplate="header">
-          <span>Wait for confirmation</span>
+          <span>Chờ xác nhận</span>
         </ng-template>
         <app-listOrder
           *ngIf="currentOrder == enumData.statusOrder.wait.value"
           [statusOrderCode]="enumData.statusOrder.wait.code"
         />
-        <!-- <app-waitOrder /> -->
       </p-tabPanel>
 
       <p-tabPanel header="Processing">
         <ng-template pTemplate="header">
-          <span>Processing</span>
+          <span>Đang xử lý</span>
         </ng-template>
         <app-listOrder
           *ngIf="currentOrder == enumData.statusOrder.processing.value"
@@ -27,7 +26,7 @@
 
       <p-tabPanel header="success">
         <ng-template pTemplate="header">
-          <span>Success</span>
+          <span>Hoàn tất</span>
         </ng-template>
         <app-listOrder
           *ngIf="currentOrder == enumData.statusOrder.success.value"
@@ -37,7 +36,7 @@
 
       <p-tabPanel header="cancel">
         <ng-template pTemplate="header">
-          <span>Cancel</span>
+          <span>Huỷ</span>
         </ng-template>
         <app-listOrder
           *ngIf="currentOrder == enumData.statusOrder.cancel.value"

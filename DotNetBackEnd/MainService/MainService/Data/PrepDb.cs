@@ -1,10 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
-using THUCTAPTOTNGHIEP.Models.Entities;
-using THUCTAPTOTNGHIEP.SyncDataServices.Grpc;
+using DoAnTotNghiep.Models.Entities;
+using DoAnTotNghiep.SyncDataServices.Grpc;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 
-namespace THUCTAPTOTNGHIEP.Data
+namespace DoAnTotNghiep.Data
 {
     public static class PrepDb
     {
