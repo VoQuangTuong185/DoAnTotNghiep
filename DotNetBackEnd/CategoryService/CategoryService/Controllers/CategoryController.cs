@@ -144,6 +144,22 @@ namespace CategoryService.Controllers
                 result.IsSuccess = false;
                 _ILog.LogException(ex.Message);
             }
+            if (result.IsSuccess)
+            {
+                var allCategory = _repository.GetAllCategories("Admin");
+                var existedCategory = allCategory.FirstOrDefault(x => x.Id == category.Id);
+
+                var sentUpdatedCategory = new Category();
+                sentUpdatedCategory.Id = existedCategory.Id;
+                sentUpdatedCategory.CategoryName = existedCategory.CategoryName;
+                sentUpdatedCategory.Description = existedCategory.Description;
+                sentUpdatedCategory.Image = existedCategory.Image;
+                sentUpdatedCategory.IsActive = existedCategory.IsActive;
+
+                var platformPublishedDto = _mapper.Map<CategoryUpdateDto>(sentUpdatedCategory);
+                platformPublishedDto.Event = "Category_Updated";
+                _messageBusClient.UpdatedCategory(platformPublishedDto);
+            }
             return result;
         }
         [HttpGet("get-existed-category")]
