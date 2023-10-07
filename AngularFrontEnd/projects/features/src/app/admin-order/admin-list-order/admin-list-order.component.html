@@ -5,13 +5,13 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th>Customer Name</th>
-      <th>Customer Mail</th>
-      <th>Product count</th>
-      <th>Time order</th>
-      <th>Payment</th>
-      <th>Total money</th>
-      <th style="text-align: center">Action</th>
+      <th>Tên khách hàng</th>
+      <th>Địa chỉ mail</th>
+      <th>Số sản phẩm</th>
+      <th>Thời gian đặt hàng</th>
+      <th>Phương thức nhận hàng</th>
+      <th>Tổng tiền</th>
+      <th style="text-align: center">Thao tác</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-order>
@@ -19,42 +19,25 @@
       <td>{{ order.customerName }}</td>
       <td>{{ order.email }}</td>
       <td>{{ order.productCount }}</td>
-      <td>{{ order.orderDate | date : "dd MMM yyyy" }}</td>
+      <td>{{ order.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</td>
       <td>{{ order.payment }}</td>
       <td>{{ order.totalBill | currency : "VND" }}</td>
       <td style="text-align: center">
         <p-button
-          *ngIf="
-            statusOrderCode === this.enumData.statusOrder.wait.code ||
-            statusOrderCode === this.enumData.statusOrder.processing.code
-          "
-          label="Huỷ"
-          styleClass="p-button-danger"
-          icon="pi pi-times"
-          (click)="confirmCancelOrder(order.id)"
-        ></p-button>
+          *ngIf=" statusOrderCode === this.enumData.statusOrder.wait.code || statusOrderCode === this.enumData.statusOrder.processing.code"
+          label="Huỷ" styleClass="p-button-danger" icon="pi pi-times" (click)="confirmCancelOrder(order.id)">
+        </p-button>
         <p-button
           *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"
-          label="Xác nhận"
-          styleClass="p-button-success"
-          [style]="{ 'margin-left': '10px' }"
-          icon="pi pi-check"
-          (click)="confirmProcessingOrder(order.id)"
+          label="Xác nhận" styleClass="p-button-success" [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmProcessingOrder(order.id)"
         ></p-button>
         <p-button
           *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
-          label="Success"
-          styleClass="p-button-success"
-          [style]="{ 'margin-left': '10px' }"
-          icon="pi pi-check"
-          (click)="confirmSuccessOrder(order.id)"
-        ></p-button>
+          label="Hoàn tất" styleClass="p-button-success" [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmSuccessOrder(order.id)">
+        </p-button>
         <p-button
-          label="Detail"
-          icon="pi pi-list"
-          [style]="{ 'margin-left': '10px' }"
-          (click)="openModalOrderDetail(order)"
-        ></p-button>
+          label="Chi tiết" icon="pi pi-list" [style]="{ 'margin-left': '10px' }" (click)="openModalOrderDetail(order)">
+        </p-button>
       </td>
     </tr>
   </ng-template>

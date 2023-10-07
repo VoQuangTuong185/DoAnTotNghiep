@@ -11,7 +11,7 @@
               </nav>
               <nav *ngIf="currentTab?.includes('/user')" class="routing">
                   <a [routerLink]="['/user/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>
-                  <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active"><b>Quản trị</b></a>
+                  <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active" style="color: red;"><b>Quản trị</b></a>
                   <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Giỏ hàng</b></a>
                   <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/order']" routerLinkActive="active"><b>Đơn hàng</b></a>                 
               </nav>

@@ -5,17 +5,17 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th>Product count</th>
-      <th>Time order</th>
-      <th>Payment</th>
-      <th>Total money</th>
-      <th style="text-align: center">Action</th>
+      <th>Số sản phẩm</th>
+      <th>Thời gian đặt hàng</th>
+      <th>Phương thức nhận hàng</th>
+      <th>Tổng tiền</th>
+      <th style="text-align: center">Thao tác</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-order>
     <tr>
       <td>{{ order.productCount }}</td>
-      <td>{{ order.orderDate | date : "dd MMM yyyy" }}</td>
+      <td>{{ order.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</td>
       <td>{{ order.payment }}</td>
       <td>{{ order.totalBill | currency : "VND" }}</td>
       <td style="text-align: center">
@@ -28,14 +28,14 @@
         ></p-button>
         <p-button
           *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
-          label="Success"
+          label="Hoàn tất"
           styleClass="p-button-success"
           [style]="{ 'margin-left': '10px' }"
           icon="pi pi-check"
           (click)="confirmSuccessOrder(order.id)"
         ></p-button>
         <p-button
-          label="Detail"
+          label="Chi tiết"
           icon="pi pi-list"
           [style]="{ 'margin-left': '10px' }"
           (click)="openModalOrderDetail(order)"

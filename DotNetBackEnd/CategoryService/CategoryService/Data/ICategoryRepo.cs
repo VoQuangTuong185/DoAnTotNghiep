@@ -1,5 +1,6 @@
 ﻿using CategoryService.Data.Entities;
 using CategoryService.DTO;
+using Optional;
 
 namespace CategoryService.Data
 {
@@ -8,8 +9,8 @@ namespace CategoryService.Data
         bool SaveChanges();
         IEnumerable<Category> GetAllCategories(string type);
         Category GetCategoryById(int id);
-        void CreateCategory(Category category);
+        Task<Option<bool, string>> CreateCategory(Category category);
         Category InactiveCategory(int categoryId);
-        Category UpdateCategory(Category category);
+        Task<Option<bool, string>> UpdateCategory(Category category);
     }
 }

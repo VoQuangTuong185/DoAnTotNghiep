@@ -1,27 +1,27 @@
 <div>
   <div>
-    <h2 class="title">ORDER DETAIL</h2>
+    <h2 class="title">Chi tiết đơn hàng</h2>
   </div>
 
   <div class="order-info">
-    <p><b>Customer Name : </b>{{ this.data.customerName }}</p>
-    <p><b>Customer Email : </b>{{ this.data.email }}</p>
-    <p><b>Address : </b>{{ this.data.address }}</p>
-    <p><b>Order date : </b>{{ this.data.orderDate | date : "dd MMM yyyy" }}</p>
-    <p><b>Payment : </b>{{ this.data.payment }}</p>
-    <p><b>Total product : </b>{{ this.data.productCount }}</p>
-    <p><b>Total bill : </b>{{ this.data.totalBill | currency : "VND" }}</p>
+    <p><b>Tên khách hàng: </b>{{ this.data.customerName }}</p>
+    <p><b>Địa chỉ mail: </b>{{ this.data.email }}</p>
+    <p><b>Số sản phẩm: </b>{{ this.data.address }}</p>
+    <p><b>Thời gian đặt hàng: </b>{{ this.data.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</p>
+    <p><b>Phương thức nhận hàng: </b>{{ this.data.payment }}</p>
+    <p><b>Số sản phẩm: </b>{{ this.data.productCount }}</p>
+    <p><b>Tổng tiền: </b>{{ this.data.totalBill | currency : "VND" }}</p>
   </div>
   <div class="table-product">
     <p-table [value]="lstProduct" [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="header">
         <tr>
           <th>Hình ảnh</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Discount</th>
-          <th>Total money</th>
+          <th>Sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Giảm giá</th>
+          <th>Tổng tiền</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product>
@@ -48,7 +48,7 @@
     </p-table>
   </div>
   <p-button
-    label="Close"
+    label="Đóng"
     icon="pi pi-times"
     (click)="closeDialog()"
     [style]="{

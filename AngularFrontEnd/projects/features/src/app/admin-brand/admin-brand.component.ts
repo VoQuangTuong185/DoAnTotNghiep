@@ -26,7 +26,7 @@ export class AdminBrandComponent {
     ){
     this.brandsDataCols = [
       { header : 'STT', field : 'id', width:10, type:'string'},
-      { header : 'Brand Name', field : 'brandName', width:25, type:'string'},
+      { header : 'Nhãn hàng', field : 'brandName', width:25, type:'string'},
       { header : 'Mô tả', field : 'description', width:50, type:'string'},   
       { header : 'Trạng thái', field : 'isActive', width:15, type:'string'},    
       { header : 'Thao tác', field : 'button', width:25, type:'button'},   
@@ -61,7 +61,7 @@ export class AdminBrandComponent {
           this.isEdit = true; 
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Get edit brand fail!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: result.message});
         }
       });  
     }
@@ -77,25 +77,34 @@ export class AdminBrandComponent {
       this.submitted = false;
     }
     confirmForm(isEdit: boolean){
+      if(this.brandForm.invalid){
+        this.messageService.add({
+          key: 'bc',
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Hãy nhập các thông tin bắt buộc!',
+        });
+        return;
+      }
       if (!isEdit){
         this.websiteAPIService.createBrand(this.brandForm.getRawValue()).subscribe((res:any) =>{     
           if(res.isSuccess){
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Create brand Successfully!'});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
             this.loadDataAllBrand();
           }
           else {
-            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Create brand Fail, try again!'});
+            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
           }
         });
       }
       else{
         this.websiteAPIService.updateBrand(this.brandForm.getRawValue()).subscribe((res:any) =>{     
           if(res.isSuccess){
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Update brand Successfully!'});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
             this.loadDataAllBrand();
           }
           else {
-            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Update brand Fail, try again!'});
+            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
           }
         });
         this.isEdit = false;
@@ -106,7 +115,7 @@ export class AdminBrandComponent {
       let action ='';
       selectedBrand.isActive ? action = 'ẩn': action = 'hiện';
       this.confirmationService.confirm({
-        message: 'Are you sure ' + action + ' brand ' + selectedBrand.brandName + ' ?',
+        message: 'Xác nhận ' + action + ' nhãn hàng ' + selectedBrand.brandName + ' ?',
         header: 'Xác nhận',
         icon: 'pi pi-exclamation-triangle', 
         accept: () => {

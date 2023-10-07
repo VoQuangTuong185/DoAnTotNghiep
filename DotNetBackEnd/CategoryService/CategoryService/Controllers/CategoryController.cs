@@ -8,6 +8,7 @@ using CategoryService.Services.Business;
 using CategoryService.Services.Contracts;
 using CategoryService.SyncDataServices.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 
 namespace CategoryService.Controllers
@@ -50,37 +51,47 @@ namespace CategoryService.Controllers
             var categoryModel = _mapper.Map<Category>(categoryCreateDto);
             try
             {
-                _repository.CreateCategory(categoryModel);              
-                result.Data = _repository.SaveChanges();
+                (await _repository.CreateCategory(categoryModel)).Match(res =>
+                {
+                    _repository.SaveChanges();
+                    result.Message = "Tạo danh mục " + categoryModel.CategoryName + " thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });           
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
             };
-            var categoryReadDto = _mapper.Map<CategoryReadDto>(categoryModel);
-
-            // Send Sync Message
-            try
+            if (result.IsSuccess)
             {
-                await _productDataClient.SendCategoryToProduct(categoryReadDto);
+                var categoryReadDto = _mapper.Map<CategoryReadDto>(categoryModel);
+                // Send Sync Message
+                try
+                {
+                    await _productDataClient.SendCategoryToProduct(categoryReadDto);
+                }
+                catch (Exception ex)
+                {
+                    _ILog.LogException($"--> Could not send synchronously: {ex.Message}");
+                }
+                //Send Async Message
+                try
+                {
+                    var platformPublishedDto = _mapper.Map<CategoryPublishDto>(categoryReadDto);
+                    platformPublishedDto.Event = "Category_Published";
+                    _messageBusClient.PublishNewCategory(platformPublishedDto);
+                }
+                catch (Exception ex)
+                {
+                    _ILog.LogException($"--> Could not send asynchronously: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                _ILog.LogException($"--> Could not send synchronously: {ex.Message}");
-            }
-
-            //Send Async Message
-            try
-            {
-                var platformPublishedDto = _mapper.Map<CategoryPublishDto>(categoryReadDto);
-                platformPublishedDto.Event = "Category_Published";
-                _messageBusClient.PublishNewCategory(platformPublishedDto);
-            }
-            catch (Exception ex)
-            {
-                _ILog.LogException($"--> Could not send asynchronously: {ex.Message}");
-            }
-
             return result;
         }
         [HttpGet("inactive-category")]
@@ -99,7 +110,7 @@ namespace CategoryService.Controllers
                 var platformPublishedDto = _mapper.Map<CategoryUpdateDto>(sentUpdatedCategory);
                 platformPublishedDto.Event = "Category_Updated";
                 _messageBusClient.InactivedCategory(platformPublishedDto);
-                result.Message = "Inactive Category successfully!";
+                result.Message = "Thao thác thành công!";
                 result.IsSuccess = true;
             }
             catch (Exception ex)
@@ -115,20 +126,18 @@ namespace CategoryService.Controllers
             var result = new ApiResult();
             try
             {
-                var recentlyUpdatedCategory = _repository.UpdateCategory(category);
-
-                var sentUpdatedCategory = new Category();
-                sentUpdatedCategory.Id = recentlyUpdatedCategory.Id;
-                sentUpdatedCategory.CategoryName = recentlyUpdatedCategory.CategoryName;
-                sentUpdatedCategory.Description = recentlyUpdatedCategory.Description;
-                sentUpdatedCategory.Image = recentlyUpdatedCategory.Image;
-                sentUpdatedCategory.IsActive = recentlyUpdatedCategory.IsActive;
-
-                var platformPublishedDto = _mapper.Map<CategoryUpdateDto>(sentUpdatedCategory);
-                platformPublishedDto.Event = "Category_Updated";
-                _messageBusClient.UpdatedCategory(platformPublishedDto);
-                result.Message = "Update Category successfully!";
-                result.IsSuccess = true;
+                (await _repository.UpdateCategory(category)).Match(res =>
+                {
+                    _repository.SaveChanges();
+                    result.Message = "Chỉnh sửa danh mục " + category.CategoryName + " thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });              
             }
             catch (Exception ex)
             {

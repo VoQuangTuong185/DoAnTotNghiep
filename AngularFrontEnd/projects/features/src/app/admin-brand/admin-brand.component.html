@@ -1,9 +1,9 @@
-<button pButton icon="pi pi-calendar-plus" label="Create" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
+<button pButton icon="pi pi-calendar-plus" label="Tạo" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
     (click)="openCreateCategoryPopup()"></button>
 <p-accordion>
-    <p-accordionTab header="Brand Manages" class="center" [selected]="true">
+    <p-accordionTab header="Quản lý nhãn hàng" class="center" [selected]="true">
         <div class="search-box">
-            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Search" 
+            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
             matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
         </div>  
         <div class="displayUsers">
@@ -27,9 +27,9 @@
                         <span [ngSwitch]="col.type">
                             <span *ngSwitchCase="'button'" class="button"> 
                                 <td>
-                                    <button pButton icon="pi pi-pencil" pTooltip="Edit Category" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                                    <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
                                         (click)="openEditBrandPopup(rowData['id'])"></button>        
-                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'InActive':'Active'" tooltipPosition="bottom" (click)="inActiveBrand(rowData)"
+                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'Ẩn':'Hiện'" tooltipPosition="bottom" (click)="inActiveBrand(rowData)"
                                     [ngClass]="rowData.isActive ? 'p-button-rounded p-button-danger mr-2' : 'p-button-rounded p-button-info mr-2'"  
                                    ></button>
                                 </td> 
@@ -63,21 +63,27 @@
                 </div>
                 <div class="category">
                     <mat-form-field appearance="outline">     
-                        <mat-label>Brand Name</mat-label>
-                        <input matInput formControlName = "BrandName" name = "BrandName" required="">        
+                        <mat-label>Nhãn hàng</mat-label>
+                        <input matInput formControlName = "BrandName" name = "BrandName" required="">     
+                        <mat-error *ngIf="brandForm.get('BrandName')?.hasError('required')">
+                            Hãy nhập nhãn hàng!
+                        </mat-error>    
                     </mat-form-field>  
                 </div>
                 <div class="category">
                     <mat-form-field appearance="outline" required=""> 
                         <mat-label>Mô tả</mat-label>   
                         <input matInput formControlName = "Description" name = "Description"> 
+                        <mat-error *ngIf="brandForm.get('BrandName')?.hasError('required')">
+                            Hãy nhập mô tả!
+                        </mat-error>   
                     </mat-form-field> 
                 </div>       
             </ng-template>
             <ng-template pTemplate="footer">
                 <div class="pt-2">
-                    <button *ngIf="!isEdit" pButton label="Create" [disabled]="!brandForm.valid" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
-                    <button *ngIf="isEdit" pButton label="Lưu" class="p-button-rounded p-button-success" [disabled]="!brandForm.valid" (click)="confirmForm(true)"></button>           
+                    <button *ngIf="!isEdit" pButton label="Tạo" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
+                    <button *ngIf="isEdit" pButton label="Lưu" class="p-button-rounded p-button-success" (click)="confirmForm(true)"></button>           
                     <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
                 </div>
             </ng-template>

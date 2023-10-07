@@ -110,22 +110,22 @@ export class AdminCategoryComponent {
     if (!isEdit){
       this.websiteAPIService.createCategory(this.categoryForm.getRawValue()).subscribe((res:any) =>{     
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Create category Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
           this.loadDataAllCategory();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Create category Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
     }
     else{
       this.websiteAPIService.updateCategory(this.categoryForm.getRawValue()).subscribe((res:any) =>{     
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Update category Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
           this.loadDataAllCategory();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Update category Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
     }

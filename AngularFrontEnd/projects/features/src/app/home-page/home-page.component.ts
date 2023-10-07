@@ -131,7 +131,7 @@ export class HomePageComponent {
     this.websiteAPIService.getCartByUserID(Number(this.userData.id)).subscribe((res: any) => {
       this.products = res.data;
       let currentProduct = this.products.filter(x => x.productId == this.currentProduct.id);
-      if (currentProduct != null &&  currentProduct[0].quanity > 0){
+      if (currentProduct.length > 0 &&  currentProduct[0].quanity > 0){
         this.quantityCurrentProductInCard = currentProduct[0].quanity;
       }    
     });   

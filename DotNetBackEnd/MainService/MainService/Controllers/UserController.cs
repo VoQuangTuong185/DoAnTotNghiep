@@ -142,7 +142,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.UpdateProfile(user)).Match(res =>
                 {
-                    result.Message = "Action successfully!";
+                    result.Message = "Thao tác thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -167,7 +167,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.AddCart(addCart)).Match(res =>
                 {
-                    result.Message = "Add cart successfully!";
+                    result.Message = "Thêm sản phẩm vào giỏ hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -209,7 +209,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.InActiveCart(cart)).Match(res =>
                 {
-                    result.Message = "Remove product successfully!";
+                    result.Message = "Xoá sản phẩm ra khỏi giỏ hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -235,7 +235,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.UpdateCart(cart)).Match(res =>
                 {
-                    result.Message = "Update quantity successfully!";
+                    result.Message = "Chỉnh sửa số lượng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -261,7 +261,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.CreateOrder(order)).Match(res =>
                 {
-                    result.Message = "Create order successfully!";
+                    result.Message = "Tạo đơn hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -351,7 +351,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.DeleteAllCartAfterOrder(userId)).Match(res =>
                 {
-                    result.Message = "Create order successfully!";
+                    result.Message = "Tạo đơn hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -408,7 +408,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.CancelOrder(orderId)).Match(res =>
                 {
-                    result.Message = "Cancel order successfully!";
+                    result.Message = "Huỷ đơn hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -434,7 +434,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.ConfirmOrder(orderId)).Match(res =>
                 {
-                    result.Message = "Confirm order successfully!";
+                    result.Message = "Xác nhận đơn hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -460,7 +460,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.SuccessOrder(orderId)).Match(res =>
                 {
-                    result.Message = "Success order successfully!";
+                    result.Message = "Hoàn tất đơn hành thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>

@@ -80,7 +80,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.EditUser(user)).Match(res =>
                 {
-                    result.Message = "Action successfully!";
+                    result.Message = "Thao tác thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -106,7 +106,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.SetManagerPermisson(userId)).Match(res =>
                 {
-                    result.Message = "Action successfully!";
+                    result.Message = "Thao tác thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -178,7 +178,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.UpdateProduct(product)).Match(res =>
                 {
-                    result.Message = "Update Product successfully!";
+                    result.Message = "Chỉnh sửa sản phẩm thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -204,7 +204,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.InActiveProduct(productId)).Match(res =>
                 {
-                    result.Message = "Action Product successfully!";
+                    result.Message = "Thao tác thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -261,6 +261,7 @@ namespace WebAppAPI.Controllers
             try
             {
                 result.Data = await _IAdminService.GetExistedBrand(brandId);
+                result.Message = "Lỗi khi lấy thông tin nhãn hàng!";
             }
             catch (Exception ex)
             {
@@ -276,7 +277,17 @@ namespace WebAppAPI.Controllers
             var result = new ApiResult();
             try
             {
-                result.Data = await _IAdminService.CreateBrand(brand);
+                (await _IAdminService.CreateBrand(brand)).Match(res =>
+                {
+                    result.Message = "Tạo nhãn hàng " + brand.BrandName + " thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
             }
             catch (Exception ex)
             {
@@ -294,7 +305,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.InActiveBrand(brandId)).Match(res =>
                 {
-                    result.Message = "Action Brand successfully!";
+                    result.Message = "Thao tác thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -319,7 +330,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IAdminService.UpdateBrand(brand)).Match(res =>
                 {
-                    result.Message = "Update Brand successfully!";
+                    result.Message = "Chỉnh sửa nhãn hàng " + brand.BrandName + " thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
