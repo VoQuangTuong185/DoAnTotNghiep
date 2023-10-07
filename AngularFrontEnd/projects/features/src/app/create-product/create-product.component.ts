@@ -87,20 +87,20 @@ export class CreatProductComponent {
     if(this.existedProductId) {  
       this.websiteAPIService.updateProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: 'Update Product Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Update Product Successfully!'});
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Update Product Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Update Product Fail, try again!'});
         }
       });
     }
     else{   
       this.websiteAPIService.createProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: 'Create Product Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Create Product Successfully!'});
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Create Product Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Create Product Fail, try again!'});
         }
       });
     }
@@ -108,7 +108,7 @@ export class CreatProductComponent {
   cancel(){
     this.confirmationService.confirm({
       message: 'Are you sure to cancel ?',
-      header: 'Confirm',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {        
         this.backToParent(); 
@@ -132,7 +132,7 @@ export class CreatProductComponent {
         this.productForm.controls['Id'].setValue(this.ProductID);
       }
       else {
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Auto generate product id fail!'});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Auto generate product id fail!'});
       }
     });
   }  

@@ -48,12 +48,14 @@ p {
 .center{
   justify-content: center;
   display: flex;
-  text-decoration: none;
-  color:green;
 }
 .loginButton{
   margin-bottom: 0.75rem;
 }
 .forgotPassword{
   cursor: pointer;
+}
+.hyper-link{
+  text-decoration: none;
+  color:green;
 }

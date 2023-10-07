@@ -56,112 +56,124 @@
 
           <ng-template pTemplate="summary">
               <p style="text-align: center;">Total money : <b style="color: red;">{{ getTotalMoney() | currency : "VND" }}</b></p>
-              <button [disabled]="products.length == 0" pButton label="Confirm Order" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
+              <button [disabled]="products.length == 0" pButton label="Xác nhận đơn hàng" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
           </ng-template>
       </p-table>
   </div>
 
   <form [formGroup]="editUserForm" (ngSubmit)="confirmOrder()">
-      <p-dialog [(visible)]="showConfirmOrder" [style]="{ width: '37vw' }" header="Profile Information" [modal]="true" styleClass="p-fluid" class="profile">
+      <p-dialog [(visible)]="showConfirmOrder" [style]="{ width: '37vw' }" header="Thông tin cá nhân" [modal]="true" styleClass="p-fluid" class="profile">
           <ng-template pTemplate="content">
               <table>
                   <tr>
                       <td>
                           <div class="mr-5">
                               <mat-form-field appearance="outline">
-                                  <mat-label>Name</mat-label>
+                                  <mat-label>Họ và tên</mat-label>
                                   <input matInput formControlName="Name" name="Name" required="" />
-                              </mat-form-field>
+                                  <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
+                                    Hãy nhập họ và tên!
+                                  </mat-error>    
+                              </mat-form-field>  
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Email</mat-label>
-                                  <input matInput formControlName="Email" name="Email" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                                <mat-label>Địa chỉ email</mat-label>
+                                <input matInput formControlName="Email" name="Email" required="" />
+                                <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
+                                  Hãy nhập địa chỉ email!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-5">
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Telephone</mat-label>
-                                  <input matInput formControlName="TelNum" name="TelNum" required="" />
-                              </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Số điện thoại</mat-label>
+                                <input matInput formControlName="TelNum" name="TelNum"/>
+                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
+                                  Định dạng số điện thoại chưa chính xác!
+                                </mat-error>
+                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('maxlength')">
+                                  Định dạng số điện thoại chưa chính xác!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="fill">
-                                  <mat-label>Provinces</mat-label>
-                                  <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
-                                      <mat-option *ngFor="let province of provices" [value]="province">
-                                          {{ province.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
-                                      Please choose your province!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Tỉnh</mat-label>
+                                <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
+                                    <mat-option *ngFor="let province of provices" [value]="province">
+                                        {{ province.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
+                                  Hãy chọn tỉnh!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-5">
-                              <mat-form-field appearance="fill">
-                                  <mat-label>District</mat-label>
-                                  <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
-                                      <mat-option *ngFor="let district of districts" [value]="district">
-                                          {{ district.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
-                                      Please choose your district
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Huyện</mat-label>
+                                <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
+                                    <mat-option *ngFor="let district of districts" [value]="district">
+                                        {{ district.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
+                                  Hãy chọn huyện!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <div>
-                              <mat-form-field appearance="fill">
-                                  <mat-label>Ward</mat-label>
-                                  <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
-                                      <mat-option *ngFor="let ward of wards" [value]="ward">
-                                          {{ ward.name }}
-                                      </mat-option>
-                                  </mat-select>
-                                  <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
-                                      Please choose your ward!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Xã</mat-label>
+                                <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
+                                    <mat-option *ngFor="let ward of wards" [value]="ward">
+                                        {{ ward.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
+                                Hãy chọn xã!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                   </tr>
                   <tr>
                       <td>
                           <div class="mr-5">
-                              <mat-form-field>
-                                  <mat-label>House number and street</mat-label>
-                                  <textarea matInput rows="1" formControlName="Streets"></textarea>
-                                  <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
-                                      Please enter your number and street!
-                                  </mat-error>
-                              </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Số nhà, đường</mat-label>
+                                <textarea matInput rows="1" formControlName="Streets"></textarea>
+                                <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
+                                  Hãy nhập số nhà, đường!
+                                </mat-error>
+                            </mat-form-field>
                           </div>
                       </td>
                       <td>
                           <mat-form-field>
-                              <mat-label>Payment method</mat-label>
+                              <mat-label>Phương thức nhận hàng</mat-label>
                               <mat-select (valueChange)="changeValuePayment($event)" required="" [(value)]="methods[0].key">
                                   <mat-option *ngFor="let method of methods" [value]="method.key">
                                       {{ method.name }}
                                   </mat-option>
                               </mat-select>
                               <mat-error *ngIf="editUserForm.get('Payment')?.hasError('required')">
-                                  Please choose payment method!
+                                Hãy chọn phương thức nhận hàng!
                               </mat-error>
                           </mat-form-field>
                       </td>
@@ -169,8 +181,8 @@
               </table>
           </ng-template>
           <ng-template pTemplate="footer">
-              <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" type="button" (click)="closeConfirmOrder()"></button>
-              <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-success" [disabled]="!editUserForm.valid"></button>
+              <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="closeConfirmOrder()"></button>
+              <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success"></button>
           </ng-template>
       </p-dialog>
   </form>

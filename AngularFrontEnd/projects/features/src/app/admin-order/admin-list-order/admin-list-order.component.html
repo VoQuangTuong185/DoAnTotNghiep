@@ -28,14 +28,14 @@
             statusOrderCode === this.enumData.statusOrder.wait.code ||
             statusOrderCode === this.enumData.statusOrder.processing.code
           "
-          label="Cancel"
+          label="Huỷ"
           styleClass="p-button-danger"
           icon="pi pi-times"
           (click)="confirmCancelOrder(order.id)"
         ></p-button>
         <p-button
           *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"
-          label="Confirm"
+          label="Xác nhận"
           styleClass="p-button-success"
           [style]="{ 'margin-left': '10px' }"
           icon="pi pi-check"

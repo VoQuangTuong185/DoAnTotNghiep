@@ -12,7 +12,7 @@
                 [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
                 [globalFilterFields]="['id','brandName','description','isActive']"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
@@ -69,7 +69,7 @@
                 </div>
                 <div class="category">
                     <mat-form-field appearance="outline" required=""> 
-                        <mat-label>Description</mat-label>   
+                        <mat-label>Mô tả</mat-label>   
                         <input matInput formControlName = "Description" name = "Description"> 
                     </mat-form-field> 
                 </div>       
@@ -77,8 +77,8 @@
             <ng-template pTemplate="footer">
                 <div class="pt-2">
                     <button *ngIf="!isEdit" pButton label="Create" [disabled]="!brandForm.valid" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
-                    <button *ngIf="isEdit" pButton label="Save" class="p-button-rounded p-button-success" [disabled]="!brandForm.valid" (click)="confirmForm(true)"></button>           
-                    <button pButton label="Cancel" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
+                    <button *ngIf="isEdit" pButton label="Lưu" class="p-button-rounded p-button-success" [disabled]="!brandForm.valid" (click)="confirmForm(true)"></button>           
+                    <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
                 </div>
             </ng-template>
     </p-dialog>

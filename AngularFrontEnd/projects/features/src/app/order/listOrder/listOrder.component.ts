@@ -95,11 +95,11 @@ export class ListOrderComponent implements OnInit {
       .cancelOrder(Number(orderId))
       .subscribe((res: any) => {
         if(res.data){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: res.message, life: 3000});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
           this.getWaitingOrder();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
   }
@@ -120,11 +120,11 @@ export class ListOrderComponent implements OnInit {
       .successOrder(Number(orderId))
       .subscribe((res: any) => {
         if(res.data){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: res.message, life: 3000});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
           this.getProcessingOrder();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: res.message});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
   }

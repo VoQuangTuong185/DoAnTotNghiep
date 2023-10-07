@@ -13,7 +13,7 @@
                 [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
                 [globalFilterFields]="['id','productName','price','discount','description','soldQuantity']"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th pReorderableColumn pResizableColumn *ngFor="let col of columns"

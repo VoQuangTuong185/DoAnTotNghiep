@@ -1,10 +1,10 @@
-<button pButton icon="pi pi-calendar-plus" label="Create" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
+<button pButton icon="pi pi-calendar-plus" label="Tạo" class="p-button-sm p-button-raised p-button-rounded p-button-help create-button" 
     (click)="openCreateCategoryPopup()"></button>
 <p-accordion>
-    <p-accordionTab header="Category Manages" class="center" [selected]="true">
+    <p-accordionTab header="Quản lý danh mục" class="center" [selected]="true">
         <div class="search-box">
-            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Search" 
-            matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
+                matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
         </div>  
         <div class="displayUsers">
             <p-table #tdt [value]="dataCategories" [columns]="productsDataCols" responsiveLayout="scroll" class="table-content" [paginator]="true" [rows]="rows"
@@ -12,7 +12,7 @@
                 [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
                 [globalFilterFields]="['id','categoryName','description','isActive']"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
@@ -27,11 +27,11 @@
                         <span [ngSwitch]="col.type">
                             <span *ngSwitchCase="'button'" class="button"> 
                                 <td>
-                                    <button pButton icon="pi pi-pencil" pTooltip="Edit Category" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                                    <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
                                         (click)="openEditCategoryPopup(rowData['id'])"></button>                    
-                                    <button pButton icon="pi pi-list" pTooltip="Products of Category" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2"
+                                    <button pButton icon="pi pi-list" pTooltip="Xem sản phẩm" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2"
                                         [routerLink]="['./admin-product', rowData['id']]"></button>
-                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'InActive':'Active'" tooltipPosition="bottom" (click)="inActiveCategory(rowData)"
+                                    <button pButton icon="pi pi-lock" [pTooltip]="rowData.isActive ? 'Ẩn':'Hiện'" tooltipPosition="bottom" (click)="inActiveCategory(rowData)"
                                     [ngClass]="rowData.isActive ? 'p-button-rounded p-button-danger mr-2' : 'p-button-rounded p-button-info mr-2'"  
                                    ></button>
                                 </td> 
@@ -74,7 +74,7 @@
                 </div>
                 <div class="category">
                     <mat-form-field appearance="outline" formControlName = "Description" name = "Description" required=""> 
-                        <mat-label>Description</mat-label>   
+                        <mat-label>Mô tả</mat-label>   
                         <input matInput formControlName = "Description" name = "Description"> 
                     </mat-form-field> 
                 </div>    
@@ -84,8 +84,8 @@
             <ng-template pTemplate="footer">
                 <div class="pt-2">
                     <button *ngIf="!isEdit" pButton label="Create" [disabled]="!categoryForm.valid" class="p-button-rounded p-button-success" (click)="confirmForm(false)"></button>
-                    <button *ngIf="isEdit" pButton label="Save" class="p-button-rounded p-button-success" [disabled]="!categoryForm.valid" (click)="confirmForm(true)"></button>           
-                    <button pButton label="Cancel" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
+                    <button *ngIf="isEdit" pButton label="Lưu" class="p-button-rounded p-button-success" [disabled]="!categoryForm.valid" (click)="confirmForm(true)"></button>           
+                    <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideEditUserPopup()"></button> 
                 </div>
             </ng-template>
     </p-dialog>

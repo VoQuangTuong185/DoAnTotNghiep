@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
             this.messageService.add({
               key: 'bc',
               severity: 'info',
-              summary: 'Info',
+              summary: 'Thông tin',
               detail: res.data,
             });
             this.router.navigate(['/user/login-user']);
@@ -138,7 +138,7 @@ export class AppComponent implements OnInit {
       Name: [this.selectedUsers.name, [Validators.required]],
       LoginName: [this.selectedUsers.loginName, [Validators.required]],
       Email: [this.selectedUsers.email, [Validators.required]],
-      TelNum: [this.selectedUsers.telNum, [Validators.maxLength(10)]],
+      TelNum: [this.selectedUsers.telNum, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
       Wards: [this.existedWard[0], Validators.required],
@@ -166,7 +166,7 @@ export class AppComponent implements OnInit {
           this.messageService.add({
             key: 'bc',
             severity: 'info',
-            summary: 'Info',
+            summary: 'Thông tin',
             detail: res.message,
           });
         }
@@ -192,6 +192,15 @@ export class AppComponent implements OnInit {
     this.displayEditUserPopup = true;
   }
   confirmEditUser() {
+    if(this.editUserForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+      });
+      return;
+    }
     if (this.selectedUsers.email != this.editUserForm.controls['Email'].value) {
       this.confirmEmail = this.editUserForm.controls['Email'].value;
       this.websiteAPIService
@@ -207,15 +216,15 @@ export class AppComponent implements OnInit {
             this.messageService.add({
               key: 'bc',
               severity: 'info',
-              summary: 'Info',
-              detail: 'Confirm change email code was sent!',
+              summary: 'Thông tin',
+              detail: 'Mã xác nhận thay đổi địa chỉ email đã được gửi đi!',
             });
           } else {
             this.messageService.add({
               key: 'bc',
               severity: 'error',
-              summary: 'Error',
-              detail: 'Existed Login Name or Email, try again!',
+              summary: 'Lỗi',
+              detail: 'Đã tồn tại tài khoản hoặc địa chỉ email này!',
             });
           }
         });
@@ -247,7 +256,7 @@ export class AppComponent implements OnInit {
           this.messageService.add({
             key: 'bc',
             severity: 'success',
-            summary: 'Successful',
+            summary: 'Thành công',
             detail: res.message,
           });
           if (
@@ -262,7 +271,7 @@ export class AppComponent implements OnInit {
           this.messageService.add({
             key: 'bc',
             severity: 'error',
-            summary: 'Error',
+            summary: 'Lỗi',
             detail: res.message,
           });
         }
@@ -274,7 +283,7 @@ export class AppComponent implements OnInit {
       this.messageService.add({
         key: 'bc',
         severity: 'info',
-        summary: 'Info',
+        summary: 'Thông tin',
         detail: 'Correct code!',
       });
       this.updateUser();
@@ -283,7 +292,7 @@ export class AppComponent implements OnInit {
       this.messageService.add({
         key: 'bc',
         severity: 'error',
-        summary: 'Error',
+        summary: 'Lỗi',
         detail: 'Wrong confirm code, try again!',
       });
     }
@@ -294,8 +303,8 @@ export class AppComponent implements OnInit {
   }
   logout() {
     this.confirmationService.confirm({
-      message: 'Are you sure to logout ?',
-      header: 'Confirm',
+      message: 'Xác nhận đăng xuất ?',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         localStorage.removeItem('authToken');
@@ -303,8 +312,8 @@ export class AppComponent implements OnInit {
         this.messageService.add({
           key: 'bc',
           severity: 'info',
-          summary: 'Info',
-          detail: 'Logout successfully!',
+          summary: 'Thông tin',
+          detail: 'Đăng xuất thành công!',
         });
         this.loginService.passLogoutAction(true);
         this.router.navigate(['']);

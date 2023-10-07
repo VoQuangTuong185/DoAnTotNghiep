@@ -18,7 +18,7 @@ export class RegisterComponent {
   displayRegisterPopUp: boolean | undefined = true;
   displayConfirmPopUp: boolean | undefined = false;
   hide = true;
-  loginForm: FormGroup;
+  registerForm: FormGroup;
   registerSuccessfully:boolean = false;
   firstLoad:boolean = true;
   confirmCodeSent :string ='';
@@ -40,13 +40,13 @@ export class RegisterComponent {
     private authService: AuthService,
     private addressService: AddressService
     ) {
-      this.loginForm = this.createEmptyLoginForm();
+      this.registerForm = this.createEmptyRegisterForm();
       this.provices = [];
       this.districts = [];
       this.wards = [];
       this.getAllProvices();
     }
-    createEmptyLoginForm() {
+    createEmptyRegisterForm() {
       return this.formBuilder.group({
         Name: ['',Validators.required],
         LoginName: ['',Validators.required],
@@ -58,11 +58,11 @@ export class RegisterComponent {
         DistrictCode: ['',Validators.required],
         WardCode: ['',Validators.required],
         Address: ['',Validators.required],
-        TelNum: ['',Validators.maxLength(10)],
+        TelNum: ['',Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
         Password: ['',Validators.required],
       })
     }
-    createExistedLoginForm() {
+    createExistedregisterForm() {
       return this.formBuilder.group({
         Name: ['',Validators.required],
         LoginName: ['',Validators.required],
@@ -74,25 +74,25 @@ export class RegisterComponent {
         DistrictCode: [this.districtSelected.code,Validators.required],
         WardCode: [this.wardSelected.code,Validators.required],
         Address: ['',Validators.required],
-        TelNum: ['',Validators.maxLength(10)],
+        TelNum: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
         Password: ['',Validators.required],
       })
     }
   ngOnInit() {
     this.primengConfig.ripple = true;
-    this.loginForm.get('Provinces')?.valueChanges.subscribe(provices => {
+    this.registerForm.get('Provinces')?.valueChanges.subscribe(provices => {
       this.provinceSelected = provices;
       this.getDistrictsOfProvice();
     });
-    this.loginForm.get('Districts')?.valueChanges.subscribe(districts => {
+    this.registerForm.get('Districts')?.valueChanges.subscribe(districts => {
       this.districtSelected = districts;
       this.getWardsOfDistrict();
     });
-    this.loginForm.get('Wards')?.valueChanges.subscribe(userWard => {
+    this.registerForm.get('Wards')?.valueChanges.subscribe(userWard => {
       this.wardSelected = userWard
     });
     if (this.provices.length > 0) {
-      this.loginForm = this.createExistedLoginForm();
+      this.registerForm = this.createExistedregisterForm();
     }
   }
   getAllProvices(): void {
@@ -109,36 +109,45 @@ export class RegisterComponent {
     this.displayRegisterPopUp = false;
   }
   register() { 
-    this.loginForm.controls['ProvinceCode'].setValue(this.loginForm.get('Provinces')?.value.code);
-    this.loginForm.controls['DistrictCode'].setValue(this.loginForm.get('Districts')?.value.code);
-    this.loginForm.controls['WardCode'].setValue(this.loginForm.get('Wards')?.value.code);
-    this.loginForm.controls['Provinces'].setValue(this.provinceSelected.name);
-    this.loginForm.controls['Districts'].setValue(this.districtSelected.name);
-    this.loginForm.controls['Wards'].setValue(this.wardSelected.name);
-    this.websiteAPIService.checkExistedAndSendConfirmMail(this.loginForm.getRawValue()).subscribe((res:any) =>{      
+    if(this.registerForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để đăng ký!',
+      });
+      return;
+    }
+    this.registerForm.controls['ProvinceCode'].setValue(this.registerForm.get('Provinces')?.value.code);
+    this.registerForm.controls['DistrictCode'].setValue(this.registerForm.get('Districts')?.value.code);
+    this.registerForm.controls['WardCode'].setValue(this.registerForm.get('Wards')?.value.code);
+    this.registerForm.controls['Provinces'].setValue(this.provinceSelected.name);
+    this.registerForm.controls['Districts'].setValue(this.districtSelected.name);
+    this.registerForm.controls['Wards'].setValue(this.wardSelected.name);
+    this.websiteAPIService.checkExistedAndSendConfirmMail(this.registerForm.getRawValue()).subscribe((res:any) =>{      
       if(res.data != 'existed'){
-        this.confirmEmail = this.loginForm.getRawValue().Email;
+        this.confirmEmail = this.registerForm.getRawValue().Email;
         this.displayConfirmPopUp = true;
         this.displayRegisterPopUp = false;
         this.confirmCodeSent = res.data;
-        this.messageService.add({key: 'bc', severity:'info', summary: 'Info', detail: 'Confirm code was sent!'});
+        this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: 'Mã xác nhận đăng ký đã được gửi đi!'});
       }
       else{
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Existed Login Name or Email, try again!'});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Đã tồn tại tài khoản hoặc địa chỉ email !'});
       }
     });
   }
   confirmRegister() {
     this.firstLoad = false; 
     if(this.confirmCode == this.confirmCodeSent){
-      this.authService.register(this.loginForm.getRawValue()).subscribe((res:any) =>{
+      this.authService.register(this.registerForm.getRawValue()).subscribe((res:any) =>{
         if(res.data){
-          this.messageService.add({key: 'c', sticky: true, severity:'success', summary:'Are you sure?', detail:'Go to login page now'});
+          this.messageService.add({key: 'c', sticky: true, severity:'success', summary:'Xác nhận?', detail:'Quay về trang đăng nhập'});
         }
       });
     }
     else{
-      this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Wrong code, try again!'});
+      this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Xác nhận không thành công, hãy thử lại!'});
     }
   }
   onConfirmLoginPage() {

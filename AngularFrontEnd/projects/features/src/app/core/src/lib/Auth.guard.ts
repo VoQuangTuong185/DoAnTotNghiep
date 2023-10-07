@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
            }
            else{
              localStorage.removeItem('authToken');
-             this.messageService.add({key: 'bc', severity:'info', summary: 'Info', detail: res.message});
+             this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: res.message});
              this.router.navigate(['/user/login-user']);
              return false;               
            }

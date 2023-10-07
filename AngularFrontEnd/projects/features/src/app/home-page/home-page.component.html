@@ -2,7 +2,7 @@
   <div class="card">
       <p-carousel [value]="loginedDataProduct" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="6000" [responsiveOptions]="responsiveOptions">
           <ng-template pTemplate="header">
-              <h1 class="ml-3 mt-1"><b>Top Seller</b></h1>
+              <h1 class="ml-3 mt-1"><b>Top bán chạy trong tháng</b></h1>
           </ng-template>
           <ng-template let-product pTemplate="item">
               <div class="product-item">
@@ -22,7 +22,7 @@
       </p-carousel>
   </div>
   <div class="categories">
-      <p-card header="Category">
+      <p-card header="Danh mục">
           <div class="card">
               <p-tabMenu [model]="lstCate" [activeItem]="activeCate">
                   <ng-template pTemplate="item" let-item let-i="index">
@@ -89,7 +89,7 @@
           </tr>        
           <tr>
               <td class="padding-table">
-                  <h4>Description: <b>{{ currentProduct.description }}</b></h4>
+                  <h4>Mô tả: <b>{{ currentProduct.description }}</b></h4>
               </td>
               <td>
                   <h4>
@@ -117,6 +117,6 @@
   </ng-template>
   <ng-template pTemplate="footer">
       <button pButton pRipple label="Add to cart" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
-      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
+      <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
   </ng-template>
 </p-dialog>

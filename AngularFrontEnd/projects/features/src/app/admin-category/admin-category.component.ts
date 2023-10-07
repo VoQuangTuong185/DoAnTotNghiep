@@ -29,12 +29,12 @@ export class AdminCategoryComponent {
     private formBuilder : FormBuilder,
     ){
     this.productsDataCols = [
-      { header : 'ID', field : 'id', width:7, type:'string'},
-      { header : 'Image', field : 'image', width:15, type:'image'},
-      { header : 'Category Name', field : 'categoryName', width:23, type:'string'},
-      { header : 'Description', field : 'description', width:35, type:'string'},   
-      { header : 'Status', field : 'isActive', width:10, type:'string'},    
-      { header : 'Button', field : 'button', width:20, type:'button'},   
+      { header : 'STT', field : 'id', width:7, type:'string'},
+      { header : 'Hình ảnh', field : 'image', width:15, type:'image'},
+      { header : 'Danh mục', field : 'categoryName', width:23, type:'string'},
+      { header : 'Mô tả', field : 'description', width:35, type:'string'},   
+      { header : 'Trạng thái', field : 'isActive', width:10, type:'string'},    
+      { header : 'Thao tác', field : 'button', width:20, type:'button'},   
       ];
       this.categoryForm = this.createEmptyUserForm();
     }
@@ -62,7 +62,7 @@ export class AdminCategoryComponent {
         this.isEdit = true; 
       }
       else {
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Get edit category fail!'});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Get edit category fail!'});
       }
     });  
   }
@@ -73,19 +73,19 @@ export class AdminCategoryComponent {
   }
   inActiveCategory(selectedCategory:any){
     let action ='';
-    selectedCategory.isActive ? action = 'InActive'.toLocaleLowerCase() : action = 'Active'.toLocaleLowerCase();
+    selectedCategory.isActive ? action = 'ẩn': action = 'hiện';
     this.confirmationService.confirm({
-      message: 'Are you sure ' + action + ' category ' + selectedCategory.categoryName + ' ?',
-      header: 'Confirm',
+      message: 'Xác nhận ' + action + ' danh mục ' + selectedCategory.categoryName + ' ?',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle', 
       accept: () => {
         this.websiteAPIService.inActiveCategory(selectedCategory.id).subscribe((res:any) => {
           if(res.data){
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: res.message, life: 3000});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
             this.loadDataAllCategory();
           }
           else {
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: res.message, life: 3000});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
           }
         });    
       }
@@ -110,22 +110,22 @@ export class AdminCategoryComponent {
     if (!isEdit){
       this.websiteAPIService.createCategory(this.categoryForm.getRawValue()).subscribe((res:any) =>{     
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: 'Create category Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Create category Successfully!'});
           this.loadDataAllCategory();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Create category Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Create category Fail, try again!'});
         }
       });
     }
     else{
       this.websiteAPIService.updateCategory(this.categoryForm.getRawValue()).subscribe((res:any) =>{     
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Successful', detail: 'Update category Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Update category Successfully!'});
           this.loadDataAllCategory();
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Error', detail: 'Update category Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Update category Fail, try again!'});
         }
       });
     }

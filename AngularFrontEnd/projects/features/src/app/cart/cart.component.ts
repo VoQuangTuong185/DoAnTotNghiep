@@ -67,7 +67,7 @@ export class CartComponent implements OnInit {
       UserId: [this.currentUser.id],
       Name: [this.currentUser.name, [Validators.required]],
       Email: [{value: this.currentUser.email, disabled: true}, [Validators.required]],
-      TelNum: [this.currentUser.telNum, [Validators.maxLength(10)]],
+      TelNum: [this.currentUser.telNum,  Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
       Wards: [this.existedWard[0], Validators.required],
@@ -116,7 +116,7 @@ export class CartComponent implements OnInit {
         this.getDistrictsOfProvice2(res.data.provinceCode);
         this.getWardsOfDistrict2(res.data.districtCode);
       } else {
-        this.messageService.add({ key: 'bc', severity: 'info', summary: 'Info', detail: res.message });
+        this.messageService.add({ key: 'bc', severity: 'info', summary: 'Thông tin', detail: res.message });
       }
     });
   }
@@ -129,17 +129,17 @@ export class CartComponent implements OnInit {
   deleteCartItem(selectedProduct: CartDTO) {
     this.confirmationService.confirm({
       message: 'Are you sure to delete this product from cart ?',
-      header: 'Confirm',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.websiteAPIService
           .inActiveCart(selectedProduct)
           .subscribe((res: any) => {
             if (res.data) {
-              this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message, life: 3000});
+              this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message, life: 3000});
               this.getCartByUserID();
             } else {
-              this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
+              this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
             }
           });
       },
@@ -184,18 +184,27 @@ export class CartComponent implements OnInit {
     updateCart.Quantity = value;
     this.websiteAPIService.updateCart(updateCart).subscribe((res: any) => {
       if (res.data) {
-        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message});
+        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});
         this.getCartByUserID();
       } else {
-        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
+        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
         this.products[this.products.findIndex(x => x.productId == productId)].quanity = oldQuantity -1;
       }
     });
   }
   confirmOrder() {
+    if(this.editUserForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+      });
+      return;
+    }
     this.confirmationService.confirm({
       message: 'Are you sure to confirm order ?',
-      header: 'Confirm',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.editUserForm.controls['Provinces'].setValue(this.provinceSelected.name);
@@ -211,13 +220,13 @@ export class CartComponent implements OnInit {
                 .deleteAllCartAfterOrder(Number(this.userData.id))
                 .subscribe((res: any) => {
                   if (res.data) {
-                    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Successful', detail: res.message});                
+                    this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});                
                   } else {
-                    this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message });
+                    this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
                   }                
                 });
             } else {
-              this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: res.message});
+              this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message});
             }
             this.getCartByUserID();
             this.showConfirmOrder = false;

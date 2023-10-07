@@ -92,7 +92,7 @@ export class HomePageComponent {
       this.messageService.add({
         key: 'bc',
         severity: 'error',
-        summary: 'Error',
+        summary: 'Lỗi',
         detail: res.message,
       });
     });
@@ -117,7 +117,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'error',
-          summary: 'Error',
+          summary: 'Lỗi',
           detail: res.message,
         });
       });
@@ -147,7 +147,7 @@ export class HomePageComponent {
   }
   addToCart(selectedProduct: any) {
     if (selectedProduct.quanity < (this.quantityCurrentProductInCard + this.quantityAddToCart)){
-      this.messageService.add({ key:'bc', severity: 'error', summary: 'Error', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
+      this.messageService.add({ key:'bc', severity: 'error', summary: 'Lỗi', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
       return;
     }
     this.addCart.ProductId = selectedProduct.id;
@@ -159,7 +159,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'success',
-          summary: 'Successful',
+          summary: 'Thành công',
           detail: res.message,
           life: 3000,
         });
@@ -168,7 +168,7 @@ export class HomePageComponent {
         this.messageService.add({
           key: 'bc',
           severity: 'error',
-          summary: 'Error',
+          summary: 'Lỗi',
           detail: res.message,
         });
       }
