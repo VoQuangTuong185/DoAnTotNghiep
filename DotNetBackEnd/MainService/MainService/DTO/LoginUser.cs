@@ -4,7 +4,7 @@ namespace WebAppAPI.DTO
 {
     public class LoginUserDTO
     {
-        public string LoginUser { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

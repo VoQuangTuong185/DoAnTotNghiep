@@ -151,7 +151,7 @@ export class LoginComponent {
       });
       return;
     }
-    this.FormChangePassword.loginUser = this.confirmEmail;
+    this.FormChangePassword.email = this.confirmEmail;
     this.FormChangePassword.password = this.newPassword;
     this.websiteAPIService
       .changePassword(this.FormChangePassword)

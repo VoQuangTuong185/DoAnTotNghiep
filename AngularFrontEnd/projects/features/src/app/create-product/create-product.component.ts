@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationStart, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CoreConstants } from '../core/src/lib/core.constant';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
@@ -56,8 +56,8 @@ export class CreatProductComponent {
       BrandId: [{value: null, disabled: true},Validators.required],
       CategoryId: [{value: this.existedCategoryId, disabled:true}, Validators.required],
       SoldQuantity: [{value: null, disabled: true}],
-      Quanity: [0, [Validators.required, Validators.max(1000), Validators.min(0)]],
-      Discount: [0, [Validators.required, Validators.max(100), Validators.min(1)]],
+      Quanity: [null, [Validators.required, Validators.max(1000), Validators.min(0)]],
+      Discount: [null, [Validators.required, Validators.max(100), Validators.min(1)]],
       Price: [null],
       Image: [''],
       IsActive: [true],
@@ -83,6 +83,15 @@ export class CreatProductComponent {
     this.productForm.controls['BrandId'].setValue(tempData.id);
   }
   saveForm(){
+    if(this.productForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc!',
+      });
+      return;
+    }
     if(this.response) this.productForm.controls['Image'].setValue(this.response.dbPath);
     if(this.existedProductId) {  
       this.websiteAPIService.updateProduct(this.productForm.getRawValue()).subscribe((res:any) =>{

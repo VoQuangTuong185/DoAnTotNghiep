@@ -142,7 +142,7 @@ namespace WebAppAPI.Controllers
             {
                 (await _IUserService.UpdateProfile(user)).Match(res =>
                 {
-                    result.Message = "Thao tác thành công!";
+                    result.Message = "Chỉnh sửa thông tin cá nhân thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -476,6 +476,21 @@ namespace WebAppAPI.Controllers
                 _ILog.LogException(ex.Message);
             }
             return result;
-        }        
+        }
+        [HttpGet("search-product")]
+        public async Task<ApiResult> SearchProduct(string keyWord)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.SearchProduct(keyWord);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
     }
 }

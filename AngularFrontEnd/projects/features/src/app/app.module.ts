@@ -66,6 +66,10 @@ import { AdminListOrderComponent } from './admin-order/admin-list-order/admin-li
 import { FooterComponent } from './home-page/footer/footer.component';
 import { UploadImageCategoryComponent } from './lib/upload-image-category/upload-image-category.component';
 import { AdminBrandComponent } from './admin-brand/admin-brand.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { PhotoService } from './data/photoservice';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +90,8 @@ import { AdminBrandComponent } from './admin-brand/admin-brand.component';
     AdminListOrderComponent,
     FooterComponent,
     UploadImageCategoryComponent,
-    AdminBrandComponent
+    AdminBrandComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +134,8 @@ import { AdminBrandComponent } from './admin-brand/admin-brand.component';
     ConfirmPopupModule,
     AvatarModule,
     CheckboxModule,
+    MatAutocompleteModule,
+    GalleriaModule
   ],
   providers: [
     {
@@ -150,6 +157,7 @@ import { AdminBrandComponent } from './admin-brand/admin-brand.component';
       useClass: AuthInterceptor,
       multi: true,
     },
+    PhotoService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -7,6 +7,7 @@ import { RegisterComponent } from '../register/register.component';
 import { AuthGuard } from '../core/src/lib/Auth.guard';
 import { CartComponent } from '../cart/cart.component';
 import { OrderComponent } from '../order/order.component';
+import { ProductDetailComponent } from '../product-detail/product-detail.component';
 const UserRoutes: Routes = [
   {
     path: '',
@@ -37,6 +38,10 @@ const UserRoutes: Routes = [
   {
     path: 'order',
     component: OrderComponent,
+  },
+  {
+    path: 'product-detail/:id',
+    component: ProductDetailComponent,
   },
 ];
 

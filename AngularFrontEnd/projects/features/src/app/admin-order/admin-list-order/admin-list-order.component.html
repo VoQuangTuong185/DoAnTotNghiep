@@ -1,44 +1,51 @@
-<p-table
-  [value]="orders"
-  [tableStyle]="{ 'min-width': '60rem' }"
-  [loading]="loading"
->
-  <ng-template pTemplate="header">
+<p-table #tdt [value]="orders" [columns]="ordersDataCols" responsiveLayout="scroll" class="table-content" [paginator]="true" [rows]="rows"
+[virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first"
+[resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
+[globalFilterFields]="['customerName','email','productCount','orderDate','payment','totalBill','statusOrderCode']"
+[rowsPerPageOptions]="[5, 10, 20]"
+currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
+<ng-template pTemplate="header" let-columns>
     <tr>
-      <th>Tên khách hàng</th>
-      <th>Địa chỉ mail</th>
-      <th>Số sản phẩm</th>
-      <th>Thời gian đặt hàng</th>
-      <th>Phương thức nhận hàng</th>
-      <th>Tổng tiền</th>
-      <th style="text-align: center">Thao tác</th>
+        <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
+            [style.width]="col.width + '%'">
+            <span>{{ col.header }}</span>
+        </th>
     </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-order>
+</ng-template>
+<ng-template pTemplate="body" let-columns="columns" let-rowIndex="rowIndex" let-rowData>
+    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+        <td *ngFor="let col of columns">
+        <span [ngSwitch]="col.type">
+          <span *ngSwitchCase="'stt'" tooltipPosition="bottom">{{rowIndex + 1}}
+          </span>
+          <span *ngSwitchCase="'money'" tooltipPosition="bottom">{{rowData[col.field] | currency : "VND"}}
+          </span>
+          <span *ngSwitchCase="'button'" class="button"> 
+              <td>
+                <button *ngIf=" statusOrderCode === this.enumData.statusOrder.wait.code || statusOrderCode === this.enumData.statusOrder.processing.code"
+                  pButton icon="pi pi-lock" pTooltip="Huỷ" tooltipPosition="bottom" class="p-button-rounded p-button-danger mr-2"
+                  (click)="confirmCancelOrder(rowData['id'])"></button> 
+                <button *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"
+                  pButton icon="pi pi-pencil" pTooltip="Xác nhận" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                  (click)="confirmProcessingOrder(rowData['id'])"></button> 
+                <button *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
+                  pButton icon="pi pi-pencil" pTooltip="Hoàn tất" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                  (click)="confirmSuccessOrder(rowData['id'])"></button> 
+                <button pButton icon="pi pi-list" pTooltip="Chi tiết" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2"
+                  (click)="openModalOrderDetail(rowData)"></button> 
+              </td> 
+            </span>
+            <span *ngSwitchCase="'date'">{{ rowData[col.field] | date : "hh:mm:ss a, dd/MM/yyyy" }} 
+            </span> 
+            <span *ngSwitchDefault>{{ rowData[col.field] }}</span> 
+        </span>                   
+        </td>
+    </tr>
+</ng-template>
+
+<ng-template pTemplate="emptymessage">
     <tr>
-      <td>{{ order.customerName }}</td>
-      <td>{{ order.email }}</td>
-      <td>{{ order.productCount }}</td>
-      <td>{{ order.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</td>
-      <td>{{ order.payment }}</td>
-      <td>{{ order.totalBill | currency : "VND" }}</td>
-      <td style="text-align: center">
-        <p-button
-          *ngIf=" statusOrderCode === this.enumData.statusOrder.wait.code || statusOrderCode === this.enumData.statusOrder.processing.code"
-          label="Huỷ" styleClass="p-button-danger" icon="pi pi-times" (click)="confirmCancelOrder(order.id)">
-        </p-button>
-        <p-button
-          *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"
-          label="Xác nhận" styleClass="p-button-success" [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmProcessingOrder(order.id)"
-        ></p-button>
-        <p-button
-          *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
-          label="Hoàn tất" styleClass="p-button-success" [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmSuccessOrder(order.id)">
-        </p-button>
-        <p-button
-          label="Chi tiết" icon="pi pi-list" [style]="{ 'margin-left': '10px' }" (click)="openModalOrderDetail(order)">
-        </p-button>
-      </td>
+        <td colspan="13">No data found.</td>
     </tr>
-  </ng-template>
+</ng-template>
 </p-table>

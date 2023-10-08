@@ -1,189 +1,189 @@
-<div class="main">
-  <div class="cart">
-      <p-table [value]="products" [tableStyle]="{ 'min-width': '60rem' }">
-          <ng-template pTemplate="caption">
-              <div class="flex align-items-center justify-content-between">
-                  Products
-              </div>
-          </ng-template>
-          <ng-template pTemplate="header">
-              <tr>
-                  <th>Image</th>
-                  <th>Name</th>                 
-                  <th>Category</th>
-                  <th>Discount</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th style="text-align: center;">Money</th>
-                  <th style="text-align: center;">Action</th>
-              </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-product>
-              <tr>
-                  <td>
-                      <img [src]="createImgPath(product.image)" [alt]="product.productName" width="100" class="shadow-4 product-image" />
-                  </td>
-                  <td>{{ product.productName }}</td>                 
-                  <td>{{ product.categoryName }}</td>
-                  <td>{{ product.discount }}%</td>
-                  <td>
-                      <p-inputNumber
-                          [(ngModel)]="product.quanity"
-                          [showButtons]="true"
-                          buttonLayout="horizontal"
-                          inputId="horizontal"
-                          spinnerMode="horizontal"
-                          [step]="1"
-                          decrementButtonClass="p-button-danger"
-                          incrementButtonClass="p-button-success"
-                          incrementButtonIcon="pi pi-plus"
-                          decrementButtonIcon="pi pi-minus"
-                          [min]="1"
-                          styleClass="input-styling"
-                          (ngModelChange)="updateCart($event, product.productId, product.quanity)"
-                      ></p-inputNumber>
-                  </td>
-                  <td>{{ product.price | currency : "VND" }}</td>
-                  <td style="text-align: center;">
-                      <span style="text-decoration: line-through; font-size: small;">{{ product.quanity * product.price | currency : "VND" }}</span>
-                      <span style="color: red; font-weight: 600;"> {{ product.quanity * product.price - (product.quanity * product.price * product.discount) / 100 | currency : "VND" }}</span>
-                  </td>
-                  <td style="text-align: center;">
-                      <p-button styleClass="p-button-danger" icon="pi pi-times" (click)="deleteCartItem(product)"></p-button>
-                  </td>
-              </tr>
-          </ng-template>
-
-          <ng-template pTemplate="summary">
-              <p style="text-align: center;">Total money : <b style="color: red;">{{ getTotalMoney() | currency : "VND" }}</b></p>
-              <button [disabled]="products.length == 0" pButton label="Xác nhận đơn hàng" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
-          </ng-template>
-      </p-table>
-  </div>
-
-  <form [formGroup]="editUserForm" (ngSubmit)="confirmOrder()">
-      <p-dialog [(visible)]="showConfirmOrder" [style]="{ width: '37vw' }" header="Thông tin cá nhân" [modal]="true" styleClass="p-fluid" class="profile">
-          <ng-template pTemplate="content">
-              <table>
-                  <tr>
-                      <td>
-                          <div class="mr-5">
-                              <mat-form-field appearance="outline">
-                                  <mat-label>Họ và tên</mat-label>
-                                  <input matInput formControlName="Name" name="Name" required="" />
-                                  <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
-                                    Hãy nhập họ và tên!
-                                  </mat-error>    
-                              </mat-form-field>  
-                          </div>
-                      </td>
-                      <td>
-                          <div>
-                            <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
-                                <mat-label>Địa chỉ email</mat-label>
-                                <input matInput formControlName="Email" name="Email" required="" />
-                                <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
-                                  Hãy nhập địa chỉ email!
-                                </mat-error>
-                            </mat-form-field>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <div class="mr-5">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Số điện thoại</mat-label>
-                                <input matInput formControlName="TelNum" name="TelNum"/>
-                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
-                                  Định dạng số điện thoại chưa chính xác!
-                                </mat-error>
-                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('maxlength')">
-                                  Định dạng số điện thoại chưa chính xác!
-                                </mat-error>
-                            </mat-form-field>
-                          </div>
-                      </td>
-                      <td>
-                          <div>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Tỉnh</mat-label>
-                                <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
-                                    <mat-option *ngFor="let province of provices" [value]="province">
-                                        {{ province.name }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
-                                  Hãy chọn tỉnh!
-                                </mat-error>
-                            </mat-form-field>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <div class="mr-5">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Huyện</mat-label>
-                                <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
-                                    <mat-option *ngFor="let district of districts" [value]="district">
-                                        {{ district.name }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
-                                  Hãy chọn huyện!
-                                </mat-error>
-                            </mat-form-field>
-                          </div>
-                      </td>
-                      <td>
-                          <div>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Xã</mat-label>
-                                <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
-                                    <mat-option *ngFor="let ward of wards" [value]="ward">
-                                        {{ ward.name }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
-                                Hãy chọn xã!
-                                </mat-error>
-                            </mat-form-field>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <div class="mr-5">
+<div class="block">
+    <div class="card">
+        <p-table [value]="products" [tableStyle]="{ 'min-width': '60rem' }">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    Giỏ hàng
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Sản phẩm</th>                 
+                    <th>Danh mục</th>
+                    <th>Giảm giá</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th style="text-align: center;">Số tiền</th>
+                    <th style="text-align: center;">Thao tác</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>
+                        <img [src]="createImgPath(product.image)" [alt]="product.productName" width="100" class="shadow-4 product-image" />
+                    </td>
+                    <td>{{ product.productName }}</td>                 
+                    <td>{{ product.categoryName }}</td>
+                    <td>{{ product.discount }}%</td>
+                    <td>
+                        <p-inputNumber
+                            [(ngModel)]="product.quanity"
+                            [showButtons]="true"
+                            buttonLayout="horizontal"
+                            inputId="horizontal"
+                            spinnerMode="horizontal"
+                            [step]="1"
+                            decrementButtonClass="p-button-danger"
+                            incrementButtonClass="p-button-success"
+                            incrementButtonIcon="pi pi-plus"
+                            decrementButtonIcon="pi pi-minus"
+                            [min]="1"
+                            styleClass="input-styling"
+                            (ngModelChange)="updateCart($event, product.productId, product.quanity)"
+                        ></p-inputNumber>
+                    </td>
+                    <td>{{ product.price | currency : "VND" }}</td>
+                    <td style="text-align: center;">
+                        <span style="text-decoration: line-through; font-size: small;">{{ product.quanity * product.price | currency : "VND" }}</span>
+                        <span style="color: red; font-weight: 600;"> {{ product.quanity * product.price - (product.quanity * product.price * product.discount) / 100 | currency : "VND" }}</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <p-button styleClass="p-button-danger" icon="pi pi-times" (click)="deleteCartItem(product)"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+    
+            <ng-template pTemplate="summary">
+                <p style="text-align: center;">Total money : <b style="color: red;">{{ getTotalMoney() | currency : "VND" }}</b></p>
+                <button [disabled]="products.length == 0" pButton label="Xác nhận đơn hàng" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
+            </ng-template>
+        </p-table>
+    </div>
+    
+    <form [formGroup]="editUserForm" (ngSubmit)="confirmOrder()">
+        <p-dialog [(visible)]="showConfirmOrder" [style]="{ width: '37vw' }" header="Thông tin cá nhân" [modal]="true" styleClass="p-fluid" class="profile">
+            <ng-template pTemplate="content">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="mr-5">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Họ và tên</mat-label>
+                                    <input matInput formControlName="Name" name="Name" required="" />
+                                    <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
+                                        Hãy nhập họ và tên!
+                                    </mat-error>    
+                                </mat-form-field>  
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                                    <mat-label>Địa chỉ email</mat-label>
+                                    <input matInput formControlName="Email" name="Email" required="" />
+                                    <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
+                                    Hãy nhập địa chỉ email!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="mr-5">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Số điện thoại</mat-label>
+                                    <input matInput formControlName="TelNum" name="TelNum"/>
+                                    <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
+                                    Định dạng số điện thoại chưa chính xác!
+                                    </mat-error>
+                                    <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('maxlength')">
+                                    Định dạng số điện thoại chưa chính xác!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Tỉnh</mat-label>
+                                    <mat-select formControlName="Provinces" (valueChange)="handleChange()" [(value)]="this.existedProvince[0]">
+                                        <mat-option *ngFor="let province of provices" [value]="province">
+                                            {{ province.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="editUserForm.get('Provinces')?.hasError('required')">
+                                    Hãy chọn tỉnh!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="mr-5">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Huyện</mat-label>
+                                    <mat-select formControlName="Districts" (valueChange)="handleChange()" [(value)]="this.existedDistrict[0]">
+                                        <mat-option *ngFor="let district of districts" [value]="district">
+                                            {{ district.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="editUserForm.get('Districts')?.hasError('required')">
+                                    Hãy chọn huyện!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Xã</mat-label>
+                                    <mat-select formControlName="Wards" (valueChange)="handleChange()" [(value)]="this.existedWard[0]">
+                                        <mat-option *ngFor="let ward of wards" [value]="ward">
+                                            {{ ward.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="editUserForm.get('Wards')?.hasError('required')">
+                                    Hãy chọn xã!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="mr-5">
+                                <mat-form-field>
+                                    <mat-label>Số nhà, đường</mat-label>
+                                    <textarea matInput rows="1" formControlName="Streets"></textarea>
+                                    <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
+                                    Hãy nhập số nhà, đường!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td>
                             <mat-form-field>
-                                <mat-label>Số nhà, đường</mat-label>
-                                <textarea matInput rows="1" formControlName="Streets"></textarea>
-                                <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
-                                  Hãy nhập số nhà, đường!
+                                <mat-label>Phương thức nhận hàng</mat-label>
+                                <mat-select (valueChange)="changeValuePayment($event)" required="" [(value)]="methods[0].key">
+                                    <mat-option *ngFor="let method of methods" [value]="method.key">
+                                        {{ method.name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="editUserForm.get('Payment')?.hasError('required')">
+                                    Hãy chọn phương thức nhận hàng!
                                 </mat-error>
                             </mat-form-field>
-                          </div>
-                      </td>
-                      <td>
-                          <mat-form-field>
-                              <mat-label>Phương thức nhận hàng</mat-label>
-                              <mat-select (valueChange)="changeValuePayment($event)" required="" [(value)]="methods[0].key">
-                                  <mat-option *ngFor="let method of methods" [value]="method.key">
-                                      {{ method.name }}
-                                  </mat-option>
-                              </mat-select>
-                              <mat-error *ngIf="editUserForm.get('Payment')?.hasError('required')">
-                                Hãy chọn phương thức nhận hàng!
-                              </mat-error>
-                          </mat-form-field>
-                      </td>
-                  </tr>
-              </table>
-          </ng-template>
-          <ng-template pTemplate="footer">
-              <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="closeConfirmOrder()"></button>
-              <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success"></button>
-          </ng-template>
-      </p-dialog>
-  </form>
-</div>
+                        </td>
+                    </tr>
+                </table>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="closeConfirmOrder()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success"></button>
+            </ng-template>
+        </p-dialog>
+    </form>
+</div>     

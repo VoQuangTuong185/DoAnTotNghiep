@@ -7,6 +7,7 @@ using WebAppAPI.Models.Entities;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
+using System.Drawing.Drawing2D;
 
 namespace WebAppAPI.Controllers
 {
@@ -146,7 +147,17 @@ namespace WebAppAPI.Controllers
             var result = new ApiResult();
             try
             {
-                result.Data = await _IAdminService.CreateProduct(product);
+                (await _IAdminService.CreateProduct(product)).Match(res =>
+                {
+                    result.Message = "Tạo sản phẩm " + product.ProductName + " thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
             }
             catch (Exception ex)
             {
@@ -221,7 +232,6 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
-        [Authorize]
         [HttpGet("get-existed-product")]
         public async Task<ApiResult> GetExistedProduct(int productId)
         {

@@ -50,7 +50,8 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<string> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
         {
-            bool existedUser = _unitOfWork.Repository<User>().Any(x => (x.LoginName == user.LoginName || x.Email == user.Email) && x.IsActive);
+            bool existedUser = _unitOfWork.Repository<User>().Any(x => (x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() 
+                                                                        || x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd()) && x.IsActive);
             string confirmCode = string.Empty;
             if (!existedUser)
             {
@@ -91,7 +92,7 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<string> ForgetPassword(string email)
         {
-            var existedUser = _unitOfWork.Repository<User>().Any(x => x.Email == email && x.IsActive);
+            var existedUser = _unitOfWork.Repository<User>().Any(x => x.Email.ToUpper().TrimStart().TrimEnd() == email.ToUpper().TrimStart().TrimEnd() && x.IsActive);
             string confirmCode = string.Empty;
             if (existedUser)
             {
@@ -103,7 +104,7 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<string> CheckExistedAndSendConfirmChangeEmail(string email)
         {
-            var existedUser = _unitOfWork.Repository<User>().Any(x => x.Email.Trim().ToLower() == email.Trim().ToLower() && x.IsActive);
+            var existedUser = _unitOfWork.Repository<User>().Any(x => x.Email.ToUpper().TrimStart().TrimEnd() == email.ToUpper().TrimStart().TrimEnd() && x.IsActive);
             string confirmCode = string.Empty;
             if (existedUser)
             {
@@ -120,7 +121,7 @@ namespace WebAppAPI.Services.Business
         public async Task<bool> ChangePassword(LoginUserDTO user)
         {
             CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Email == user.LoginUser && x.IsActive);
+            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd() && x.IsActive);
             existedUser.PasswordHash = passwordHash;
             existedUser.PasswordSalt = passwordSalt;
             _unitOfWork.Repository<User>().Update(existedUser);
@@ -172,10 +173,10 @@ namespace WebAppAPI.Services.Business
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName == user.LoginName && x.Id != user.Id);
+                    var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() && x.Id != user.Id);
                     if (existedLoginName)
                     {
-                        return Optional.Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
+                        return Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
                     }
                     else
                     {
@@ -190,9 +191,9 @@ namespace WebAppAPI.Services.Business
                     }
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> AddCart(AddCart addCart)
@@ -219,9 +220,9 @@ namespace WebAppAPI.Services.Business
                     }
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<IEnumerable<CartDTO>> GetCartByUserID(int userId)
@@ -251,9 +252,9 @@ namespace WebAppAPI.Services.Business
                         _unitOfWork.Repository<Cart>().Delete(existedCart);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<Option<bool, string>> CreateOrder(CreateOrder order)
@@ -279,7 +280,7 @@ namespace WebAppAPI.Services.Business
                         {
                             _unitOfWork.Repository<Cart>().UpdateRange(existedProductInCart);
                             await _unitOfWork.SaveChangesAsync();
-                            return Optional.Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
+                            return Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
                         }
 
                         var insertOrder = new Order();
@@ -318,9 +319,9 @@ namespace WebAppAPI.Services.Business
                             var customerName = _unitOfWork.Repository<User>().FirstOrDefault(x => x.IsActive && x.Id == order.UserId).Name;
                             var mailInformation = new MailPublishedDto("CreateOrder", listAdmin.FirstOrDefault().Name, listAdmin.FirstOrDefault().Email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Change Email Profile For TUONG STATIONERY STOREs", customerName, "Mail_Published");
                             _messageBusClient.PublishMail(mailInformation);
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<Option<bool, string>> DeleteAllCartAfterOrder(int userId)
@@ -333,9 +334,9 @@ namespace WebAppAPI.Services.Business
                        _unitOfWork.Repository<Cart>().DeleteRange(existedProductInCart);
                        if (await _unitOfWork.SaveChangesAsync())
                        {
-                           return Optional.Option.Some<bool, string>(true);
+                           return Option.Some<bool, string>(true);
                        }
-                       return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                       return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                    });
 
         }
@@ -452,9 +453,9 @@ namespace WebAppAPI.Services.Business
                     {
                         var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been canceled", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> ConfirmOrder(int orderId)
@@ -472,9 +473,9 @@ namespace WebAppAPI.Services.Business
                     {
                         var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been confirmed", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> SuccessOrder(int orderId)
@@ -502,9 +503,9 @@ namespace WebAppAPI.Services.Business
                     {
                         var mailInformation = new MailPublishedDto("SuccessOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been succeeded", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> UpdateCart(UpdateCart cart)
@@ -517,15 +518,15 @@ namespace WebAppAPI.Services.Business
                         var existedProduct = _unitOfWork.Repository<Product>().FirstOrDefault(x => x.Id == cart.ProductId && x.IsActive);
                         if (existedProduct.Quanity < cart.Quantity)
                         {
-                            return Optional.Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
+                            return Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
                         }
                         existedCart.Quantity = cart.Quantity;
                         _unitOfWork.Repository<Cart>().Update(existedCart);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         #region Private
@@ -561,6 +562,18 @@ namespace WebAppAPI.Services.Business
             string path = Path.GetRandomFileName();
             path = path.Replace(".", ""); // Remove period.
             return path.Substring(0, 6);  // Return 6 character string
+        }
+        public async Task<List<SearchProduct>> SearchProduct(string keyWord)
+        {
+            return await _unitOfWork.Repository<Product>().Get(x => (x.ProductName.ToUpper().TrimStart().TrimEnd() == keyWord.ToUpper().TrimStart().TrimEnd() 
+                                                                     || x.ProductName.ToUpper().TrimStart().TrimEnd().Contains(keyWord.ToUpper().TrimStart().TrimEnd())) 
+                                                                     && x.IsActive)
+                                                          .Select(x => new SearchProduct()
+                                                          {
+                                                              ProductName = x.ProductName,
+                                                              Id = x.Id,
+                                                              BrandName = x.brand.BrandName
+                                                          }).ToListAsync();
         }
         #endregion
     }

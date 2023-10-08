@@ -23,11 +23,6 @@ const AdminRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'edit-course/:courseId',
-        component: CreatProductComponent,
-        canActivate: [AuthGuard],
-      },
-      {
         path: 'admin-product/:categoryId',
         children: [
           {

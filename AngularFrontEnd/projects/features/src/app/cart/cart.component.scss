@@ -1,16 +1,3 @@
-.main {
-  width: 100%;
-  background-color: #f0f3f8;
-}
-
-.cart {
-  width: 100%;
-  background: #f0f3f8;
-  padding: 0 2rem;
-  border-radius: 10px;
-  position: absolute;
-}
-
 .btnBuy {
   margin-left: 45%;
 }
@@ -22,7 +9,7 @@
     width: 0px;
   }
   .p-datatable .p-datatable-footer,.p-datatable .p-datatable-header{
-    background-color: #f0f3f8;
+    background-color: WHITE;
   }
 }
 .product-image {
@@ -41,4 +28,10 @@
 
 ::ng-deep .cdk-overlay-container {
   z-index: 999999 !important ;
+}
+.card {
+  width: 100%;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
 }

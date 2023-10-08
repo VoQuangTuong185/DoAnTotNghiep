@@ -53,7 +53,9 @@ namespace WebAppAPI.Controllers
             try
             {
                 var refreshToken = Request.Cookies["refreshToken"];
-                var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName == LoginName && x.IsActive).Include(x => x.UserAPIs).ToListAsync();
+                var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == LoginName.ToUpper().TrimStart().TrimEnd() && x.IsActive)
+                                                                    .Include(x => x.UserAPIs)
+                                                                    .ToListAsync();
                 if (loginUser.FirstOrDefault().RefreshToken.Equals(refreshToken))
                 {
                     if (loginUser.FirstOrDefault().TokenExpires < DateTime.Now)
@@ -114,7 +116,7 @@ namespace WebAppAPI.Controllers
             var result = new ApiResult();
             try
             {
-                var existedUser = _unitOfWork.Repository<User>().Any(x => x.LoginName == request.LoginUser && x.IsActive);
+                var existedUser = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == request.LoginUser.ToUpper().TrimStart().TrimEnd() && x.IsActive);
                 if (!existedUser)
                 {
                     result.IsSuccess = false;
@@ -123,7 +125,9 @@ namespace WebAppAPI.Controllers
                 }
                 else
                 {
-                    var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName == request.LoginUser && x.IsActive).Include(x => x.UserAPIs).ToListAsync();
+                    var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == request.LoginUser.ToUpper().TrimStart().TrimEnd() && x.IsActive)
+                                                                        .Include(x => x.UserAPIs)
+                                                                        .ToListAsync();
                     if (!VerifyPasswordHash(request.Password, loginUser.FirstOrDefault().PasswordHash, loginUser.FirstOrDefault().PasswordSalt))
                     {
                         result.IsSuccess = false;
@@ -179,7 +183,7 @@ namespace WebAppAPI.Controllers
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            var loginUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.LoginName == user.LoginName && x.IsActive);
+            var loginUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() && x.IsActive);
             loginUser.RefreshToken = refreshToken.Token;
             loginUser.TokenCreated = DateTime.Now;
             loginUser.TokenExpires = DateTime.Now.AddMinutes(30);

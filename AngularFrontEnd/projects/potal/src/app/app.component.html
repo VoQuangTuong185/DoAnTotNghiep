@@ -18,7 +18,16 @@
           </div>
       </div>
       <div class="logan d-flex-center">
-        VĂN PHÒNG PHẨM 2023
+        <form [formGroup]="searchProductForm">
+            <mat-form-field class="search-product">
+                <input formControlName="ProductName" name="ProductName" type="text" [matAutocomplete]="autoProduct" matInput placeholder="Tìm kiếm sản phẩm mong muốn..." (input)="searchProduct(this.searchProductForm.value.ProductName)"/>
+                <mat-autocomplete #autoProduct [displayWith]="displayProduct">
+                    <mat-option *ngFor="let product of filterProducts" [value]="product" (click)="productDetail(this.searchProductForm.value.ProductName)">
+                        {{ product.productName }} - [{{product.brandName}}]
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
       </div>
       <div>
           <span *ngIf="!this.userData.isLoggedIn" class="user-info"><b>Đăng nhập ngay</b>!</span>

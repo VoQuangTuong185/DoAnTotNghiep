@@ -26,13 +26,13 @@ export class AdminProductComponent {
     this.productsDataCols = [
       { header : 'STT', field : 'id', width:2, type:'string'},
       { header : 'Hình ảnh', field : 'image', width:5, type:'image'},
-      { header : 'Product Name', field : 'productName', width:10, type:'string'},
-      { header : 'Price', field : 'price', width:3, type:'money'},
-      { header : 'Discount', field : 'discount', width:3, type:'percent'},
+      { header : 'Sản phẩm', field : 'productName', width:10, type:'string'},
+      { header : 'Giá', field : 'price', width:3, type:'money'},
+      { header : 'Giảm giá', field : 'discount', width:3, type:'percent'},
       { header : 'Mô tả', field : 'description', width:3, type:'string'},
-      { header : 'Sold', field : 'soldQuantity', width:3, type:'string'},
+      { header : 'Đã bán', field : 'soldQuantity', width:3, type:'string'},
       { header : 'Trạng thái', field : 'isActive', width:3, type:'boolean'},
-      { header : 'Action', field : 'action', width:1, type:'button'},
+      { header : 'Thao tác', field : 'action', width:1, type:'button'},
       ];
       this.ActiveRoute.params.subscribe((params) =>{
         this.existedCategoryId = params['categoryId'];
