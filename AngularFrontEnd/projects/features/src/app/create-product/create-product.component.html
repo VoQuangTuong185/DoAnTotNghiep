@@ -1,95 +1,113 @@
-<button pButton icon="pi pi-caret-left" label="Back To Admin Product" class="p-button-sm p-button-raised p-button-rounded p-button-secondary back-button" (click)="backToParent()"></button>
-<form [formGroup]="productForm" (ngSubmit)="saveForm()">
-    <p-accordion>
-        <p-accordionTab header="Create Product" class="center" [selected]="true">
-            <div class="grid p-fluid">
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Product STT</mat-label>
-                        <input matInput formControlName = "Id" name = "ProductId" required="">             
-                      </mat-form-field> 
-                </div>              
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Category Id</mat-label>
-                        <input matInput formControlName = "CategoryId" name = "CategoryId" required="">            
-                    </mat-form-field>       
-                </div>                       
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Brand Name</mat-label>
-                        <mat-select formControlName="BrandName" (valueChange)="changeBrandName()">
-                            <mat-option *ngFor="let brand of brands" [value]="brand">
-                            {{brand}}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="productForm.get('BrandName')?.hasError('required')">
-                            Please choose one brand!
-                        </mat-error>
-                      </mat-form-field> 
+<div class="block">
+    <button pButton icon="pi pi-caret-left" label="Trở về sản phẩm" class="p-button-sm p-button-raised p-button-rounded p-button-secondary mb-3" (click)="backToParent()"></button>
+    <form [formGroup]="productForm" (ngSubmit)="saveForm()">
+        <p-accordion>
+            <p-accordionTab header="Tạo sản phẩm" class="center" [selected]="true">
+                <div class="grid p-fluid">
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>ID</mat-label>
+                            <input matInput formControlName = "Id" name = "ProductId" required="">             
+                          </mat-form-field> 
+                    </div>              
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Danh mục ID</mat-label>
+                            <input matInput formControlName = "CategoryId" name = "CategoryId" required="">            
+                        </mat-form-field>       
+                    </div>                       
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Nhãn hiệu</mat-label>
+                            <mat-select formControlName="BrandName" (valueChange)="changeBrandName()">
+                                <mat-option *ngFor="let brand of brands" [value]="brand">
+                                {{brand}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="productForm.get('BrandName')?.hasError('required')">
+                                Hãy chọn nhãn hiệu!
+                            </mat-error>
+                          </mat-form-field> 
+                    </div>
                 </div>
-            </div>
-            <div class="grid p-fluid">
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>BrandId</mat-label>
-                        <input matInput formControlName = "BrandId" name = "BrandId" required="">             
-                    </mat-form-field> 
-                </div>              
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Product Name</mat-label>
-                        <input matInput formControlName = "ProductName" name = "ProductName" required="">             
-                      </mat-form-field>         
-                </div>                       
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Mô tả</mat-label>
-                        <input matInput formControlName = "Description" name = "Description">             
-                    </mat-form-field> 
+                <div class="grid p-fluid">
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nhãn hiệu ID</mat-label>
+                            <input matInput formControlName = "BrandId" name = "BrandId" required="">  
+                            <mat-error *ngIf="productForm.get('BrandId')?.hasError('required')">
+                                Hãy nhập nhãn hiệu ID!
+                            </mat-error>            
+                        </mat-form-field> 
+                    </div>              
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tên sản phẩm</mat-label>
+                            <input matInput formControlName = "ProductName" name = "ProductName" required=""> 
+                            <mat-error *ngIf="productForm.get('ProductName')?.hasError('required')">
+                                Hãy nhập tên sản phẩm!
+                            </mat-error>            
+                          </mat-form-field>         
+                    </div>                       
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mô tả</mat-label>
+                            <input matInput formControlName = "Description" name = "Description">             
+                        </mat-form-field> 
+                    </div>
                 </div>
-            </div>
-            <div class="grid p-fluid">
-                <div class="col-12 md:col-4">       
-                    <mat-form-field appearance="outline">
-                        <mat-label>Sold Quantity</mat-label>
-                        <input matInput formControlName = "SoldQuantity" name = "SoldQuantity" type="number">             
-                    </mat-form-field> 
-                </div>              
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Quanity</mat-label>
-                        <input matInput formControlName = "Quanity" name = "Quanity" type="number">             
-                    </mat-form-field>               
-                </div>   
-                <div class="col-12 md:col-4"> 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Discount</mat-label>
-                        <input matInput formControlName = "Discount" name = "Discount" type="number">             
-                    </mat-form-field>   
-                </div>                     
-            </div>
-            <div class="grid p-fluid">
-                <div class="col-12 md:col-4">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Price</mat-label>
-                        <input matInput formControlName = "Price" name = "Price" required="" type="number">
-                        <span matTextSuffix>VND</span>             
-                    </mat-form-field>        
-                </div>              
-                <div class="col-12 md:col-4">         
-                </div>   
-                <div class="col-12 md:col-4">
-                </div>                     
-            </div>
-            <app-upload-image (onUploadFinished)="uploadFinished($event)"></app-upload-image>
-            <img [src]="createImgPath(this.productForm.controls['Image'].value)" alt="product picture" class="courseImage"> 
-            <div class="pt-2">
-                <button *ngIf="!existedProductId" pButton label="Create" class="p-button-rounded p-button-success" type="submit" [disabled]="productForm.invalid"></button>
-                <button *ngIf="existedProductId" pButton label="Lưu" class="p-button-rounded p-button-success" type="submit" [disabled]="productForm.invalid"></button>           
-                <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-3" type="button" (click)="cancel()"></button> 
-            </div>                             
-         </p-accordionTab>
-    </p-accordion>
-</form>
-<app-footer />
+                <div class="grid p-fluid">
+                    <div class="col-12 md:col-4">       
+                        <mat-form-field appearance="outline">
+                            <mat-label>Số lượng đã bán</mat-label>
+                            <input matInput formControlName = "SoldQuantity" name = "SoldQuantity" type="number">             
+                        </mat-form-field> 
+                    </div>              
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sẵn có</mat-label>
+                            <input matInput formControlName = "Quanity" name = "Quanity" type="number" required="">   
+                            <mat-error *ngIf="productForm.get('Quanity')?.hasError('required')">
+                                Hãy nhập số lượng sẵn có!
+                            </mat-error>          
+                        </mat-form-field>               
+                    </div>   
+                    <div class="col-12 md:col-4"> 
+                        <mat-form-field appearance="outline">
+                            <mat-label>Giá</mat-label>
+                            <input matInput formControlName = "Price" name = "Price" required="" type="number">
+                            <mat-error *ngIf="productForm.get('Price')?.hasError('required')">
+                                Hãy nhập giá!
+                            </mat-error>  
+                            <span matTextSuffix>VND</span>             
+                        </mat-form-field> 
+                    </div>                     
+                </div>
+                <div class="grid p-fluid">
+                    <div class="col-12 md:col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Giảm giá</mat-label>
+                            <input matInput formControlName = "Discount" name = "Discount" type="number">  
+                            <mat-error *ngIf="productForm.get('Discount')?.hasError('required')">
+                                Hãy nhập giảm giá!
+                            </mat-error>          
+                            <span matTextSuffix>%</span>      
+                        </mat-form-field>                               
+                    </div>              
+                    <div class="col-12 md:col-4">         
+                    </div>   
+                    <div class="col-12 md:col-4">
+                    </div>                     
+                </div>
+                <app-upload-image (onUploadFinished)="uploadFinished($event)"></app-upload-image>
+                <img *ngIf="this.productForm.controls['Image'].value" [src]="createImgPath(this.productForm.controls['Image'].value)" alt="product picture" class="courseImage"> 
+                <div class="pt-2">
+                    <button *ngIf="!existedProductId" pButton label="Tạo" class="p-button-rounded p-button-success" type="submit"></button>
+                    <button *ngIf="existedProductId" pButton label="Lưu" class="p-button-rounded p-button-success" type="submit"></button>           
+                    <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-3" type="button" (click)="cancel()"></button> 
+                </div>                             
+             </p-accordionTab>
+        </p-accordion>
+    </form>
+    <app-footer />
+</div>

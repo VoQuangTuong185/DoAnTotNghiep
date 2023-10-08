@@ -33,5 +33,6 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> ConfirmOrder(int orderId);
         Task<Option<bool, string>> SuccessOrder(int orderId);
         Task<Option<bool, string>> UpdateCart(UpdateCart cart);
+        Task<List<SearchProduct>> SearchProduct(string keyWord);
     }
 }

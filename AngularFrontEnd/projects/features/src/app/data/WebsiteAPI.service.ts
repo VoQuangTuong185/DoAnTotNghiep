@@ -60,6 +60,7 @@ export class WebsiteAPIService{
     private urlGetProcessingOrder = 'get-processing-order';
     private urlGetSuccessOrder = 'get-success-order';
     private urlGetCancelOrder = 'get-cancel-order';
+    private urlSearchProduct = 'search-product?keyWord=';
 
     //Category service
     private urlgetAllCategory = '?type='; 
@@ -209,6 +210,9 @@ export class WebsiteAPIService{
     }
     getCancelOrder(){
         return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetCancelOrder, {headers: this.httpHeaders});
+    }
+    getSearchProduct(keyWord: string){
+        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
     }
 
     //Category Service 

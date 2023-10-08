@@ -1,4 +1,4 @@
 export class LoginUserDTO{
-    public loginUser: string = '';
+    public email: string = '';
     public password: string = '';
 }

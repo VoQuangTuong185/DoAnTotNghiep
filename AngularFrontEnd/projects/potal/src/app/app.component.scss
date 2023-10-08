@@ -32,7 +32,7 @@
   font-size: 1.4rem;
   height: var(--height);
   left: 0;
-  padding: 0 28px;
+  padding: 0 6%;
   position: -webkit-sticky;
   position: sticky;
   right: 0;
@@ -43,10 +43,6 @@
   align-items: center;
   display: flex;
   justify-content: center;
-}
-.logan {
-  flex: 1 1;
-  font-weight: 700;
 }
 .routing {
   align-items: center;
@@ -79,9 +75,6 @@
     justify-content: space-between;
     box-shadow: none;
   }
-  .p-accordion {
-    padding: 1.5rem;
-  }
   .p-dialog .p-dialog-footer {
     padding: 0.5rem;
   }
@@ -102,6 +95,17 @@
   .confirm-change-email .mat-mdc-form-field{
     width: 25.5rem;
   }
+  .search-product{
+    .mdc-notched-outline{
+      height: 70%;
+    }
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label{
+      top: 20px;
+    }
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+      padding-top: 9px;
+    }
+  } 
 }
 .small-text {
   padding-left: 0.25rem;
@@ -136,4 +140,12 @@
   border-radius: 15px;
 }
 
-////////////////////////////
+.logan {
+  flex: 1 1;
+  font-weight: 700;
+  margin-top: 2em;
+}
+
+.search-product{
+  width: 25em;
+}

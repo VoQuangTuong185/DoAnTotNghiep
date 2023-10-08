@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RegisterConstant } from '../../RegisterCourse.constant';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-upload-image',
@@ -9,7 +10,8 @@ import { RegisterConstant } from '../../RegisterCourse.constant';
 })
 export class UploadImageComponent {
   constructor(
-    private http: HttpClient){}
+    private http: HttpClient,
+    private messageService: MessageService){}
   progress!: number;
   message!: string;
   @Output() public onUploadFinished = new EventEmitter();
@@ -29,12 +31,12 @@ export class UploadImageComponent {
           }
         }        
         else if (event.type === HttpEventType.Response) {
-          this.message = 'Upload success.';
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Tải lên ảnh thành công!'});
           this.onUploadFinished.emit(event.body);
         }
       },
       error: (err: HttpErrorResponse) => {
-        this.message = 'Upload fail.';
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Tải lên ảnh thất bại!'});
       }
     });
   }

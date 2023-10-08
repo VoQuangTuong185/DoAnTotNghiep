@@ -107,6 +107,15 @@ export class AdminCategoryComponent {
     this.categoryForm.controls['Image'].setValue(event.dbPath);
   }
   confirmForm(isEdit: boolean){
+    if(this.categoryForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc!',
+      });
+      return;
+    }
     if (!isEdit){
       this.websiteAPIService.createCategory(this.categoryForm.getRawValue()).subscribe((res:any) =>{     
         if(res.isSuccess){

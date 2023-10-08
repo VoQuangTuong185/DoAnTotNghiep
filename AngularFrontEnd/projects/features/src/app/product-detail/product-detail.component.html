@@ -1,0 +1,19 @@
+<div class="block">
+    <div class="row">
+        <div class="col-4">
+            <div class="card md:flex md:justify-content-center">
+                <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+                    <ng-template pTemplate="item" let-item>
+                        <img [src]="item.itemImageSrc" style="width: 100%;" />
+                    </ng-template>
+                    <ng-template pTemplate="thumbnail" let-item>
+                        <div class="grid grid-nogutter justify-content-center">
+                            <img [src]="item.thumbnailImageSrc" />
+                        </div>
+                    </ng-template>
+                </p-galleria>
+            </div>
+        </div>
+        <div class="col-8">.col-8<br>Subsequent columns continue along the new line.</div>
+    </div>
+</div>

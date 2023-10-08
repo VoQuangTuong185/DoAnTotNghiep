@@ -10,13 +10,13 @@ import { User } from '../../../features/src/app/data/User.model';
 import { UserRole } from '../../../features/src/app/data/UserRole.model';
 import { WebsiteAPIService } from '../../../features/src/app/data/WebsiteAPI.service';
 import { AddressService } from '../../../features/src/app/data/Address.service';
+import { SearchProduct } from '../../../features/src/app/data/SearchProduct.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'Website API ^^';
   currentTab!: string;
   isAdmin: boolean = false;
   role!: string;
@@ -43,6 +43,8 @@ export class AppComponent implements OnInit {
   existedProvince: any;
   existedDistrict: any;
   existedWard: any;
+  searchProductForm: FormGroup;
+  filterProducts: SearchProduct[] = [];
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -53,6 +55,7 @@ export class AppComponent implements OnInit {
     private formBuilder: FormBuilder,
     private addressService: AddressService
   ) {
+    this.searchProductForm = this.createEmptySearchProductForm();
     this.provices = [];
     this.districts = [];
     this.wards = [];
@@ -197,7 +200,7 @@ export class AppComponent implements OnInit {
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+        detail: 'Hãy nhập các thông tin bắt buộc!',
       });
       return;
     }
@@ -266,15 +269,15 @@ export class AppComponent implements OnInit {
             this.router.navigate(['user/login-user']);
           }
           this.loadDataUser();
-          this.displayEditUserPopup = false;
         } else {
           this.messageService.add({
             key: 'bc',
             severity: 'error',
             summary: 'Lỗi',
             detail: res.message,
-          });
+          });       
         }
+        this.displayEditUserPopup = false;
       });
   }
   confirmChangeEmail() {
@@ -375,5 +378,32 @@ export class AppComponent implements OnInit {
     this.editUserForm.get('Wards')?.valueChanges.subscribe((userWard) => {
       this.wardSelected = userWard;
     });
+  }
+  displayProduct(product: SearchProduct): string{
+    return product ? `${product.productName} - ${product.brandName}` :  '';
+  }
+  async searchProduct(name: any): Promise<SearchProduct[]>{
+    this.filterProducts = [];
+    const filterValue = name.toLowerCase();
+    let products = await this.getProduct(filterValue);
+    this.filterProducts = products;
+    return this.filterProducts;
+  }
+  getProduct(value: string){
+    return new Promise<SearchProduct[]>((resolve) => {
+      this.websiteAPIService.getSearchProduct(value).subscribe((result: any) => {
+        resolve(result.data)
+      });
+    }).then((value) => {
+      return value;
+    });
+  }
+  createEmptySearchProductForm() {
+    return this.formBuilder.group({
+      ProductName: [''],
+    });
+  }
+  productDetail(selectedProduct: any){
+    this.router.navigate(['/user/product-detail/' + selectedProduct.id]);
   }
 }

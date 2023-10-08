@@ -1,75 +1,77 @@
-<p-accordion>
-    <p-accordionTab header="Quản lý tài khoản" class="center" [selected]="true">
-        <div class="search-box">
-            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
-                matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
-        </div>          
-        <div class="displayUsers">
-            <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
-                [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first" [loading]="loading"
-                [resizableColumns]="true" [reorderableColumns]="true" 
-                [globalFilterFields]="['name','loginName','email','telNum', 'address']"
-                [rowsPerPageOptions]="[5, 10, 20]"
-                currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th pReorderableColumn pResizableColumn *ngFor="let col of columns" [style.width]="col.width + '%'">
-                            <span>{{ col.header }}</span>
-                        </th>
-                    </tr>
+<div class="block">
+    <p-accordion>
+        <p-accordionTab header="Quản lý tài khoản" class="center" [selected]="true">
+            <div class="search-box">
+                <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
+                    matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+            </div>          
+            <div class="displayUsers">
+                <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
+                    [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first" [loading]="loading"
+                    [resizableColumns]="true" [reorderableColumns]="true" 
+                    [globalFilterFields]="['name','loginName','email','telNum', 'address']"
+                    [rowsPerPageOptions]="[5, 10, 20]"
+                    currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th pReorderableColumn pResizableColumn *ngFor="let col of columns" [style.width]="col.width + '%'">
+                                <span>{{ col.header }}</span>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-columns="columns" let-rowIndex="rowIndex" let-rowData>
+                        <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+                            <td *ngFor="let col of columns" >
+                            <span [ngSwitch]="col.type">
+                                <span *ngSwitchCase="'number'">{{ rowIndex + 1 }}</span>
+                                <span *ngSwitchCase="'button'" class="button"> 
+                                    <td>
+                                        <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2" (click)="editUser(rowData)"></button>
+                                        <button *ngIf="rowData.isActive" pButton icon="pi pi-lock" pTooltip="Khoá" tooltipPosition="bottom" class="p-button-rounded p-button-danger mr-2" (click)="activeOrInActiveUser(rowData)"></button>
+                                        <button *ngIf="!rowData.isActive" pButton icon="pi pi-lock-open" pTooltip="Mở khoá" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2" (click)="activeOrInActiveUser(rowData)"></button>
+                                        <button pButton icon="pi pi-user-plus" tooltipPosition="bottom" [ngClass]="handleButtonSetManager(rowData) ? 'p-button-rounded p-button-info mr-2' : 'p-button-rounded p-button-secondary mr-2'"  
+                                        (click)="setManagerPermisson(rowData)" [pTooltip]="handleTooltipSetManager(rowData)"></button>
+                                    </td> 
+                                </span>
+                                <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom" >{{ rowData[col.field] }}</span> 
+                            </span>                   
+                            </td>
+                        </tr>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="13">No data found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+         </p-accordionTab>
+    </p-accordion>
+    <form [formGroup]="editUserForm" (ngSubmit)="confirmEditUser()">
+        <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid">
+                <ng-template pTemplate="content">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName = "Name" name = "Name" required="">                              
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">     
+                        <mat-label>Login Name</mat-label>
+                        <input matInput formControlName = "LoginName" name = "LoginName" required="">        
+                    </mat-form-field>      
+                    <mat-form-field appearance="outline" pTooltip="You can not change user's email" tooltipPosition="bottom"> 
+                        <mat-label>Email</mat-label>   
+                        <input matInput formControlName = "Email" name = "Email" required=""> 
+                    </mat-form-field>        
+                    <mat-form-field appearance="outline"> 
+                        <mat-label>Telephone</mat-label>     
+                        <input matInput formControlName = "TelNum" name = "TelNum" required="">  
+                    </mat-form-field>     
                 </ng-template>
-                <ng-template pTemplate="body" let-columns="columns" let-rowIndex="rowIndex" let-rowData>
-                    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
-                        <td *ngFor="let col of columns" >
-                        <span [ngSwitch]="col.type">
-                            <span *ngSwitchCase="'number'">{{ rowIndex + 1 }}</span>
-                            <span *ngSwitchCase="'button'" class="button"> 
-                                <td>
-                                    <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2" (click)="editUser(rowData)"></button>
-                                    <button *ngIf="rowData.isActive" pButton icon="pi pi-lock" pTooltip="Khoá" tooltipPosition="bottom" class="p-button-rounded p-button-danger mr-2" (click)="activeOrInActiveUser(rowData)"></button>
-                                    <button *ngIf="!rowData.isActive" pButton icon="pi pi-lock-open" pTooltip="Mở khoá" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2" (click)="activeOrInActiveUser(rowData)"></button>
-                                    <button pButton icon="pi pi-user-plus" tooltipPosition="bottom" [ngClass]="handleButtonSetManager(rowData) ? 'p-button-rounded p-button-info mr-2' : 'p-button-rounded p-button-secondary mr-2'"  
-                                    (click)="setManagerPermisson(rowData)" [pTooltip]="handleTooltipSetManager(rowData)"></button>
-                                </td> 
-                            </span>
-                            <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom" >{{ rowData[col.field] }}</span> 
-                        </span>                   
-                        </td>
-                    </tr>
+                <ng-template pTemplate="footer">
+                    <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
+                    <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success" (click)="confirmEditUser()"></button>
                 </ng-template>
-                
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="13">No data found.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-     </p-accordionTab>
-</p-accordion>
-<form [formGroup]="editUserForm" (ngSubmit)="confirmEditUser()">
-    <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid">
-            <ng-template pTemplate="content">
-                <mat-form-field appearance="outline">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName = "Name" name = "Name" required="">                              
-                </mat-form-field>
-                <mat-form-field appearance="outline">     
-                    <mat-label>Login Name</mat-label>
-                    <input matInput formControlName = "LoginName" name = "LoginName" required="">        
-                </mat-form-field>      
-                <mat-form-field appearance="outline" pTooltip="You can not change user's email" tooltipPosition="bottom"> 
-                    <mat-label>Email</mat-label>   
-                    <input matInput formControlName = "Email" name = "Email" required=""> 
-                </mat-form-field>        
-                <mat-form-field appearance="outline"> 
-                    <mat-label>Telephone</mat-label>     
-                    <input matInput formControlName = "TelNum" name = "TelNum" required="">  
-                </mat-form-field>     
-            </ng-template>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
-                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success" (click)="confirmEditUser()"></button>
-            </ng-template>
-    </p-dialog>
-</form>
+        </p-dialog>
+    </form>
+</div>

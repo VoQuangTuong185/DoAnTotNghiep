@@ -12,6 +12,7 @@ using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Repositories;
 using WebAppAPI.Services.Contracts;
+using System.Drawing.Drawing2D;
 
 namespace WebAppAPI.Services.Business
 {
@@ -21,12 +22,14 @@ namespace WebAppAPI.Services.Business
         private readonly ILogger<AdminService> _logger;
         private readonly IMapper _mapper;
         private readonly IMessageBusClient _messageBusClient;
-        public AdminService(IUnitOfWork unitOfWork, ILogger<AdminService> logger, IMapper mapper, IMessageBusClient messageBusClient)
+        private readonly IUserService _IUserService;
+        public AdminService(IUnitOfWork unitOfWork, ILogger<AdminService> logger, IMapper mapper, IMessageBusClient messageBusClient, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
             _messageBusClient = messageBusClient;
+            _IUserService = userService;
         }
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
@@ -50,14 +53,14 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<bool> ActiveOrInActiveUser(string loginName)
         {
-            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.LoginName == loginName);
+            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == loginName.ToUpper().TrimStart().TrimEnd());
             existedUser.IsActive = !existedUser.IsActive;
             _unitOfWork.Repository<User>().Update(existedUser);
             return _unitOfWork.SaveChanges();
         }
         public async Task<bool> CheckExistedLoginName(string loginName)
         {
-            return _unitOfWork.Repository<User>().Any(x => x.LoginName == loginName);
+            return _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == loginName.ToUpper().TrimStart().TrimEnd());
         }
         public async Task<Option<bool, string>> EditUser(UserAdminDTO user)
         {
@@ -65,10 +68,10 @@ namespace WebAppAPI.Services.Business
                    .SomeNotNull().WithException("Null input")
                    .FlatMapAsync(async req =>
                    {
-                       var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName == user.LoginName && x.Id != user.Id);
+                       var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() && x.Id != user.Id);
                        if (existedLoginName)
                        {
-                           return Optional.Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
+                           return Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
                        }
                        else
                        {
@@ -81,9 +84,9 @@ namespace WebAppAPI.Services.Business
                        }
                        if (await _unitOfWork.SaveChangesAsync())
                        {
-                           return Optional.Option.Some<bool, string>(true);
+                           return Option.Some<bool, string>(true);
                        }
-                       return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                       return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                    });
         }
         public async Task<Option<bool, string>> SetManagerPermisson(int userId)
@@ -110,18 +113,33 @@ namespace WebAppAPI.Services.Business
                         }
                         if (await _unitOfWork.SaveChangesAsync())
                         {
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });       
         }
-        public async Task<bool> CreateProduct(ProductDTO product)
+        public async Task<Option<bool, string>> CreateProduct(ProductDTO product)
         {
-            var existedCategory = await _unitOfWork.Repository<Category>().Get(x => x.ExternalID == product.CategoryId).FirstOrDefaultAsync();
-            var insertCourse = _mapper.Map<Product>(product);
-            insertCourse.CategoryId = existedCategory.Id;
-            _unitOfWork.Repository<Product>().Add(insertCourse);
-            return _unitOfWork.SaveChanges();
+            return await (product)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    var existedProduct = await _unitOfWork.Repository<Product>().FirstOrDefaultAsync(x => x.ProductName.ToUpper().TrimStart().TrimEnd() == product.ProductName.ToUpper().TrimStart().TrimEnd() &&
+                                                                                                          x.BrandId == product.BrandId && x.IsActive);
+                    if (existedProduct != null)
+                    {
+                        return Option.None<bool, string>("Đã tồn tại sản phẩm thuộc nhãn hàng " + existedProduct.brand.BrandName + ". Hãy thử lại!");
+                    }
+                    var existedCategory = await _unitOfWork.Repository<Category>().Get(x => x.ExternalID == product.CategoryId).FirstOrDefaultAsync();
+                    var insertCourse = _mapper.Map<Product>(product);
+                    insertCourse.CategoryId = existedCategory.Id;
+                    _unitOfWork.Repository<Product>().Add(insertCourse);
+                    if (await _unitOfWork.SaveChangesAsync())
+                    {
+                        return Option.Some<bool, string>(true);
+                    }
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                });
         }
         public async Task<Option<bool, string>> UpdateProduct(ProductDTO product)
         {
@@ -129,14 +147,20 @@ namespace WebAppAPI.Services.Business
                     .SomeNotNull().WithException("Null input")
                     .FlatMapAsync(async req =>
                     {
-                        var updatedProduct = _mapper.Map<Product>(product);
-                        updatedProduct.Id = product.Id;
-                        _unitOfWork.Repository<Product>().Update(updatedProduct);
+                        var allProduct = await _unitOfWork.Repository<Product>().Get(x => true).ToListAsync();
+                        var existedProduct = allProduct.FirstOrDefault(x => x.Id == product.Id);
+                        var existedProductName = allProduct.FirstOrDefault(x => x.Id != product.Id && x.ProductName.ToUpper().TrimStart().TrimEnd() == product.ProductName.ToUpper().TrimStart().TrimEnd()
+                                                                                && x.BrandId == product.BrandId);
+                        if (existedProductName != null)
+                        {
+                            return Option.None<bool, string>("Đã tồn tại sản phẩm thuộc nhãn hàng " + existedProduct.brand.BrandName + ". Hãy thử lại!");
+                        }
+                        _unitOfWork.Repository<Product>().Update(existedProduct);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<int> AutoGeneratedProductID()
@@ -158,9 +182,9 @@ namespace WebAppAPI.Services.Business
                         _unitOfWork.Repository<Product>().Update(existedProduct);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
-                            return Optional.Option.Some<bool, string>(true);
+                            return Option.Some<bool, string>(true);
                         }
-                        return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
         public async Task<Product> GetExistedProduct(int ProductId)
@@ -217,9 +241,9 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Brand>().Update(existedBrand);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> CreateBrand(CreateBrandDTO brand)
@@ -228,18 +252,18 @@ namespace WebAppAPI.Services.Business
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedBrand = await _unitOfWork.Repository<Brand>().FirstOrDefaultAsync(x => x.BrandName == brand.BrandName.TrimStart().TrimEnd() && x.IsActive);
+                    var existedBrand = await _unitOfWork.Repository<Brand>().FirstOrDefaultAsync(x => x.BrandName.ToUpper().TrimStart().TrimEnd() == brand.BrandName.ToUpper().TrimStart().TrimEnd() && x.IsActive);
                     if (existedBrand != null)
                     {
-                        return Optional.Option.None<bool, string>("Đã tồn tại nhãn hàng này. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã tồn tại nhãn hàng này. Hãy thử lại!");
                     }
                     var insertBrand = _mapper.Map<Brand>(brand);
                     _unitOfWork.Repository<Brand>().Add(insertBrand);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<Option<bool, string>> UpdateBrand(BrandDTO brand)
@@ -248,21 +272,21 @@ namespace WebAppAPI.Services.Business
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var allBrand = await _unitOfWork.Repository<Brand>().Get(x => x.IsActive).ToListAsync();
+                    var allBrand = await _unitOfWork.Repository<Brand>().Get(x => true).ToListAsync();
                     var existedBrand = allBrand.FirstOrDefault(x => x.Id == brand.Id);
-                    var existedBrandName = allBrand.FirstOrDefault(x => x.Id != brand.Id && x.BrandName == brand.BrandName.TrimStart().TrimEnd());
+                    var existedBrandName = allBrand.FirstOrDefault(x => x.Id != brand.Id && x.BrandName.ToUpper().TrimStart().TrimEnd() == brand.BrandName.ToUpper().TrimStart().TrimEnd());
                     if (existedBrandName != null)
                     {
-                        return Optional.Option.None<bool, string>("Đã tồn tại nhãn hàng này. Hãy thử lại!");
+                        return Option.None<bool, string>("Đã tồn tại nhãn hàng này. Hãy thử lại!");
                     }
                     var updatedBrand = _mapper.Map<Brand>(brand);
                     updatedBrand.IsActive = existedBrand.IsActive;
                     _unitOfWork.Repository<Brand>().Update(updatedBrand);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        return Optional.Option.Some<bool, string>(true);
+                        return Option.Some<bool, string>(true);
                     }
-                    return Optional.Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
         public async Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId)
