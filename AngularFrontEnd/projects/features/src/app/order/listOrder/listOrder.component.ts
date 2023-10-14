@@ -106,7 +106,7 @@ export class ListOrderComponent implements OnInit {
 
   confirmCancelOrder(orderId: string) {
     this.confirmationService.confirm({
-      message: 'Do you want to cancel this order?',
+      message: 'Xác nhận huỷ đơn hàng?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.cancelOrder(orderId);
@@ -131,7 +131,7 @@ export class ListOrderComponent implements OnInit {
 
   confirmSuccessOrder(orderId: string) {
     this.confirmationService.confirm({
-      message: 'Do you want to confirm?',
+      message: 'Xác nhận hoàn tất đơn hàng?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.successOrder(orderId);

@@ -128,7 +128,7 @@ export class CartComponent implements OnInit {
   };
   deleteCartItem(selectedProduct: CartDTO) {
     this.confirmationService.confirm({
-      message: 'Are you sure to delete this product from cart ?',
+      message: 'Xác nhận xoá sản phẩm ra khỏi giỏ hàng?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

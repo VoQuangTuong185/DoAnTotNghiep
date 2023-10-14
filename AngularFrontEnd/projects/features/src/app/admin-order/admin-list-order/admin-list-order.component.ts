@@ -112,7 +112,7 @@ export class AdminListOrderComponent implements OnInit {
             key: 'bc',
             severity: 'info',
             summary: 'Confirmed',
-            detail: 'Huỷ order successfully',
+            detail: 'Huỷ đơn hàng',
           });
           return
         }
@@ -129,7 +129,7 @@ export class AdminListOrderComponent implements OnInit {
             key: 'bc',
             severity: 'info',
             summary: 'Confirmed',
-            detail: 'Xác nhận order successfully',
+            detail: 'Xác nhận đơn hàng thành công',
           });
           return
         }
@@ -139,7 +139,7 @@ export class AdminListOrderComponent implements OnInit {
 
   confirmCancelOrder(orderId: string) {
     this.confirmationService.confirm({
-      message: 'Do you want to cancel this order?',
+      message: 'Xác nhận huỷ đơn hàng?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.cancelOrder(orderId);
@@ -149,7 +149,7 @@ export class AdminListOrderComponent implements OnInit {
 
   confirmProcessingOrder(orderId: string) {
     this.confirmationService.confirm({
-      message: 'Do you want to confirm?',
+      message: 'Xác nhận đang xử lý đơn hàng?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.confirmOrder(orderId);

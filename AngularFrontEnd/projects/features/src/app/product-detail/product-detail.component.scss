@@ -1,0 +1,50 @@
+.main{
+    background-color: #f0f3f8;
+    padding-top: 0.75rem;
+    padding-bottom: 0.1rem;
+}
+.price{
+    font-size: 32px;
+    line-height: 32px;
+    color: #C92127;
+    font-family: 'Roboto',sans-serif !important;
+    font-weight: 700;
+}
+.old-price{
+    font-size: 1em;
+    font-weight: 300;
+    text-decoration: line-through;
+    margin-left: 8px;
+    color: #0D0E0F;
+}
+.discount-percent{
+    margin-left: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background-color: #C92127;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 600;
+}
+:host ::ng-deep {
+    .p-fluid p-inputnumber {
+      width: 120px;
+    }
+  }
+.button-box{
+    justify-content: center;
+    display: flex;
+    max-width: 400px;
+}
+.categories {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+.card {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 10px;
+}

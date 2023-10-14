@@ -8,6 +8,7 @@ import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { CoreConstants } from '../core/src/lib/core.constant';
 import { AddressService } from '../data/Address.service';
 import { AddCart } from '../data/addCart.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -38,7 +39,8 @@ export class HomePageComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private loginService: LoginService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private router: Router,
   ) {
     this.responsiveOptions = [
       { breakpoint: '1024px', numVisible: 4, numScroll: 4 },
@@ -173,5 +175,8 @@ export class HomePageComponent {
         });
       }
     });
+  }
+  productDetail(selectedProduct: any){
+    this.router.navigate(['/user/product-detail/' + selectedProduct.id]);
   }
 }

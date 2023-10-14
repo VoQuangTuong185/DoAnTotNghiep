@@ -118,7 +118,7 @@ namespace WebAppAPI.Services.Business
                         return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });       
         }
-        public async Task<Option<bool, string>> CreateProduct(ProductDTO product)
+        public async Task<Option<bool, string>> CreateProduct(ProductDTOShow product)
         {
             return await (product)
                 .SomeNotNull().WithException("Null input")
@@ -141,7 +141,7 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
-        public async Task<Option<bool, string>> UpdateProduct(ProductDTO product)
+        public async Task<Option<bool, string>> UpdateProduct(ProductDTOUpdate product)
         {
             return await (product)
                     .SomeNotNull().WithException("Null input")
@@ -155,6 +155,17 @@ namespace WebAppAPI.Services.Business
                         {
                             return Option.None<bool, string>("Đã tồn tại sản phẩm thuộc nhãn hàng " + existedProduct.brand.BrandName + ". Hãy thử lại!");
                         }
+                        existedProduct.ProductName = product.ProductName;
+                        existedProduct.Description = product.Description;
+                        existedProduct.Image = product.Image;
+                        existedProduct.Price = product.Price;
+                        existedProduct.Discount = product.Discount;
+                        existedProduct.Quanity = product.Quanity;
+                        existedProduct.CategoryId = product.CategoryId;
+                        existedProduct.BrandId = product.BrandId;
+                        existedProduct.ImageDetail = String.Join(",", product.ImageDetail);
+
+
                         _unitOfWork.Repository<Product>().Update(existedProduct);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
@@ -187,9 +198,13 @@ namespace WebAppAPI.Services.Business
                         return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });
         }
-        public async Task<Product> GetExistedProduct(int ProductId)
+        public async Task<ProductDTOShow> GetExistedProduct(int ProductId)
         {
-            return _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId).Include(x => x.brand).FirstOrDefault();
+            var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
+                                                          .Include(x => x.brand)
+                                                          .Include(x => x.category)
+                                                          .FirstOrDefaultAsync();
+            return _mapper.Map<ProductDTOShow>(existedProduct);
         }
         public async Task<IEnumerable<Product>> GetAllProduct(string type)
         {

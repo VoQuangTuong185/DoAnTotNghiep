@@ -87,7 +87,7 @@
                     <mat-error *ngIf="categoryForm.get('Image')?.hasError('required')">
                         Hãy chọn ảnh!
                     </mat-error>
-                    <img *ngIf="this.categoryForm.controls['Image'].value" [src]="createImgPath(this.categoryForm.controls['Image'].value)" alt="product picture" class="courseImage">         
+                    <img *ngIf="this.categoryForm.controls['Image'].value" [src]="createImgPath(this.categoryForm.controls['Image'].value)" alt="product picture" class="image-db">         
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <div class="pt-2">

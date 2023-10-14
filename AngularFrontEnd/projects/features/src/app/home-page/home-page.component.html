@@ -60,7 +60,7 @@
                   <h4>Sản phẩm: <b>{{ currentProduct.productName }}</b></h4>
               </td>
               <td>
-                  <h4>Nhãn hiệu: <b>{{ currentProduct.brand.brandName }}</b></h4>
+                  <h4>Nhãn hàng: <b>{{ currentProduct.brand.brandName }}</b></h4>
               </td>
           </tr>
           <tr>
@@ -81,7 +81,7 @@
           </tr>
           <tr>
             <td class="padding-table">                 
-                <h4>Có sẵn: <b>{{ currentProduct.quanity }}</b></h4> 
+                <h4>Số lượng sẵn có: <b>{{ currentProduct.quanity }}</b></h4> 
             </td>
             <td>
                 <h4>Đã bán: <b>{{ currentProduct.soldQuantity }}</b></h4>
@@ -115,8 +115,9 @@
           </tr>
       </table>
   </ng-template>
-  <ng-template pTemplate="footer">
+  <ng-template pTemplate="footer">  
+    <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>   
+      <button pButton pRipple label="Xem chi tiết" icon="pi pi-list" class="p-button-help" (click)="productDetail(currentProduct)"></button>      
       <button pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
-      <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>
   </ng-template>
 </p-dialog>

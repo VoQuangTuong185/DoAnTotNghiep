@@ -1,19 +1,90 @@
-<div class="block">
-    <div class="row">
-        <div class="col-4">
-            <div class="card md:flex md:justify-content-center">
-                <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
-                    <ng-template pTemplate="item" let-item>
-                        <img [src]="item.itemImageSrc" style="width: 100%;" />
-                    </ng-template>
-                    <ng-template pTemplate="thumbnail" let-item>
-                        <div class="grid grid-nogutter justify-content-center">
-                            <img [src]="item.thumbnailImageSrc" />
-                        </div>
-                    </ng-template>
-                </p-galleria>
+<div class="block main">
+    <div class="categories">
+        <p-card header="Chi tiết sản phẩm">
+            <div class="row">
+                <div class="col-5 mt-3">
+                    <div class="md:flex">
+                        <p-galleria [value]="currentProduct.imageDetail" 
+                            [showIndicators]="true" 
+                            [showThumbnails]="false" 
+                            [changeItemOnIndicatorHover]="true" 
+                            [responsiveOptions]="responsiveOptions"
+                            [containerStyle]="{ 'max-width': '400px', 'min-width': '400px', 'min-height': '460px' }"> 
+                            <ng-template pTemplate="item" let-item>
+                                <img [src]="createImgPath(item)" style="width: 100%; display: block;" />
+                            </ng-template>
+                        </p-galleria>
+                    </div>
+                    <div class="button-box">            
+                        <button pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-secondary"></button>
+                        <button pButton pRipple label="Mua ngay" icon="pi pi-cart-plus" class="p-button-danger ml-3"></button>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-12">
+                            <h1><b>{{currentProduct.productName}}</b></h1>
+                        </div>              
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <h3>Nhãn hàng: <b>{{currentProduct.brand.brandName}}</b></h3>
+                        </div>    
+                        <div class="col-12 md:col-6">
+                            <h3>Danh mục: <b>{{currentProduct.category.categoryName}}</b></h3>
+                        </div>             
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <h3>Số lượng sẵn có: <b>{{currentProduct.quanity}}</b></h3>
+                        </div>    
+                        <div class="col-12 md:col-6">
+                            <h3>Số lượng đã bán: <b>{{currentProduct.soldQuantity}}</b></h3>
+                        </div>  
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-9">
+                            <h3>Mô tả: <b>{{currentProduct.description}}</b></h3>
+                        </div>    
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <div class="price-box">
+                                <p style="display: inline-block;">
+                                    <span class="price">{{currentProduct.price - (currentProduct.price * currentProduct.discount) / 100 | currency : "VND"}}</span>
+                                </p>                      
+                                <p style="display: inline-block;">
+                                    <span class="old-price">{{currentProduct.price | currency : "VND"}}</span>
+                                    <span class="discount-percent">{{currentProduct.discount}}%</span>
+                                </p>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <h4>
+                                Số lượng:
+                                <p-inputNumber 
+                                    class="ml-3"
+                                    [(ngModel)]="quantityAddToCart"
+                                    [showButtons]="true"
+                                    buttonLayout="horizontal"
+                                    inputId="horizontal"
+                                    spinnerMode="horizontal"
+                                    [step]="1"
+                                    decrementButtonClass="p-button-danger"
+                                    incrementButtonClass="p-button-success"
+                                    incrementButtonIcon="pi pi-plus"
+                                    decrementButtonIcon="pi pi-minus"
+                                    [min]="1"
+                                    [max]="currentProduct.quanity"
+                                    [style]="{ width: '150px' }">
+                                </p-inputNumber>
+                            </h4>
+                        </div>    
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-8">.col-8<br>Subsequent columns continue along the new line.</div>
+        </p-card>
     </div>
 </div>

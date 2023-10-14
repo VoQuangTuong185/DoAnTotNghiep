@@ -87,13 +87,13 @@ export class AdminUserComponent {
   }
   activeOrInActiveUser(data:any){
     if (this.userData.id == data.id){
-      this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: 'You can not inactive yourself!', life: 3000});
+      this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: 'Bạn không thể khoá tài khoản của chính bạn!', life: 3000});
       return;
     }
     var info = '';
-    info = data.IsActive ? 'InActive' : 'Active';
+    info = data.IsActive ? 'khoá' : 'mở khoá';
     this.confirmationService.confirm({
-      message: 'Are you sure '+ info+ ' user: ' + data.name + '?',
+      message: 'Xác nhận '+ info+ ' tài khoản: ' + data.name + '?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -103,7 +103,7 @@ export class AdminUserComponent {
             this.loadDataUsers();
           }
           else {
-            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: info + data.name + ' fail, try again!'});
+            this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: info + data.name + ' lỗi, hãy thử lại!'});
           }
         });         
       }
