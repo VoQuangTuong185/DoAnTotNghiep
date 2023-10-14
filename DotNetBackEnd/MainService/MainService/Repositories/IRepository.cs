@@ -19,5 +19,6 @@ namespace WebAppAPI.Repositories
         void UpdateRange(IEnumerable<TEntity> entities);
         IQueryable<TEntity> GetNoTracking(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        void Detached(IEnumerable<TEntity> entities);
     }
 }

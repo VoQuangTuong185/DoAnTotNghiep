@@ -1,22 +1,21 @@
 ﻿using DoAnTotNghiep.Models.Entities;
-using WebAppAPI.Models.Bases;
+using WebAppAPI.Models.Entities;
 
-namespace WebAppAPI.Models.Entities
+namespace WebAppAPI.DTO
 {
-    public class Product : BaseEntity
+    public class ProductDTOUpdate
     {
+        public int Id { get; set; }
         public string ProductName { get; set; }
         public string? Description { get; set; }
         public string? Image { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
         public int Quanity { get; set; }
-        public int SoldQuantity { get; set; }
+        public int? SoldQuantity { get; set; }
         public int CategoryId { get; set; }
-        public virtual Category category { get; set; }
         public int BrandId { get; set; }
-        public virtual Brand brand { get; set; }
-        public virtual IList<Cart> P_carts { get; set; }
-        public string? ImageDetail { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string[] ImageDetail { get; set; }
     }
 }

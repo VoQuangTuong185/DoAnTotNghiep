@@ -142,7 +142,7 @@ namespace WebAppAPI.Controllers
         }
         [Authorize]
 		[HttpPost("create-product")]
-        public async Task<ApiResult> CreateProduct(ProductDTO product)
+        public async Task<ApiResult> CreateProduct(ProductDTOShow product)
         {
             var result = new ApiResult();
             try
@@ -182,7 +182,7 @@ namespace WebAppAPI.Controllers
             return result;
         }      
         [HttpPost("update-product")]
-        public async Task<ApiResult> UpdateProduct(ProductDTO product)
+        public async Task<ApiResult> UpdateProduct(ProductDTOUpdate product)
         {
             var result = new ApiResult();
             try

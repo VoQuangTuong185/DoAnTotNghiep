@@ -61,6 +61,7 @@ export class CreatProductComponent {
       Price: [null],
       Image: [''],
       IsActive: [true],
+      ImageDetail: [''],
     })
   }
   createExistedCourseForm(data : any){
@@ -76,6 +77,7 @@ export class CreatProductComponent {
       Discount: [data.discount,[Validators.required, Validators.max(100), Validators.min(1)]],
       Price: [data.price, [Validators.required]],
       Image: [data.image, [Validators.required]],
+      ImageDetail: [data.imageDetail],
     })
   }
   getBrandIdOfBrand(): void {
@@ -92,31 +94,30 @@ export class CreatProductComponent {
       });
       return;
     }
-    if(this.response) this.productForm.controls['Image'].setValue(this.response.dbPath);
     if(this.existedProductId) {  
       this.websiteAPIService.updateProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Update Product Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Update Product Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
     }
     else{   
       this.websiteAPIService.createProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
-          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Create Product Successfully!'});
+          this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
         }
         else {
-          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Create Product Fail, try again!'});
+          this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
         }
       });
     }
   }
   cancel(){
     this.confirmationService.confirm({
-      message: 'Are you sure to cancel ?',
+      message: 'Huỷ tạo/chỉnh sửa sản phẩm ?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {        
@@ -141,16 +142,22 @@ export class CreatProductComponent {
         this.productForm.controls['Id'].setValue(this.ProductID);
       }
       else {
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Auto generate product id fail!'});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Chức năng tạo mã sản phẩm bị lỗi!'});
       }
     });
   }  
   createImgPath = (serverPath: string) => {
     return CoreConstants.apiUrl() + `/${serverPath}`; 
   }
-  uploadFinished = (event:any) => { 
+  uploadImageFinished = (event:any) => { 
     this.response = event; 
     this.productForm.controls['Image'].setValue(event.dbPath);
+  }
+  uploadImageDetailFinished = (event:any) => { 
+    this.response = event;  
+    let currentImageDetail = this.productForm.controls['ImageDetail'].value;
+    currentImageDetail.push(event.dbPath)
+    this.productForm.controls['ImageDetail'].setValue(currentImageDetail);
   }
   loadDataAllBrands(){
     this.websiteAPIService.getAllBrand('user').subscribe((res:any) => {
@@ -165,5 +172,10 @@ export class CreatProductComponent {
       this.brandSelected = brand;
       this.getBrandIdOfBrand();
     });
+  }
+  removeImage(imagePath: string){
+    var currentImageDetail = this.productForm.controls['ImageDetail'].value;
+    currentImageDetail = currentImageDetail.filter((obj: string) => {return obj !== imagePath});
+    this.productForm.controls['ImageDetail'].setValue(currentImageDetail);
   }
 }

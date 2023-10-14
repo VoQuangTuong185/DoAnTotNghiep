@@ -69,7 +69,6 @@ import { AdminBrandComponent } from './admin-brand/admin-brand.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { GalleriaModule } from 'primeng/galleria';
-import { PhotoService } from './data/photoservice';
 @NgModule({
   declarations: [
     AppComponent,
@@ -157,7 +156,6 @@ import { PhotoService } from './data/photoservice';
       useClass: AuthInterceptor,
       multi: true,
     },
-    PhotoService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

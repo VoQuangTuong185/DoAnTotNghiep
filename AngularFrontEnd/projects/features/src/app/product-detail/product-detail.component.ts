@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
-import { PhotoService } from '../data/photoservice';
+import { CoreConstants } from '../core/src/lib/core.constant';
 
 @Component({
   selector: 'app-product-detail',
@@ -14,14 +14,15 @@ export class ProductDetailComponent implements OnInit {
   images: any[] = [];
   responsiveOptions: any[] = [];
   @Input() value: unknown
-@Output() valueChange = new EventEmitter<unknown>();
+  currentProduct!: any;
+  @Output() valueChange = new EventEmitter<unknown>();
+  quantityAddToCart: number = 1;
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private websiteAPIService: WebsiteAPIService,
     private ActiveRoute : ActivatedRoute,
-    private photoService: PhotoService
   ){
     this.ActiveRoute.params.subscribe((params) =>{
       this.existedProductId = params['id'];
@@ -29,25 +30,27 @@ export class ProductDetailComponent implements OnInit {
   }
   ngOnInit(): void{
     this.getExistedProduct();
-    this.photoService.getImages().then((images) => (this.images = images));
-      this.responsiveOptions = [
-          {
-              breakpoint: '1024px',
-              numVisible: 5
-          },
-          {
-              breakpoint: '768px',
-              numVisible: 3
-          },
-          {
-              breakpoint: '560px',
-              numVisible: 1
-          }
-      ];
+    this.responsiveOptions = [
+        {
+            breakpoint: '1024px',
+            numVisible: 5
+        },
+        {
+            breakpoint: '768px',
+            numVisible: 3
+        },
+        {
+            breakpoint: '560px',
+            numVisible: 1
+        }
+    ];
   }
   getExistedProduct(){
     this.websiteAPIService.getExistedProduct(this.existedProductId).subscribe((result : any) => {
-      var data = result.data;
+      this.currentProduct = result.data;
     });
+  }
+  createImgPath = (serverPath: string) => {
+    return CoreConstants.apiUrl() + `/${serverPath}`; 
   }
 }

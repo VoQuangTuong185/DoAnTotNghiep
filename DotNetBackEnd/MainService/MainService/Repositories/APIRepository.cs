@@ -84,5 +84,13 @@ namespace WebAppAPI.Repositories
                 _ApplicationDbContext.Entry(en).State = EntityState.Modified;
             }
         }
+
+        public void Detached(IEnumerable<TEntity> entities)
+        {
+            foreach (var en in entities)
+            {
+                _ApplicationDbContext.Entry(en).State = EntityState.Detached;
+            }
+        }
     }
 }

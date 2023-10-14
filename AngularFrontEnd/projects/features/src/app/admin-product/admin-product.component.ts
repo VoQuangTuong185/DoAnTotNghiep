@@ -52,7 +52,7 @@ export class AdminProductComponent {
     let action ='';
     selectedProduct.isActive ? action = 'ẩn': action = 'hiện';
     this.confirmationService.confirm({
-      message: 'Are you sure ' + action + ' course ' + selectedProduct.productName + ' ?',
+      message: 'Xác nhận ' + action + ' sản phẩm ' + selectedProduct.productName + ' ?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle', 
       accept: () => {
