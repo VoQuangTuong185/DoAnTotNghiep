@@ -69,6 +69,7 @@ import { AdminBrandComponent } from './admin-brand/admin-brand.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { GalleriaModule } from 'primeng/galleria';
+import {MatRadioModule} from '@angular/material/radio';
 @NgModule({
   declarations: [
     AppComponent,
@@ -134,7 +135,8 @@ import { GalleriaModule } from 'primeng/galleria';
     AvatarModule,
     CheckboxModule,
     MatAutocompleteModule,
-    GalleriaModule
+    GalleriaModule,
+    MatRadioModule
   ],
   providers: [
     {

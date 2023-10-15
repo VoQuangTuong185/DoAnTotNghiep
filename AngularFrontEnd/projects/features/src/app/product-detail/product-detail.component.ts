@@ -30,24 +30,14 @@ export class ProductDetailComponent implements OnInit {
   }
   ngOnInit(): void{
     this.getExistedProduct();
-    this.responsiveOptions = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1
-        }
-    ];
+    this.responsiveOptions = [{ breakpoint: '1024px',  numVisible: 5 }, { breakpoint: '768px', numVisible: 3 }, { breakpoint: '560px', numVisible: 1 }];
   }
   getExistedProduct(){
     this.websiteAPIService.getExistedProduct(this.existedProductId).subscribe((result : any) => {
       this.currentProduct = result.data;
+      let currentImageDetail = this.currentProduct.imageDetail || [];
+      currentImageDetail.unshift(this.currentProduct.image);
+      this.currentProduct.imageDetail = currentImageDetail;
     });
   }
   createImgPath = (serverPath: string) => {

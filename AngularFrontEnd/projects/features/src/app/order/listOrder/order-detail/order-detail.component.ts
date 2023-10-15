@@ -29,6 +29,7 @@ export class OrderDetailComponent implements OnInit {
         }
       });
   }
+  
   getTotalMoney(price: number, quantity: number, discount: number) {
     return price * quantity * ((100 - discount) / 100);
   }

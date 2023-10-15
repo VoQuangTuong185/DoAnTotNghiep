@@ -492,5 +492,31 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
+        [HttpPost("create-feedback")]
+        public async Task<ApiResult> CreateFeedback(List<FeedbackDTO> feedbacks)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IUserService.CreateFeedback(feedbacks)).Match(res =>
+                {
+                    result.Message = "Đánh giá thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
     }
 }

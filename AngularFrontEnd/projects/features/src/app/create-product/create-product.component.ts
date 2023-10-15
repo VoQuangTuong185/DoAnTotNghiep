@@ -155,7 +155,7 @@ export class CreatProductComponent {
   }
   uploadImageDetailFinished = (event:any) => { 
     this.response = event;  
-    let currentImageDetail = this.productForm.controls['ImageDetail'].value;
+    let currentImageDetail = this.productForm.controls['ImageDetail'].value || [];
     currentImageDetail.push(event.dbPath)
     this.productForm.controls['ImageDetail'].setValue(currentImageDetail);
   }
