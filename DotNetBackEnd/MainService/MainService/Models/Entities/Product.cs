@@ -18,5 +18,6 @@ namespace WebAppAPI.Models.Entities
         public virtual Brand brand { get; set; }
         public virtual IList<Cart> P_carts { get; set; }
         public string? ImageDetail { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
     }
 }

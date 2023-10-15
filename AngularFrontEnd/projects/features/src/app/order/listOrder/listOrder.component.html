@@ -1,7 +1,7 @@
 <p-table
   [value]="orders"
   [tableStyle]="{ 'min-width': '60rem' }"
-  [loading]="loading">
+  [loading]="loading">   
   <ng-template pTemplate="header">
     <tr>
       <th>Số sản phẩm</th>
@@ -23,23 +23,65 @@
           label="Huỷ"
           styleClass="p-button-danger"
           icon="pi pi-times"
-          (click)="confirmCancelOrder(order.id)"
-        ></p-button>
+          (click)="confirmCancelOrder(order.id)">
+        </p-button>
         <p-button
           *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
           label="Hoàn tất"
           styleClass="p-button-success"
           [style]="{ 'margin-left': '10px' }"
           icon="pi pi-check"
-          (click)="confirmSuccessOrder(order.id)"
-        ></p-button>
+          (click)="confirmSuccessOrder(order.id)">
+        </p-button>
         <p-button
           label="Chi tiết"
           icon="pi pi-list"
           [style]="{ 'margin-left': '10px' }"
-          (click)="openModalOrderDetail(order)"
-        ></p-button>
+          (click)="openModalOrderDetail(order)">
+        </p-button>
+        <p-button
+        *ngIf="statusOrderCode === this.enumData.statusOrder.success.code"
+        label="Đánh giá"
+        icon="pi pi-comments"
+        [style]="{ 'margin-left': '10px' }"
+        styleClass="p-button-help"
+        (click)="openFeedback(order)">
+      </p-button>
       </td>
     </tr>
   </ng-template>
 </p-table>
+<form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+  <p-dialog [(visible)]="displayFeedbackPopup" [style]="{width: '450px'}" header="Đánh giá" [modal]="true" styleClass="p-fluid" class="profile">
+    <ng-container formArrayName="feedbacks">
+      <ng-container *ngFor="let feedback of feedbacks.controls; let i = index">
+        <div class="mx-3" [formGroupName]="i">
+          <mat-form-field>
+            <mat-label>Sản phẩm</mat-label>
+            <input matInput formControlName="ProductName" type="string" readonly/>
+          </mat-form-field>
+          <div style="margin-top: -1.2rem;">
+            <mat-radio-group matInput formControlName="Votes" >
+              <mat-radio-button value="1" [checked]="feedbacks.controls[i].get('Votes')?.value === 1">1&#9733;</mat-radio-button>
+              <mat-radio-button value="2" [checked]="feedbacks.controls[i].get('Votes')?.value === 2">2&#9733;</mat-radio-button>
+              <mat-radio-button value="3" [checked]="feedbacks.controls[i].get('Votes')?.value === 3">3&#9733;</mat-radio-button>
+              <mat-radio-button value="4" [checked]="feedbacks.controls[i].get('Votes')?.value === 4">4&#9733;</mat-radio-button>
+              <mat-radio-button value="5" [checked]="feedbacks.controls[i].get('Votes')?.value === 5">5&#9733;</mat-radio-button>
+            </mat-radio-group> 
+          </div>
+          <mat-form-field>
+            <mat-label>Đánh giá</mat-label>
+            <textarea  matInput formControlName="Comments" type="string"></textarea>
+          </mat-form-field>
+        </div>
+        <hr style="margin-top: -0.5rem;">
+      </ng-container>
+    </ng-container>
+    <ng-template pTemplate="footer">
+        <div class="pt-2">
+            <button pButton label="Tạo" class="p-button-rounded p-button-success"></button>    
+            <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideFeedbackPopup()"></button> 
+        </div>
+    </ng-template>
+  </p-dialog>
+</form>

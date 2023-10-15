@@ -21,6 +21,8 @@ using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
 using WebAppAPI.Repositories;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
+using System.Xml.Linq;
+
 namespace WebAppAPI.Services.Business
 {
     public class UserService : IUserService
@@ -412,18 +414,43 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId)
         {
-            var result = Enumerable.Empty<OrderDetailDTO>();
+            var secondJoin = Enumerable.Empty<OrderDetailDTO>();
             var existedOrderDetail = await _unitOfWork.Repository<OrderDetail>().Get(x => x.OrderId == orderId).ToListAsync();
+            var feedbacks = await _unitOfWork.Repository<Feedback>().Get(x => x.OrderId == orderId).ToListAsync();
             var existedProductInOder = await _unitOfWork.Repository<Product>().Get(x => existedOrderDetail.Select(x => x.ProductId).Any(y => y == x.Id)).ToListAsync();
-            result = existedOrderDetail.GroupJoin(existedProductInOder, or => or.ProductId, pr => pr.Id, (or, pr) => new { or, pr })
-                                 .SelectMany(x => x.pr.DefaultIfEmpty(), (orData, prData) => new OrderDetailDTO
-                                 {
-                                    ProductName = prData.ProductName,
-                                    Image = prData.Image,
-                                    Price = orData.or.Price,
-                                    Discount = prData.Discount,
-                                    Quantity = orData.or.Quantity
-                                 }).ToList();
+            secondJoin = existedOrderDetail.GroupJoin(existedProductInOder, or => or.ProductId, pr => pr.Id, (or, pr) => new { or, pr })
+                                     .SelectMany(x => x.pr.DefaultIfEmpty(), (orData, prData) => new OrderDetailDTO
+                                     {
+                                        OrderId = orderId,
+                                        ProductId = prData.Id,
+                                        ProductName = prData.ProductName,
+                                        Image = prData.Image,
+                                        Price = orData.or.Price,
+                                        Discount = prData.Discount,
+                                        Quantity = orData.or.Quantity,
+                                     }).ToList();
+            var result = secondJoin.GroupJoin(feedbacks,
+              firstSelector => new {
+                  firstSelector.OrderId,
+                  firstSelector.ProductId
+              },
+              secondSelector => new {
+                  secondSelector.OrderId,
+                  secondSelector.ProductId
+              },
+              (product, feedback) => new { product, feedback }).SelectMany(grp => grp.feedback.DefaultIfEmpty(),
+                         (pro, fed) => new OrderDetailDTO
+                         {
+                             OrderId = orderId,
+                             ProductId = pro.product.ProductId,
+                             ProductName = pro.product.ProductName,
+                             Image = pro.product.Image,
+                             Price = pro.product.Price,
+                             Discount = pro.product.Discount,
+                             Quantity = pro.product.Quantity,
+                             Comments = fed?.Comments,
+                             Votes = fed?.Votes
+                         });
             return result;
         }
         public async Task<Option<bool, string>> CancelOrder(int orderId)
@@ -574,6 +601,21 @@ namespace WebAppAPI.Services.Business
                                                               Id = x.Id,
                                                               BrandName = x.brand.BrandName
                                                           }).ToListAsync();
+        }
+
+        public async Task<Option<bool, string>> CreateFeedback(List<FeedbackDTO> feedbacks)
+        {
+            return await(feedbacks)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    _unitOfWork.Repository<Feedback>().AddRange(_mapper.Map<List<Feedback>>(feedbacks));
+                    if (await _unitOfWork.SaveChangesAsync())
+                    {
+                        return Option.Some<bool, string>(true);
+                    }
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                });
         }
         #endregion
     }
