@@ -20,7 +20,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Notification - Your store has a new order!"),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -38,7 +38,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Notification - Your order has been canceled"),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -55,7 +55,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Confirm Change Email Profile For TUONG STATIONERY STOREs "),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -73,7 +73,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Confirm Change Password For TUONG STATIONERY STORE "),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -90,7 +90,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Confirm Forget Password For TUONG STATIONERY STORE "),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -108,7 +108,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Notification - Your order has been confirmed"),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);
@@ -143,7 +143,7 @@ namespace MailService.Services.Business
             {
                 IsBodyHtml = true,
                 Subject = content.Subject,
-                From = new MailAddress(sysEmail, "Notification - Your order has been succeeded"),
+                From = new MailAddress(sysEmail, content.Title),
             };
             var toEmail = new MailAddress(content.Email);
             mail.To.Add(toEmail);

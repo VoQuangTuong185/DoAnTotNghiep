@@ -58,7 +58,7 @@ namespace WebAppAPI.Services.Business
             if (!existedUser)
             {
                 confirmCode = Get8CharacterRandomString();
-                var mailInformation = new MailPublishedDto("ConfirmRegister", user.Name, user.Email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Register For [TUONG STATIONERY STORE] ", confirmCode, "Mail_Published");
+                var mailInformation = new MailPublishedDto("ConfirmRegister", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN ĐĂNG KÝ TÀI KHOẢN", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
                 _messageBusClient.PublishMail(mailInformation);
             }
             else
@@ -99,7 +99,7 @@ namespace WebAppAPI.Services.Business
             if (existedUser)
             {
                 confirmCode = Get8CharacterRandomString();
-                var mailInformation = new MailPublishedDto("ConfirmForgetPassword", string.Empty, email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Forget Password For TUONG STATIONERY STORE", confirmCode, "Mail_Published");
+                var mailInformation = new MailPublishedDto("ConfirmForgetPassword", string.Empty, email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN QUÊN MẬT KHẨU", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
                 _messageBusClient.PublishMail(mailInformation);
             }
             return confirmCode;
@@ -115,7 +115,7 @@ namespace WebAppAPI.Services.Business
             else
             {
                 confirmCode = Get8CharacterRandomString();
-                var mailInformation = new MailPublishedDto("ConfirmChangeEmail", string.Empty, email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Change Email Profile For TUONG STATIONERY STOREs", confirmCode, "Mail_Published");
+                var mailInformation = new MailPublishedDto("ConfirmChangeEmail", string.Empty, email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN THAY ĐỔI MẬT KHẨU CÁ NHÂN", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
                 _messageBusClient.PublishMail(mailInformation);
             }
             return confirmCode;
@@ -130,7 +130,7 @@ namespace WebAppAPI.Services.Business
             bool IsChangePassword = _unitOfWork.SaveChanges();
             if (IsChangePassword)
             {
-                var mailInformation = new MailPublishedDto("ConfirmChangePassword", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Change Password For TUONG STATIONERY STORE ", string.Empty, "Mail_Published");
+                var mailInformation = new MailPublishedDto("ConfirmChangePassword", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN THAY ĐỔI MẬT KHẨU", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
                 _messageBusClient.PublishMail(mailInformation);
             }
             return IsChangePassword;
@@ -319,7 +319,7 @@ namespace WebAppAPI.Services.Business
                             var allUser = _unitOfWork.Repository<UserAPI>().Get(x => x.IsActive && x.RoleId == 2).Include(x => x.user).ToList();
                             var listAdmin = allUser.Select(x => x.user).ToList();
                             var customerName = _unitOfWork.Repository<User>().FirstOrDefault(x => x.IsActive && x.Id == order.UserId).Name;
-                            var mailInformation = new MailPublishedDto("CreateOrder", listAdmin.FirstOrDefault().Name, listAdmin.FirstOrDefault().Email, "[TUONG STATIONERY STORE] Confirm Email", "Confirm Change Email Profile For TUONG STATIONERY STOREs", customerName, "Mail_Published");
+                            var mailInformation = new MailPublishedDto("CreateOrder", listAdmin.FirstOrDefault().Name, listAdmin.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC TẠO THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", customerName, "Mail_Published");
                             _messageBusClient.PublishMail(mailInformation);
                             return Option.Some<bool, string>(true);
                         }
@@ -478,7 +478,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been canceled", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -498,7 +498,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been confirmed", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -528,7 +528,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("SuccessOrder", existedUser.Name, existedUser.Email, "[TUONG STATIONERY STORE] Confirm Email", "Notification - Your order has been succeeded", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("SuccessOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }

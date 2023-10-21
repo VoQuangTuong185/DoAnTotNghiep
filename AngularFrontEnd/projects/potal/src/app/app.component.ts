@@ -287,7 +287,7 @@ export class AppComponent implements OnInit {
         key: 'bc',
         severity: 'info',
         summary: 'Thông tin',
-        detail: 'Correct code!',
+        detail: 'Mã xác nhận chính xác!',
       });
       this.updateUser();
       this.displayChangeMailPopup = false;
@@ -296,7 +296,7 @@ export class AppComponent implements OnInit {
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Wrong confirm code, try again!',
+        detail: 'Mã xác nhận không đúng!',
       });
     }
   }

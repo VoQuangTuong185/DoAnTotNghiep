@@ -62,7 +62,7 @@ export class AdminCategoryComponent {
         this.isEdit = true; 
       }
       else {
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Get edit category fail!'});
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Không thể lấy thông tin danh mục!'});
       }
     });  
   }
