@@ -22,6 +22,7 @@ using WebAppAPI.Repositories;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace WebAppAPI.Services.Business
 {
@@ -602,14 +603,34 @@ namespace WebAppAPI.Services.Business
                                                               BrandName = x.brand.BrandName
                                                           }).ToListAsync();
         }
-
         public async Task<Option<bool, string>> CreateFeedback(List<FeedbackDTO> feedbacks)
         {
-            return await(feedbacks)
+            return await (feedbacks)
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    _unitOfWork.Repository<Feedback>().AddRange(_mapper.Map<List<Feedback>>(feedbacks));
+                    var existedFeedbacks = await _unitOfWork.Repository<Feedback>().Get(x => feedbacks.Select(y => y.OrderId).Contains(x.OrderId)
+                                                                                        && feedbacks.Select(y => y.ProductId).Contains(x.ProductId)
+                                                                                        && feedbacks.Select(y => y.UserId).Contains(x.UserId))
+                                                                                        .ToListAsync();
+                    var processedfeedbacks = new List<Feedback>();
+                    processedfeedbacks.AddRange(_mapper.Map<List<Feedback>>(feedbacks));
+
+                    foreach(var item in existedFeedbacks)
+                    {
+                       var updateFeedback = feedbacks.FirstOrDefault(x => x.OrderId == item.OrderId && x.ProductId == item.ProductId && x.UserId == item.UserId);
+                       if (updateFeedback != null)
+                       {
+                            item.Votes = updateFeedback.Votes;
+                            item.Comments = updateFeedback.Comments;
+                            item.UpdatedDate = DateTime.UtcNow;
+                       }
+                    }
+
+                    var newFeedback = processedfeedbacks.Where(x => !existedFeedbacks.Any(y => y.UserId == x.UserId && y.OrderId == x.OrderId && y.ProductId == x.ProductId)).ToList();
+                    _unitOfWork.Repository<Feedback>().AddRange(newFeedback);
+                    _unitOfWork.Repository<Feedback>().UpdateRange(existedFeedbacks);
+
                     if (await _unitOfWork.SaveChangesAsync())
                     {
                         return Option.Some<bool, string>(true);
