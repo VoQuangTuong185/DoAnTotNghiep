@@ -25,7 +25,7 @@ export class AdminBrandComponent {
     private formBuilder : FormBuilder,
     ){
     this.brandsDataCols = [
-      { header : 'STT', field : 'id', width:10, type:'string'},
+      { header : 'STT', field : 'id', width:10, type:'number'},
       { header : 'Nhãn hàng', field : 'brandName', width:25, type:'string'},
       { header : 'Mô tả', field : 'description', width:50, type:'string'},   
       { header : 'Trạng thái', field : 'isActive', width:15, type:'string'},    

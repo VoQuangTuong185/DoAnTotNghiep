@@ -49,7 +49,7 @@
          </p-accordionTab>
     </p-accordion>
     <form [formGroup]="editUserForm" (ngSubmit)="confirmEditUser()">
-        <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="Thông tin tài khoản chi tiết" [modal]="true" styleClass="p-fluid">
                 <ng-template pTemplate="content">
                     <mat-form-field appearance="outline">
                         <mat-label>Name</mat-label>

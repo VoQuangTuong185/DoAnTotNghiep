@@ -22,15 +22,15 @@ currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {tota
           </span>
           <span *ngSwitchCase="'button'" class="button"> 
               <td>
-                <button *ngIf=" statusOrderCode === this.enumData.statusOrder.wait.code || statusOrderCode === this.enumData.statusOrder.processing.code"
-                  pButton icon="pi pi-lock" pTooltip="Huỷ" tooltipPosition="bottom" class="p-button-rounded p-button-danger mr-2"
-                  (click)="confirmCancelOrder(rowData['id'])"></button> 
                 <button *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"
-                  pButton icon="pi pi-pencil" pTooltip="Xác nhận" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                  pButton icon="pi pi-chevron-circle-down" pTooltip="Xác nhận" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
                   (click)="confirmProcessingOrder(rowData['id'])"></button> 
                 <button *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
-                  pButton icon="pi pi-pencil" pTooltip="Hoàn tất" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
+                  pButton icon="pi pi-check-square" pTooltip="Hoàn tất" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
                   (click)="confirmSuccessOrder(rowData['id'])"></button> 
+                <button *ngIf=" statusOrderCode === this.enumData.statusOrder.wait.code || statusOrderCode === this.enumData.statusOrder.processing.code"
+                  pButton icon="pi pi-times-circle" pTooltip="Huỷ" tooltipPosition="bottom" class="p-button-rounded p-button-danger mr-2"
+                  (click)="confirmCancelOrder(rowData['id'])"></button> 
                 <button pButton icon="pi pi-list" pTooltip="Chi tiết" tooltipPosition="bottom" class="p-button-rounded p-button-secondary mr-2"
                   (click)="openModalOrderDetail(rowData)"></button> 
               </td> 

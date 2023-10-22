@@ -26,6 +26,7 @@
                         <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
                             <td *ngFor="let col of columns">
                             <span [ngSwitch]="col.type">
+                                <span *ngSwitchCase="'number'">{{ rowIndex + 1 }}</span>
                                 <span *ngSwitchCase="'button'" class="button"> 
                                     <td>
                                         <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"
@@ -54,7 +55,7 @@
     </p-accordion>
 
     <form [formGroup]="brandForm">
-        <p-dialog [(visible)]="displayEditBrandPopup" [style]="{width: '450px'}" header="Brand Category" [modal]="true" styleClass="p-fluid" class="profile">
+        <p-dialog [(visible)]="displayEditBrandPopup" [style]="{width: '450px'}" header="Sửa nhãn hàng" [modal]="true" styleClass="p-fluid" class="profile">
                 <ng-template pTemplate="content">
                     <div *ngIf="isEdit" class="category">
                         <mat-form-field appearance="outline">

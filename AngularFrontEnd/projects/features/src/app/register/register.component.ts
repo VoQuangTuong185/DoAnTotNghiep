@@ -109,6 +109,12 @@ export class RegisterComponent {
     this.displayRegisterPopUp = false;
   }
   register() { 
+    this.registerForm.controls['ProvinceCode'].setValue(this.registerForm.get('Provinces')?.value.code);
+    this.registerForm.controls['DistrictCode'].setValue(this.registerForm.get('Districts')?.value.code);
+    this.registerForm.controls['WardCode'].setValue(this.registerForm.get('Wards')?.value.code);
+    this.registerForm.controls['Provinces'].setValue(this.provinceSelected.name);
+    this.registerForm.controls['Districts'].setValue(this.districtSelected.name);
+    this.registerForm.controls['Wards'].setValue(this.wardSelected.name);
     if(this.registerForm.invalid){
       this.messageService.add({
         key: 'bc',
@@ -118,12 +124,6 @@ export class RegisterComponent {
       });
       return;
     }
-    this.registerForm.controls['ProvinceCode'].setValue(this.registerForm.get('Provinces')?.value.code);
-    this.registerForm.controls['DistrictCode'].setValue(this.registerForm.get('Districts')?.value.code);
-    this.registerForm.controls['WardCode'].setValue(this.registerForm.get('Wards')?.value.code);
-    this.registerForm.controls['Provinces'].setValue(this.provinceSelected.name);
-    this.registerForm.controls['Districts'].setValue(this.districtSelected.name);
-    this.registerForm.controls['Wards'].setValue(this.wardSelected.name);
     this.websiteAPIService.checkExistedAndSendConfirmMail(this.registerForm.getRawValue()).subscribe((res:any) =>{      
       if(res.data != 'existed'){
         this.confirmEmail = this.registerForm.getRawValue().Email;

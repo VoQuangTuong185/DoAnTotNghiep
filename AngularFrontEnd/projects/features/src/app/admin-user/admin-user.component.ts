@@ -91,7 +91,7 @@ export class AdminUserComponent {
       return;
     }
     var info = '';
-    info = data.IsActive ? 'khoá' : 'mở khoá';
+    info = data.isActive == true ? 'khoá' : 'mở khoá';
     this.confirmationService.confirm({
       message: 'Xác nhận '+ info+ ' tài khoản: ' + data.name + '?',
       header: 'Xác nhận',

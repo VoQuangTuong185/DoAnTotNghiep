@@ -32,17 +32,23 @@
               </p-tabMenu>
           </div>
           <div>
-              <div class="list-item">
-                  <div class="item" *ngFor="let item of lstProduct" (click)="openDetailPopup(item)">
-                      <img width="100%" height="100%" [src]="createImgPath(item.image)" alt="Image" style="border-radius: 20px;" />
-                      <div class="discount"><p>-{{ item.discount }}%</p></div>
-                      <div class="border-text">
-                        <div pTooltip="{{ item.productName }}" tooltipPosition="bottom" class="long-text">{{ item.productName }}</div>
-                        <span>{{ item.price - (item.price * item.discount) / 100 | currency : "VND" }}</span><br/>
-                        <span>Sold: {{ item.soldQuantity }}</span><br/>
-                      </div>
-                  </div>
-              </div>
+            <p-carousel *ngIf="visible" [value]="lstProduct" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="0" [responsiveOptions]="responsiveOptions">
+                <ng-template let-product pTemplate="item">
+                    <div class="product-item">
+                        <div class="list-item">
+                            <div class="item" (click)="openDetailPopup(product)" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);">
+                                <img width="100%" height="100%" [src]="createImgPath(product.image)" alt="Image" style="border-radius: 20px;" />
+                                <div class="discount"><p>-{{ product.discount }}%</p></div>
+                                <div class="border-text">
+                                  <div pTooltip="{{ product.productName }}" tooltipPosition="bottom" class="long-text">{{ product.productName }}</div>
+                                  <span>{{ product.price - (product.price * product.discount) / 100 | currency : "VND" }}</span><br/>
+                                  <span>Sold: {{ product.soldQuantity }}</span><br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
           </div>
       </p-card>
   </div>
@@ -118,6 +124,8 @@
   <ng-template pTemplate="footer">  
     <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>   
       <button pButton pRipple label="Xem chi tiết" icon="pi pi-list" class="p-button-help" (click)="productDetail(currentProduct)"></button>      
-      <button pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="!userData.isLoggedIn" (click)="addToCart(currentProduct)"></button>
+      <button *ngIf="userData.isLoggedIn" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" (click)="addToCart(currentProduct)"></button>
+      <button *ngIf="!userData.isLoggedIn" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="true" 
+        (click)="addToCart(currentProduct)" pTooltip="Bạn cần đăng nhập để thực hiện mua hàng" tooltipPosition="bottom"></button>
   </ng-template>
 </p-dialog>

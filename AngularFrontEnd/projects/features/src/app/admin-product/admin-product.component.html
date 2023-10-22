@@ -27,6 +27,7 @@
                         <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
                             <td *ngFor="let col of columns">
                             <span [ngSwitch]="col.type">
+                                <span *ngSwitchCase="'number'">{{ rowIndex + 1 }}</span>
                                 <span *ngSwitchCase="'button'" class="button"> 
                                     <td>
                                         <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2"

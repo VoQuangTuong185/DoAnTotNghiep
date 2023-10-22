@@ -29,7 +29,7 @@ export class AdminCategoryComponent {
     private formBuilder : FormBuilder,
     ){
     this.productsDataCols = [
-      { header : 'STT', field : 'id', width:7, type:'string'},
+      { header : 'STT', field : 'id', width:7, type:'number'},
       { header : 'Hình ảnh', field : 'image', width:15, type:'image'},
       { header : 'Danh mục', field : 'categoryName', width:23, type:'string'},
       { header : 'Mô tả', field : 'description', width:35, type:'string'},   

@@ -97,8 +97,8 @@ export class LoginComponent {
       });
   }
   openForgotPopup() {
-    this.displayForgotPopup = true;
     this.displayLoginPopUp = false;
+    this.displayForgotPopup = true;   
   }
   sendForgetCode() {
     this.websiteAPIService
@@ -199,6 +199,8 @@ export class LoginComponent {
     this.messageService.clear();
   }
   hideLogin(){
-    this.router.navigate(['user/home-page']);
+    if(!this.displayForgotPopup){
+      this.router.navigate(['user/home-page']);
+    }
   }
 }
