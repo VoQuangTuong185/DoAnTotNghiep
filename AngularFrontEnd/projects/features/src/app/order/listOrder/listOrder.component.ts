@@ -154,7 +154,7 @@ export class ListOrderComponent implements OnInit {
     return this.formBuilder.group({
       ProductName : [order.ProductName, Validators.required],
       Votes : [order.Votes, Validators.required],
-      Comments : [order.Comments, Validators.required],
+      Comments : [order.Comments, ],
       ProductId : [order.ProductId, ],
     });
   }
@@ -179,6 +179,7 @@ export class ListOrderComponent implements OnInit {
       }
     }); 
     this.feedbackForm = this.createEmptyListFeedback();
+    this.displayFeedbackPopup = false;
   }
   hideFeedbackPopup(){
     this.displayFeedbackPopup = false;

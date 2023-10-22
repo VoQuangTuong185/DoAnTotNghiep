@@ -1,7 +1,7 @@
 <p-toast position="top-center" key="tc"></p-toast>
 <form [formGroup]="registerForm" (submit)="register()">
     <p-dialog header="Đăng ký" [(visible)]="displayRegisterPopUp" [style]="{width: '37vw'}" [baseZIndex]="10000">
-      <div class="example-container">
+      <div class="example-container register">
         <table>
           <tr>
             <td>
@@ -76,14 +76,14 @@
             <td>
               <div>
                 <mat-form-field appearance="fill">
-                  <mat-label>Tỉnh</mat-label>
+                  <mat-label>Tỉnh/Thành Phố</mat-label>
                   <mat-select formControlName="Provinces">
                       <mat-option *ngFor="let province of provices" [value]="province">
                       {{province.name}}
                       </mat-option>
                   </mat-select>
                   <mat-error *ngIf="registerForm.get('Provinces')?.hasError('required')">
-                    Hãy chọn tỉnh!
+                    Hãy chọn tỉnh/thành phố!
                   </mat-error>
                 </mat-form-field>
               </div> 
@@ -93,28 +93,28 @@
             <td>
               <div class="mr-5">
                 <mat-form-field appearance="fill">
-                  <mat-label>Huyện</mat-label>
+                  <mat-label>Huyện/Quận</mat-label>
                   <mat-select formControlName="Districts">
                       <mat-option *ngFor="let district of districts" [value]="district" >
                       {{district.name}}
                       </mat-option>
                   </mat-select>
                   <mat-error *ngIf="registerForm.get('Districts')?.hasError('required')">
-                    Hãy chọn huyện!
+                    Hãy chọn huyện/quận!
                   </mat-error>
               </mat-form-field>
               </div>
             </td>
             <td>
               <mat-form-field appearance="fill">
-                <mat-label>Xã</mat-label>
+                <mat-label>Xã/Phường</mat-label>
                 <mat-select formControlName="Wards">
                     <mat-option *ngFor="let ward of wards" [value]="ward">
                     {{ward.name}}
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="registerForm.get('Wards')?.hasError('required')">
-                  Hãy chọn xã!
+                  Hãy chọn xã/phường!
                 </mat-error>
             </mat-form-field>
             </td>
@@ -174,7 +174,7 @@
               <button type="button" pButton (click)="onConfirmLoginPage()" label="Đồng ý" class="p-button-success ml-3 mt-3"></button>
             </div>
             <div class="col">
-              <button type="button" pButton (click)="onRejectLoginPage()" label="No" class="p-button-secondary mt-3" style="float: right;"></button>
+              <button type="button" pButton (click)="onRejectLoginPage()" label="Huỷ" class="p-button-secondary mt-3" style="float: right;"></button>
             </div>
           </div>         
       </div>

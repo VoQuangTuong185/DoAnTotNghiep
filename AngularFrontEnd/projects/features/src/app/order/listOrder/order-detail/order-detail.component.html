@@ -47,14 +47,7 @@
       </ng-template>
     </p-table>
   </div>
-  <p-button
-    label="Đóng"
-    icon="pi pi-times"
-    (click)="closeDialog()"
-    [style]="{
-      left: '50%',
-      'margin-top': '20px',
-      transform: 'translate(-50%, -50%)'
-    }"
-  ></p-button>
+  <p-button label="Đóng" icon="pi pi-times" (click)="closeDialog()" styleClass="p-button-danger"
+    [style]="{ left: '50%', 'margin-top': '20px', transform: 'translate(-50%, -50%)' }">
+  </p-button>
 </div>

@@ -28,12 +28,14 @@ export class HomePageComponent {
   userData = new User();
   quantityAddToCart: number = 1;
   provices: any[];
-  lstProduct: any[] = []
+  lstProduct: ProductDTO[] = []
   lstCate: MenuItem[] = [];
   activeCate: any;
   addCart = new AddCart();
   products: any[] = [];
   quantityCurrentProductInCard: number = 0;
+  cloneDatProduct !: any[];
+  visible: boolean = true;
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
@@ -106,7 +108,11 @@ export class HomePageComponent {
       });
       return;
     }
-    this.getProductByCategory(cateId);
+    this.cloneDatProduct = Object.values({...this.loginedDataProduct});
+    console.log(this.cloneDatProduct)
+    this.lstProduct = this.cloneDatProduct.filter((x) => x.category.externalID === cateId);  
+    console.log(this.lstProduct)
+    this.updateVisibility()
   }
   getProductByCategory(categoryId: number) {
     this.websiteAPIService
@@ -178,5 +184,9 @@ export class HomePageComponent {
   }
   productDetail(selectedProduct: any){
     this.router.navigate(['/user/product-detail/' + selectedProduct.id]);
+  }
+  updateVisibility(): void {
+    this.visible = false;
+    setTimeout(() => this.visible = true, 0);
   }
 }

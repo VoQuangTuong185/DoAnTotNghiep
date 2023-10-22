@@ -24,7 +24,7 @@ export class AdminProductComponent {
     private ActiveRoute : ActivatedRoute,
     ){
     this.productsDataCols = [
-      { header : 'STT', field : 'id', width:2, type:'string'},
+      { header : 'STT', field : 'id', width:2, type:'number'},
       { header : 'Hình ảnh', field : 'image', width:5, type:'image'},
       { header : 'Sản phẩm', field : 'productName', width:10, type:'string'},
       { header : 'Giá', field : 'price', width:3, type:'money'},

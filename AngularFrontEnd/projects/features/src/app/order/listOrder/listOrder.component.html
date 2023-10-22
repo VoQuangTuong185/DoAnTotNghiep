@@ -18,34 +18,15 @@
       <td>{{ order.payment }}</td>
       <td>{{ order.totalBill | currency : "VND" }}</td>
       <td style="text-align: center">
-        <p-button
-          *ngIf="this.statusOrderCode === this.enumData.statusOrder.wait.code"
-          label="Huỷ"
-          styleClass="p-button-danger"
-          icon="pi pi-times"
-          (click)="confirmCancelOrder(order.id)">
+        <p-button *ngIf="this.statusOrderCode === this.enumData.statusOrder.wait.code" label="Huỷ" styleClass="p-button-danger"
+          icon="pi pi-times" (click)="confirmCancelOrder(order.id)">
         </p-button>
-        <p-button
-          *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code"
-          label="Hoàn tất"
-          styleClass="p-button-success"
-          [style]="{ 'margin-left': '10px' }"
-          icon="pi pi-check"
-          (click)="confirmSuccessOrder(order.id)">
+        <p-button *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code" label="Hoàn tất" styleClass="p-button-success"
+          [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmSuccessOrder(order.id)">
         </p-button>
-        <p-button
-          label="Chi tiết"
-          icon="pi pi-list"
-          [style]="{ 'margin-left': '10px' }"
-          (click)="openModalOrderDetail(order)">
+        <p-button label="Chi tiết" icon="pi pi-list" [style]="{ 'margin-left': '10px' }" (click)="openModalOrderDetail(order)">
         </p-button>
-        <p-button
-        *ngIf="statusOrderCode === this.enumData.statusOrder.success.code"
-        label="Đánh giá"
-        icon="pi pi-comments"
-        [style]="{ 'margin-left': '10px' }"
-        styleClass="p-button-help"
-        (click)="openFeedback(order)">
+        <p-button *ngIf="statusOrderCode === this.enumData.statusOrder.success.code" label="Đánh giá" icon="pi pi-comments" [style]="{ 'margin-left': '10px' }" styleClass="p-button-help" (click)="openFeedback(order)">
       </p-button>
       </td>
     </tr>
@@ -56,12 +37,9 @@
     <ng-container formArrayName="feedbacks">
       <ng-container *ngFor="let feedback of feedbacks.controls; let i = index">
         <div class="mx-3" [formGroupName]="i">
-          <mat-form-field>
-            <mat-label>Sản phẩm</mat-label>
-            <input matInput formControlName="ProductName" type="string" readonly/>
-          </mat-form-field>
-          <div style="margin-top: -1.2rem;">
-            <mat-radio-group matInput formControlName="Votes" >
+          <span class="mb-3"><b>{{feedbacks.controls[i].get('ProductName')?.value}}</b></span>      
+          <div>
+            <mat-radio-group matInput formControlName="Votes" class="mb-3">
               <mat-radio-button value="1" [checked]="feedbacks.controls[i].get('Votes')?.value === 1">1&#9733;</mat-radio-button>
               <mat-radio-button value="2" [checked]="feedbacks.controls[i].get('Votes')?.value === 2">2&#9733;</mat-radio-button>
               <mat-radio-button value="3" [checked]="feedbacks.controls[i].get('Votes')?.value === 3">3&#9733;</mat-radio-button>
@@ -69,9 +47,9 @@
               <mat-radio-button value="5" [checked]="feedbacks.controls[i].get('Votes')?.value === 5">5&#9733;</mat-radio-button>
             </mat-radio-group> 
           </div>
-          <mat-form-field>
+          <mat-form-field class="mt-3 comments">
             <mat-label>Đánh giá</mat-label>
-            <textarea  matInput formControlName="Comments" type="string"></textarea>
+            <textarea matInput formControlName="Comments" type="string" rows="4" cols="60"></textarea>
           </mat-form-field>
         </div>
         <hr style="margin-top: -0.5rem;">
@@ -79,7 +57,7 @@
     </ng-container>
     <ng-template pTemplate="footer">
         <div class="pt-2">
-            <button pButton label="Tạo" class="p-button-rounded p-button-success"></button>    
+            <button pButton label="Lưu" class="p-button-rounded p-button-success"></button>    
             <button pButton label="Huỷ" class="p-button-rounded p-button-secondary ml-1" type="button" (click)="hideFeedbackPopup()"></button> 
         </div>
     </ng-template>
