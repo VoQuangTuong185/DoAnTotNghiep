@@ -406,6 +406,11 @@ export class AppComponent implements OnInit {
     });
   }
   productDetail(selectedProduct: any){
-    this.router.navigate(['../product-detail/' + selectedProduct.id]);
+    if (this.currentTab?.includes('admin')){
+      this.router.navigate(['../product-detail/' + selectedProduct.id]);
+    }
+    else {
+      this.router.navigate(['product-detail/' + selectedProduct.id]);
+    }
   }
 }
