@@ -3,7 +3,7 @@
       <div>
           <div class="menu">
               <nav *ngIf="currentTab?.includes('admin') || currentTab?.includes('product-detail')" class="routing">
-                  <a *ngIf="userRole != '' && userRole == 'user'" [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>                 
+                  <a [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>                 
                   <a [routerLink]="['/admin/admin-category']" routerLinkActive="active"><b>Danh mục</b></a>
                   <a [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Nhãn hàng</b></a>
                   <a [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>Tài khoản</b></a>
@@ -12,8 +12,8 @@
               <nav *ngIf="currentTab?.includes('/user') || currentTab?.includes('home-page')" class="routing">
                   <a [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>
                   <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active" style="color: red;"><b>Quản trị</b></a>
-                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Giỏ hàng</b></a>
-                  <a *ngIf="userData.isLoggedIn" [routerLink]="['/user/order']" routerLinkActive="active"><b>Đơn hàng</b></a>                 
+                  <a *ngIf="userData.isLoggedIn && userRole == 'user'" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Giỏ hàng</b></a>
+                  <a *ngIf="userData.isLoggedIn && userRole == 'user'" [routerLink]="['/user/order']" routerLinkActive="active"><b>Đơn hàng</b></a>                 
               </nav>
           </div>
       </div>
@@ -68,7 +68,7 @@
                   <tr>
                       <td>
                           <div class="mr-3">
-                            <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                            <mat-form-field appearance="outline">
                                 <mat-label>Địa chỉ email</mat-label>
                                 <input matInput formControlName="Email" name="Email" required="" />
                                 <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">

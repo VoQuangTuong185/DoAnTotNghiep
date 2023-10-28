@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { RegisterConstant } from '../../RegisterCourse.constant';
+import { Constant } from '../../data/WebsiteApi.constant';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -22,7 +22,7 @@ export class UploadImageComponent {
     let fileToUpload = <File>files[0];
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    this.http.post(RegisterConstant.libraryApiUrlAdmin() + 'upload-course-image', formData, {reportProgress: true, observe: 'events'})
+    this.http.post(Constant.libraryApiUrlAdmin() + 'upload-course-image', formData, {reportProgress: true, observe: 'events'})
       .subscribe({
         next: (event) => {
         if (event.type === HttpEventType.UploadProgress){

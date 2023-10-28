@@ -11,6 +11,8 @@ import { UserRole } from '../../../features/src/app/data/UserRole.model';
 import { WebsiteAPIService } from '../../../features/src/app/data/WebsiteAPI.service';
 import { AddressService } from '../../../features/src/app/data/Address.service';
 import { SearchProduct } from '../../../features/src/app/data/SearchProduct.model';
+import { CheckValidEmailService } from '../../../features/src/app/data/CheckValidEmailService';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -54,7 +56,8 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private websiteAPIService: WebsiteAPIService,
     private formBuilder: FormBuilder,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private checkValidEmailService : CheckValidEmailService
   ) {
     this.searchProductForm = this.createEmptySearchProductForm();
     this.provices = [];
@@ -72,9 +75,10 @@ export class AppComponent implements OnInit {
       this.userData = JSON.parse(
         window.atob(localStorage.getItem('authToken')!.split('.')[1])
       );
-      let userRole = sessionStorage.getItem('userRole')!;
+      console.log(this.userData)
+      this.userRole = sessionStorage.getItem('userRole')!;
       this.authService
-        .checkValidToken(this.userData.loginName, userRole)
+        .checkValidToken(this.userData.loginName, this.userRole)
         .subscribe((res: any) => {
           if (res.isSuccess) {
             this.userData.isLoggedIn = true;
@@ -90,7 +94,7 @@ export class AppComponent implements OnInit {
               key: 'bc',
               severity: 'info',
               summary: 'Thông tin',
-              detail: res.data,
+              detail: res.message,
             });
             this.router.navigate(['login-user']);
           }
@@ -203,6 +207,15 @@ export class AppComponent implements OnInit {
         severity: 'error',
         summary: 'Lỗi',
         detail: 'Hãy nhập các thông tin bắt buộc!',
+      });
+      return;
+    }
+    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
       });
       return;
     }

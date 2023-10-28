@@ -124,8 +124,8 @@
   <ng-template pTemplate="footer">  
     <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" (click)="hideDetailPopup()"></button>   
       <button pButton pRipple label="Xem chi tiết" icon="pi pi-list" class="p-button-help" (click)="productDetail(currentProduct)"></button>      
-      <button *ngIf="userData.isLoggedIn" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" (click)="addToCart(currentProduct)"></button>
-      <button *ngIf="!userData.isLoggedIn" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="true" 
+      <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" (click)="addToCart(currentProduct)"></button>
+      <button *ngIf="!userData.isLoggedIn || userRole != 'user'" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-danger" [disabled]="true" 
         (click)="addToCart(currentProduct)" pTooltip="Bạn cần đăng nhập để thực hiện mua hàng" tooltipPosition="bottom"></button>
   </ng-template>
 </p-dialog>

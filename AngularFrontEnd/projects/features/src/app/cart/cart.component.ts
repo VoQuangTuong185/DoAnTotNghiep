@@ -7,6 +7,7 @@ import { CartDTO } from '../data/cartDTO.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressService } from '../data/Address.service';
 import { UpdateCart } from '../data/UpdateCart.model';
+import { CheckValidEmailService } from '../data/CheckValidEmailService';
 
 @Component({
   selector: 'app-cart',
@@ -42,7 +43,8 @@ export class CartComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private checkValidEmailService : CheckValidEmailService
   ) {
     this.provices = [];
     this.districts = [];
@@ -199,6 +201,15 @@ export class CartComponent implements OnInit {
         severity: 'error',
         summary: 'Lỗi',
         detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+      });
+      return;
+    }
+    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
       });
       return;
     }
