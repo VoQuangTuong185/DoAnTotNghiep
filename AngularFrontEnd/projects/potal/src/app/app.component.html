@@ -31,7 +31,7 @@
       </div>
       <div>
           <span *ngIf="!this.userData.isLoggedIn" class="user-info"><b>Đăng nhập ngay</b>!</span>
-          <span *ngIf="this.userData.isLoggedIn" class="user-info">Xin chào <b>{{ loginName }}</b> <i class="small-text">({{ role }})</i></span>
+          <span *ngIf="this.userData.isLoggedIn" class="user-info">Xin chào <b>{{ userData.name }}</b> <i class="small-text">({{ role }})</i></span>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Thông tin cá nhân" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
           <button *ngIf="!this.userData.isLoggedIn" pButton label="Đăng nhập" class="p-button-rounded p-button-round user-button" [routerLink]="['login-user']"></button>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Đăng xuất" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>

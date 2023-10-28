@@ -75,7 +75,6 @@ export class AppComponent implements OnInit {
       this.userData = JSON.parse(
         window.atob(localStorage.getItem('authToken')!.split('.')[1])
       );
-      console.log(this.userData)
       this.userRole = sessionStorage.getItem('userRole')!;
       this.authService
         .checkValidToken(this.userData.loginName, this.userRole)
@@ -163,6 +162,7 @@ export class AppComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.isSuccess) {
           this.selectedUsers = res.data;
+          this.userData.name = res.data.name;
           this.getDistrictsOfProvice(
             this.selectedUsers.provinceCode,
             this.selectedUsers.districtCode
