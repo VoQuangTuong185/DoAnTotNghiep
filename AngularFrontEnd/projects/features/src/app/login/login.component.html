@@ -25,7 +25,15 @@
         </mat-error>
       </mat-form-field>     
     </div> 
+    </div>    
+    <div class="center mb-1">   
+      <label class="example-margin mt-2">Bạn là:</label>
+      <mat-radio-group [(ngModel)]="userRole" (change)="handleUserRole($event)">
+        <mat-radio-button class="example-margin" value="admin">Quản trị viên</mat-radio-button>
+        <mat-radio-button class="example-margin" value="user" [checked]="true">Người dùng</mat-radio-button>
+      </mat-radio-group>
     </div>
+   
     <p-button class="center loginButton" label="Đăng nhập" type="submit"></p-button> 
     <span class="center">
       <a class="hyper-link" routerLink="../register-user">Bạn chưa có tài khoản?</a>

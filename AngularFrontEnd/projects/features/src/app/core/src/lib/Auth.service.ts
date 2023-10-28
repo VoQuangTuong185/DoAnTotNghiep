@@ -16,10 +16,12 @@ export class AuthService {
   public register(user: RegisterUserDTO): Observable<any> {
     return this.http.post<any>(RegisterConstant.libraryApiUrlAuth() + this.urlRegister,user);
   }
-  public login(user: LoginUserDTO): Observable<string> {
-    return this.http.post<any>(RegisterConstant.libraryApiUrlAuth()+ this.urlLogin, user,{withCredentials: true});
+  public login(user: LoginUserDTO, role: string): Observable<string> {
+    return role == 'user' ? this.http.post<any>(RegisterConstant.libraryApiUrlAuth()+ this.urlLogin, user,{withCredentials: true}) : 
+                              this.http.post<any>(RegisterConstant.libraryAdminApiUrlAuth()+ this.urlLogin, user,{withCredentials: true});
   }
-  public checkValidToken(loginName : string): Observable<any> {
-    return this.http.post<any>(RegisterConstant.libraryApiUrlAuth()+ this.urlCheckValidToken ,JSON.stringify(loginName),{'headers':this.headers, withCredentials: true});
+  public checkValidToken(loginName : string, role: string): Observable<any> {
+    return role == 'user' ? this.http.post<any>(RegisterConstant.libraryApiUrlAuth()+ this.urlCheckValidToken ,JSON.stringify(loginName),{'headers':this.headers, withCredentials: true}) :
+                              this.http.post<any>(RegisterConstant.libraryAdminApiUrlAuth()+ this.urlCheckValidToken ,JSON.stringify(loginName),{'headers':this.headers, withCredentials: true});
   }
 }

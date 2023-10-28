@@ -11,6 +11,7 @@ using WebAppAPI.Models.Entities;
 using WebAppAPI.Repositories;
 using WebAppAPI.Services.Contracts;
 using AdminService.DTO;
+using Nest;
 
 namespace WebAppAPI.Services.Business
 {
@@ -412,16 +413,15 @@ namespace WebAppAPI.Services.Business
                     .SomeNotNull().WithException("Null input")
                     .FlatMapAsync(async req =>
                     {
-                        var allCategory = GetAllCategory("admin");
-                        var existedCategoryName = allCategory.Result.FirstOrDefault(c => c.CategoryName.ToUpper().TrimStart().TrimEnd() 
+                        var existedCategoryName = await _unitOfWork.Repository<Category>().FirstOrDefaultAsync(c => c.CategoryName.ToUpper().TrimStart().TrimEnd() 
                                                                                         == category.CategoryName.ToUpper().TrimStart().TrimEnd() && c.Id != category.Id);
+
+                        var existedCategory = await _unitOfWork.Repository<Category>().FirstOrDefaultAsync(c => c.Id == category.Id);
 
                         if (existedCategoryName != null)
                         {
                             return Option.None<bool, string>("Đã tồn tại tên danh mục này. Hãy thử lại!");
-                        }
-
-                        var existedCategory = allCategory.Result.FirstOrDefault(c => c.Id == category.Id);
+                        }                       
 
                         if (existedCategory != null)
                         {
@@ -430,7 +430,7 @@ namespace WebAppAPI.Services.Business
                             existedCategory.Image = category.Image;
                         }
 
-                        _unitOfWork.Repository<Category>().Update(existedCategoryName);
+                        _unitOfWork.Repository<Category>().Update(existedCategory);
                         if (await _unitOfWork.SaveChangesAsync())
                         {
                             return Option.Some<bool, string>(true);

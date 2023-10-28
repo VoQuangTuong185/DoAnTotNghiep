@@ -6,20 +6,20 @@ import { User } from '../../../data/User.model';
 @Injectable({      
    providedIn: 'root'      
 })      
-export class AdminGuard implements CanActivate {
+export class UserGuard implements CanActivate {
    userData = new User();     
    constructor(private router: Router) 
    { 
       this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
    }      
    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
-      if (this.isAdmin()) {    
+      if (this.isUser()) {    
         return true;      
       }           
-      this.router.navigate(['unauthorize']);      
+      this.router.navigate(['admin']);      
     return false;      
 }      
-public isAdmin(): boolean {        
-   return this.userData.role == UserRole.Admin;
+public isUser(): boolean {        
+   return this.userData.role == UserRole.User;
    }
 }  

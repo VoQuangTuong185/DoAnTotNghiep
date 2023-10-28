@@ -15,6 +15,7 @@ using DoAnTotNghiep.SyncDataServices.Grpc;
 using WebAppAPI.Data;
 using WebAppAPI.Extensions;
 using WebAppAPI.Services.Model;
+using DoAnTotNghiep.EventProcessing;
 
 namespace WebAppAPI
 {
@@ -82,6 +83,7 @@ namespace WebAppAPI
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 });
             services.AddHostedService<MessageBusSubscriber>();
+            services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddScoped<ICategoryDataClient, CategoryDataClient>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.Configure<FormOptions>(o =>

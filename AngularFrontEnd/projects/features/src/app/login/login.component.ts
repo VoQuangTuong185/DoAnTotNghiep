@@ -28,6 +28,8 @@ export class LoginComponent {
   newConfirmPassword: string = '';
   FormChangePassword!: LoginUserDTO;
   previousUrl!: string;
+  checked: boolean = false;
+  userRole: 'admin' | 'user' = 'user';
 
   constructor(
     public dialog: MatDialog,
@@ -64,8 +66,9 @@ export class LoginComponent {
       });
       return;
     }
+    sessionStorage.setItem('userRole', this.userRole);
     this.authService
-      .login(this.loginForm.getRawValue())
+      .login(this.loginForm.getRawValue(), this.userRole)
       .subscribe((res: any) => {
         if (res.isSuccess) {
           localStorage.setItem('authToken', res.data);
@@ -85,7 +88,8 @@ export class LoginComponent {
             summary: '',
             detail: 'Đăng nhập thành công, đang chuyển hướng đến trang chủ...',
           });
-          setTimeout(()=>{ this.router.navigate(['user/home-page']); }, 2000)          
+          let navigateURL = this.userRole == 'user' ? 'home-page' : 'admin/admin-category';
+          setTimeout(()=>{ this.router.navigate([navigateURL]); })          
         } else {
           this.messageService.add({
             key: 'bc',
@@ -193,14 +197,17 @@ export class LoginComponent {
   onConfirmCoursePage() {
     this.messageService.clear();
     this.displayLoginPopUp = false;
-    this.router.navigate(['user/home-page']);
+    this.router.navigate(['home-page']);
   }
   onRejectLoginCoursePage() {
     this.messageService.clear();
   }
   hideLogin(){
     if(!this.displayForgotPopup){
-      this.router.navigate(['user/home-page']);
+      this.router.navigate(['home-page']);
     }
+  }
+  handleUserRole(e:any){
+    this.userRole = e.value;
   }
 }

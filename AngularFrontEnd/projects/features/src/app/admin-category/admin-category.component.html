@@ -83,8 +83,8 @@
                             <input matInput formControlName = "Description" name = "Description"> 
                         </mat-form-field> 
                     </div>    
-                    <app-upload-image-category (onUploadFinished)="uploadFinished($event)">
-                    </app-upload-image-category>
+                    <app-upload-image (onUploadFinished)="uploadFinished($event)">
+                    </app-upload-image>
                     <mat-error *ngIf="categoryForm.get('Image')?.hasError('required')">
                         Hãy chọn ảnh!
                     </mat-error>
