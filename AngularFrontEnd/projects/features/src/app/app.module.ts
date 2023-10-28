@@ -64,12 +64,14 @@ import { ListOrderComponent } from './order/listOrder/listOrder.component';
 import { OrderDetailComponent } from './order/listOrder/order-detail/order-detail.component';
 import { AdminListOrderComponent } from './admin-order/admin-list-order/admin-list-order.component';
 import { FooterComponent } from './home-page/footer/footer.component';
-import { UploadImageCategoryComponent } from './lib/upload-image-category/upload-image-category.component';
 import { AdminBrandComponent } from './admin-brand/admin-brand.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { GalleriaModule } from 'primeng/galleria';
 import {MatRadioModule} from '@angular/material/radio';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { UserGuard } from './core/src/lib/User.guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +91,6 @@ import {MatRadioModule} from '@angular/material/radio';
     OrderDetailComponent,
     AdminListOrderComponent,
     FooterComponent,
-    UploadImageCategoryComponent,
     AdminBrandComponent,
     ProductDetailComponent
   ],
@@ -136,7 +137,9 @@ import {MatRadioModule} from '@angular/material/radio';
     CheckboxModule,
     MatAutocompleteModule,
     GalleriaModule,
-    MatRadioModule
+    MatRadioModule,
+    InputSwitchModule,
+    MatCheckboxModule
   ],
   providers: [
     {
@@ -148,6 +151,7 @@ import {MatRadioModule} from '@angular/material/radio';
     AuthGuard,
     AdminGuard,
     LoginService,
+    UserGuard,
     AuthService,
     {
       provide: DEFAULT_CURRENCY_CODE,

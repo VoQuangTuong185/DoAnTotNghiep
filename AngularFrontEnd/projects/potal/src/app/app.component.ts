@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
   existedWard: any;
   searchProductForm: FormGroup;
   filterProducts: SearchProduct[] = [];
+  userRole!: string;
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -71,8 +72,9 @@ export class AppComponent implements OnInit {
       this.userData = JSON.parse(
         window.atob(localStorage.getItem('authToken')!.split('.')[1])
       );
+      let userRole = sessionStorage.getItem('userRole')!;
       this.authService
-        .checkValidToken(this.userData.loginName)
+        .checkValidToken(this.userData.loginName, userRole)
         .subscribe((res: any) => {
           if (res.isSuccess) {
             this.userData.isLoggedIn = true;
@@ -90,7 +92,7 @@ export class AppComponent implements OnInit {
               summary: 'Thông tin',
               detail: res.data,
             });
-            this.router.navigate(['/user/login-user']);
+            this.router.navigate(['login-user']);
           }
         });
     } else {
@@ -404,6 +406,11 @@ export class AppComponent implements OnInit {
     });
   }
   productDetail(selectedProduct: any){
-    this.router.navigate(['/user/product-detail/' + selectedProduct.id]);
+    if (this.currentTab?.includes('admin')){
+      this.router.navigate(['../product-detail/' + selectedProduct.id]);
+    }
+    else {
+      this.router.navigate(['product-detail/' + selectedProduct.id]);
+    }
   }
 }

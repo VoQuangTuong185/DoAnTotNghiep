@@ -10,12 +10,9 @@ namespace DoAnTotNghiep.Models.Entities
         [Key]
         [Required]
         public int Id { get; set; }
-
-        [Required]
-        public int ExternalID { get; set; }
-
-        [Required]
         public string CategoryName { get; set; }
+        public string? Image { get; set; }
+        public string? Description { get; set; }
         [Required]
         public bool IsActive { get; set; } = true;
         public ICollection<Product> Products { get; set; } = new List<Product>();

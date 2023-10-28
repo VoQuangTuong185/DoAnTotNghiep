@@ -152,7 +152,7 @@ export class RegisterComponent {
   }
   onConfirmLoginPage() {
     this.messageService.clear();
-    this.router.navigate(['/user/login-user']);
+    this.router.navigate(['login-user']);
   }
   onRejectLoginPage() {
     this.messageService.clear();

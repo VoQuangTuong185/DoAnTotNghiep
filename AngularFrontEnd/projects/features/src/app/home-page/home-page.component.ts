@@ -80,7 +80,7 @@ export class HomePageComponent {
     });
   }
   getAllCategory() {
-    this.websiteAPIService.getAllCategory('users').subscribe((res: any) => {
+    this.websiteAPIService.getAllCategory('user').subscribe((res: any) => {
       if (res.isSuccess === true) {
         this.lstCate = [
           {

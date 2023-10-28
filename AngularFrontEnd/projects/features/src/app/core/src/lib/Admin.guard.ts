@@ -16,13 +16,10 @@ export class AdminGuard implements CanActivate {
       if (this.isAdmin()) {    
         return true;      
       }           
-      this.router.navigate(['user/unauthorize']);      
+      this.router.navigate(['unauthorize']);      
     return false;      
 }      
 public isAdmin(): boolean {        
-   if(this.userData.role == UserRole.Admin){
-      return true;
-    }
-   return false;  
+   return this.userData.role == UserRole.Admin;
    }
 }  

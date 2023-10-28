@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { CoreConstants } from '../core/src/lib/core.constant';
@@ -27,9 +27,11 @@ export class ProductDetailComponent implements OnInit {
     this.ActiveRoute.params.subscribe((params) =>{
       this.existedProductId = params['id'];
     });
+    router.events.subscribe((val) => {
+      this.getExistedProduct(); 
+  });
   }
   ngOnInit(): void{
-    this.getExistedProduct();
     this.responsiveOptions = [{ breakpoint: '1024px',  numVisible: 5 }, { breakpoint: '768px', numVisible: 3 }, { breakpoint: '560px', numVisible: 1 }];
   }
   getExistedProduct(){

@@ -100,7 +100,7 @@ export class AdminCategoryComponent {
     })
   }
   createImgPath = (serverPath: string) => {
-    return CoreConstants.apiCategoryURL() + `/${serverPath}`; 
+    return CoreConstants.apiAdminURL() + `/${serverPath}`; 
   }
   uploadFinished = (event:any) => { 
     this.response = event; 
