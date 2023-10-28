@@ -410,7 +410,7 @@ namespace WebAppAPI.Services.Business
         public async Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId)
         {
             var result = Enumerable.Empty<Product>();
-            result = await _unitOfWork.Repository<Product>().Get(x => x.category.ExternalID == categoryId && x.IsActive).Include(x => x.category).Include(x => x.brand).ToListAsync();
+            result = await _unitOfWork.Repository<Product>().Get(x => x.category.Id == categoryId && x.IsActive).Include(x => x.category).Include(x => x.brand).ToListAsync();
             return result;
         }
         public async Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId)

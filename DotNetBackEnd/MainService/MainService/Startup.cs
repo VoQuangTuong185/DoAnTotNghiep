@@ -11,8 +11,6 @@ using RBVH.HRL.Services.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using DoAnTotNghiep.AsyncDataServices;
-using DoAnTotNghiep.Data;
-using DoAnTotNghiep.EventProcessing;
 using DoAnTotNghiep.SyncDataServices.Grpc;
 using WebAppAPI.Data;
 using WebAppAPI.Extensions;
@@ -83,9 +81,7 @@ namespace WebAppAPI
                     options.UseSqlServer(Configuration.GetConnectionString("DoAnTotNghiep"));
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 });
-            services.AddScoped<IProductRepo, ProductRepo>();
             services.AddHostedService<MessageBusSubscriber>();
-            services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddScoped<ICategoryDataClient, CategoryDataClient>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.Configure<FormOptions>(o =>

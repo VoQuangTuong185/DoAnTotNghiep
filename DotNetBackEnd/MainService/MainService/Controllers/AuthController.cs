@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Nest;
-using RestSharp;
-using System.Collections.Generic;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -34,7 +29,6 @@ namespace WebAppAPI.Controllers
             _configuration = configuration;
             _userService = userService;
             _unitOfWork = unitOfWork;
-            //Get the Singleton Log Instance
             _ILog = Log.GetInstance;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -215,5 +209,4 @@ namespace WebAppAPI.Controllers
             HttpContext.Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
         }
     }
-    //test commit
 }
