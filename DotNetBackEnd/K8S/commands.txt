@@ -1,0 +1,5 @@
+docker build -t mainservice .
+
+docker build -t adminservice .
+
+docker build -t mailservice .
