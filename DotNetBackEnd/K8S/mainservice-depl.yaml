@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mainservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mainservice
+  template:
+    metadata:
+      labels:
+        app: mainservice
+    spec:
+      containers:
+        - name: mainservice
+          image: voquangtuong06022001/mainservice:1.1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mainservice-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: mainservice
+  ports:
+  - name: mainservice
+    protocol: TCP
+    port: 80
+    targetPort: 80

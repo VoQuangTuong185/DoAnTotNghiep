@@ -3,3 +3,55 @@ docker build -t mainservice .
 docker build -t adminservice .
 
 docker build -t mailservice .
+
+//////////////////////////////////////
+
+kubectl apply -f deployment.yml
+
+kubectl apply -f service.yml
+
+kubectl vi backend-deployment.yaml # Create/Edit backend pod configuration
+
+kubectl apply -f backend-deployment.yaml # Apply Pod configuration
+
+kubectl get pods # Check current pods in cluster
+
+kubectl get deployments # Get all current deployments in cluster
+
+kubectl get services # Get all current services in cluster
+
+kubectl get ingress -A # Get all current ingress config 
+
+kubectl logs <pods_name> # Check if any error occurs when creating Pod.
+
+kubectl describe pod <pods_name> # Check pod configuration
+
+kubectl delete service 
+kubectl delete deployment 
+kubectl delete pod 
+
+docker tag mainservice voquangtuong06022001/mainservice:latest
+docker push voquangtuong06022001/mainservice:latest
+
+docker tag adminservice voquangtuong06022001/adminservice:latest
+docker push voquangtuong06022001/adminservice:latest
+
+docker tag mailservice voquangtuong06022001/mailservice:latest
+docker push voquangtuong06022001/mailservice:latest
+
+docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
+docker push voquangtuong06022001/rabbitmq:latest
+
+kubectl apply -f local-pvc.yaml
+
+kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
+
+kubectl apply -f mssql.yaml
+
+kubectl apply -f mainservice-depl.yaml
+
+kubectl apply -f adminservice-depl.yaml
+
+kubectl apply -f mailservice-depl.yaml
+
+kubectl apply -f ingress-srv.yaml

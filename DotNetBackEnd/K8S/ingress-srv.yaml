@@ -1,26 +1,25 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-srv
+  name: minimal-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: acme.com
+    - host: test.test
       http:
         paths:
-          - path: /api/platforms
+          - path: /api/User/get-all-product-by-oder-id?orderId=1
             pathType: Prefix
             backend:
               service:
-                name: platforms-clusterip-srv
+                name: mainservice-clusterip-srv
                 port:
                   number: 80
-          - path: /api/c/platforms
+          - path: /api/c/admin
             pathType: Prefix
             backend:
               service:
-                name: commands-clusterip-srv
+                name: adminservice-clusterip-srv
                 port:
-                  number: 80
+                  number: 80 
