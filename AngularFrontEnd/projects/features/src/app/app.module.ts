@@ -72,6 +72,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserGuard } from './core/src/lib/User.guard';
+import { CheckValidEmailService } from './data/CheckValidEmailService';
 @NgModule({
   declarations: [
     AppComponent,
@@ -152,6 +153,7 @@ import { UserGuard } from './core/src/lib/User.guard';
     AdminGuard,
     LoginService,
     UserGuard,
+    CheckValidEmailService,
     AuthService,
     {
       provide: DEFAULT_CURRENCY_CODE,

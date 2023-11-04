@@ -1,6 +1,6 @@
 export class User {  
     id!:number;  
-    Name!: string;    
+    name!: string;    
     loginName!: string;    
     isLoggedIn!: boolean;    
     role!: string;    

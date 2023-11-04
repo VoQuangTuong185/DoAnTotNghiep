@@ -50,6 +50,7 @@ namespace WebAppAPI.Controllers
                 var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == LoginName.ToUpper().TrimStart().TrimEnd() && x.IsActive)
                                                                     .Include(x => x.UserAPIs)
                                                                     .ToListAsync();
+                _ILog.LogException(refreshToken);
                 if (loginUser.FirstOrDefault().RefreshToken.Equals(refreshToken))
                 {
                     if (loginUser.FirstOrDefault().TokenExpires < DateTime.Now)
@@ -139,10 +140,19 @@ namespace WebAppAPI.Controllers
                                 role = "Admin";
                             }
                         });
-                        var refreshToken = GenerateRefreshToken();
-                        string token = CreateToken(loginUser.FirstOrDefault(), role, refreshToken);                      
-                        SetRefreshToken(refreshToken);
-                        result.Data = token;
+                        if (role == "Admin")
+                        {
+                            result.Message = "Tài khoản của bạn không phải là người dùng, hãy chọn lại";
+                            result.IsSuccess = false;
+                        }
+                        else
+                        {
+                            var refreshToken = GenerateRefreshToken();
+                            string token = CreateToken(loginUser.FirstOrDefault(), role, refreshToken);
+                            SetRefreshToken(refreshToken);
+                            result.Data = token;
+                            result.IsSuccess = true;
+                        }
                     }
                 }
             }
@@ -167,6 +177,7 @@ namespace WebAppAPI.Controllers
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("loginName", user.LoginName),
+                new Claim("name", user.Name),
                 new Claim("role", role),
                 new Claim("expires", DateTime.Now.AddMinutes(30).ToString())
             };

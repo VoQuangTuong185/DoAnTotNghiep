@@ -9,6 +9,7 @@ import { LoginService } from '../data/login.service';
 import { AddressService } from '../data/Address.service';
 import { User } from '../data/User.model';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service'
+import { CheckValidEmailService } from '../data/CheckValidEmailService';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -30,6 +31,7 @@ export class RegisterComponent {
   provinceSelected: any;
   districtSelected: any;
   wardSelected: any;
+  newConfirmPassword: string = '';
   constructor(
     public dialog: MatDialog, 
     private primengConfig: PrimeNGConfig, 
@@ -38,7 +40,8 @@ export class RegisterComponent {
     private messageService: MessageService,
     private router: Router,
     private authService: AuthService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private checkValidEmailService : CheckValidEmailService
     ) {
       this.registerForm = this.createEmptyRegisterForm();
       this.provices = [];
@@ -60,6 +63,7 @@ export class RegisterComponent {
         Address: ['',Validators.required],
         TelNum: ['',Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
         Password: ['',Validators.required],
+        ConfirmPassword: ['',Validators.required],
       })
     }
     createExistedregisterForm() {
@@ -76,6 +80,7 @@ export class RegisterComponent {
         Address: ['',Validators.required],
         TelNum: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
         Password: ['',Validators.required],
+        ConfirmPassword: ['',Validators.required],
       })
     }
   ngOnInit() {
@@ -124,6 +129,24 @@ export class RegisterComponent {
       });
       return;
     }
+    if (!this.checkValidEmailService.isValidEmail(this.registerForm.controls['Email'].value)){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
+      });
+      return;
+    }
+    if (this.registerForm.controls['Password'].value != this.registerForm.controls['ConfirmPassword'].value) {
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Mật khẩu xác nhận không khớp, hãy thử lại!',
+      });
+      return;
+    }
     this.websiteAPIService.checkExistedAndSendConfirmMail(this.registerForm.getRawValue()).subscribe((res:any) =>{      
       if(res.data != 'existed'){
         this.confirmEmail = this.registerForm.getRawValue().Email;
@@ -142,6 +165,7 @@ export class RegisterComponent {
     if(this.confirmCode == this.confirmCodeSent){
       this.authService.register(this.registerForm.getRawValue()).subscribe((res:any) =>{
         if(res.data){
+          this.messageService.add({ key: 'bc', severity:'success', summary: 'Đăng ký thành công'});
           this.messageService.add({key: 'c', sticky: true, severity:'success', summary:'Xác nhận?', detail:'Quay về trang đăng nhập'});
         }
       });

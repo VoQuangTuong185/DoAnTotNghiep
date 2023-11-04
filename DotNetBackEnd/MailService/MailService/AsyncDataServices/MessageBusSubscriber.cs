@@ -44,14 +44,14 @@ namespace THUCTAPTOTNGHIEP.AsyncDataServices
 
             var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += (ModuleHandle, ea) =>
+            consumer.Received += async (ModuleHandle, ea) =>
             {
                 _ILog.LogException("--> Event Received!");
 
                 var body = ea.Body;
                 var notificationMessage = Encoding.UTF8.GetString(body.ToArray());
 
-                _eventProcessor.ProcessEvent(notificationMessage);
+                await _eventProcessor.ProcessEvent(notificationMessage);
             };
 
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);

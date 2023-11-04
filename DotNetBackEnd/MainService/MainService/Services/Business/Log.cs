@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using WebAppAPI.Services.Contracts;
 namespace WebAppAPI.Services.Business
 {
@@ -21,6 +22,10 @@ namespace WebAppAPI.Services.Business
         {
             string fileName = string.Format("{0}_{1}.log", "Exception", DateTime.Now.ToString("dd MM yyyy"));
             string folderName = Path.Combine("Resources", "Logs");
+
+            if (!Directory.Exists(folderName))
+                Directory.CreateDirectory(folderName);
+
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             string logFilePath = string.Format(@"{0}\{1}", pathToSave, fileName);
             StringBuilder sb = new StringBuilder();

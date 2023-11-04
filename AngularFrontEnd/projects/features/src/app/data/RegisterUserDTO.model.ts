@@ -5,6 +5,7 @@ export class RegisterUserDTO{
     public email: string = '';
     public telNum: string = '';
     public password: string = '';
+    public confirmPassword: string = '';
     public roles :number = 0;
     public IsActive :boolean = true;
     public provinces: string='';

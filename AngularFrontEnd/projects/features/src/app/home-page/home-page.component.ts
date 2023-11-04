@@ -9,6 +9,7 @@ import { CoreConstants } from '../core/src/lib/core.constant';
 import { AddressService } from '../data/Address.service';
 import { AddCart } from '../data/addCart.model';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -36,13 +37,14 @@ export class HomePageComponent {
   quantityCurrentProductInCard: number = 0;
   cloneDatProduct !: any[];
   visible: boolean = true;
+  userRole!: string;
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private loginService: LoginService,
     private addressService: AddressService,
-    private router: Router,
+    private router: Router
   ) {
     this.responsiveOptions = [
       { breakpoint: '1024px', numVisible: 4, numScroll: 4 },
@@ -56,6 +58,7 @@ export class HomePageComponent {
         this.getAllProduct();
       }
     });
+    this.userRole = sessionStorage.getItem('userRole')!;
     if (
       localStorage.getItem('authToken') != null &&
       localStorage.getItem('authToken') != 'null'
@@ -109,9 +112,7 @@ export class HomePageComponent {
       return;
     }
     this.cloneDatProduct = Object.values({...this.loginedDataProduct});
-    console.log(this.cloneDatProduct)
-    this.lstProduct = this.cloneDatProduct.filter((x) => x.category.externalID === cateId);  
-    console.log(this.lstProduct)
+    this.lstProduct = this.cloneDatProduct.filter((x) => x.category.id === cateId);  
     this.updateVisibility()
   }
   getProductByCategory(categoryId: number) {
@@ -155,7 +156,7 @@ export class HomePageComponent {
   }
   addToCart(selectedProduct: any) {
     if (selectedProduct.quanity < (this.quantityCurrentProductInCard + this.quantityAddToCart)){
-      this.messageService.add({ key:'bc', severity: 'error', summary: 'Lỗi', detail: 'Expected quantity is more than current quantity of product! (include quantity in your cart)!'});
+      this.messageService.add({ key:'bc', severity: 'error', summary: 'Lỗi', detail: 'Số lượng sản phẩm có sẵn không đủ (bao gồm số lượng đã có sẵn trong giỏ hàng)'});
       return;
     }
     this.addCart.ProductId = selectedProduct.id;
@@ -183,7 +184,7 @@ export class HomePageComponent {
     });
   }
   productDetail(selectedProduct: any){
-    this.router.navigate(['/user/product-detail/' + selectedProduct.id]);
+    this.router.navigate(['product-detail/' + selectedProduct.id]);
   }
   updateVisibility(): void {
     this.visible = false;

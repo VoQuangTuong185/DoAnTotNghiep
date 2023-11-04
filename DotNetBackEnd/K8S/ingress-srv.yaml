@@ -5,22 +5,23 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: acme.com
       http:
         paths:
-          - path: /api/platforms
-            pathType: Prefix
+          - path: /admin(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: platforms-clusterip-srv
+                name: adminservice-clusterip-srv
                 port:
-                  number: 80
-          - path: /api/c/platforms
-            pathType: Prefix
+                  number: 80 
+          - path: /main(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: commands-clusterip-srv
+                name: mainservice-clusterip-srv
                 port:
                   number: 80

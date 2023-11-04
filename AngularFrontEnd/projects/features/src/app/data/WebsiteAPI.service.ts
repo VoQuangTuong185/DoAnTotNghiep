@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RegisterConstant } from '../RegisterCourse.constant';
+import { Constant } from './WebsiteApi.constant';
 import { ProductDTO } from './ProductDTO.model';
 import { LoginUserDTO } from './LoginUserDTO.model';
 import { RegisterUserDTO } from './RegisterUserDTO.model';
@@ -78,157 +78,157 @@ export class WebsiteAPIService{
         });
     }
     loginUser(user: LoginUserDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlLoginUser, user);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlLoginUser, user);
     }
     checkExistedAndSendConfirmMail(user: RegisterUserDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlCheckExisted, user);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlCheckExisted, user);
     }
     checkExistedAndSendChangeConfirmMail(email: string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlCheckExistedAndSendConfirmChangeMail + email, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlCheckExistedAndSendConfirmChangeMail + email, {headers: this.httpHeaders});
     }
     registerUser(user: RegisterUserDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlRegisterUser, user);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlRegisterUser, user);
     }
     getUsers(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetUsers,{ headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetUsers,{ headers: this.httpHeaders});
     }
     sendForgetCode(email: any){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlSendForgetCode + email, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSendForgetCode + email, {headers: this.httpHeaders});
     }
     changePassword(user: LoginUserDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlChangePassword, user);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlChangePassword, user);
     }
     updateProfile(user: UserProfile){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlUpdateProfile, user);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlUpdateProfile, user);
     }
     getInfoUser(userId : number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetInfoUser + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetInfoUser + userId, {headers: this.httpHeaders});
     }
     getAllProduct(type:string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlgetAllProduct + type, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetAllProduct + type, {headers: this.httpHeaders});
     }
     getProductsByCategoryID(categoryId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
     }
     getExistedProduct(productId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});
     }
     addCart(product: AddCart){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlAddCard, product);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlAddCard, product);
     }
     getCartByUserID(userId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetCartByUserID + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetCartByUserID + userId, {headers: this.httpHeaders});
     }
     inActiveCart(cart: CartDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlInActiveCart, cart);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlInActiveCart, cart);
     }
     updateCart(cart: UpdateCart){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlUpdateCart, cart);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlUpdateCart, cart);
     }
     createOrder(order: CreateOrder){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlCreateOrder, order);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlCreateOrder, order);
     }
     getWaitingOrderByUserID(userId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetWaitingOrderByUserID + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetWaitingOrderByUserID + userId, {headers: this.httpHeaders});
     }
     getProcessingOrderByUserID(userId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetProcessingOrderByUserID + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetProcessingOrderByUserID + userId, {headers: this.httpHeaders});
     }
     getSuccessOrderByUserID(userId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetSuccessOrderByUserID + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetSuccessOrderByUserID + userId, {headers: this.httpHeaders});
     }
     getCancelOrderByUserID(userId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetCancelOrderByUserID + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetCancelOrderByUserID + userId, {headers: this.httpHeaders});
     }
     deleteAllCartAfterOrder(userId:number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlDeleteAllCartAfterOrder + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlDeleteAllCartAfterOrder + userId, {headers: this.httpHeaders});
     }
     getProductsByCategoryIDUser(categoryId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
     }
     getAllProductByOrderID(orderId :number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlGetAllProductByOrderID + orderId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetAllProductByOrderID + orderId, {headers: this.httpHeaders});
     }
     cancelOrder(orderId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlCancelOrder + orderId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlCancelOrder + orderId, {headers: this.httpHeaders});
     }
     confirmOrder(orderId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlConfirmOrder + orderId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlConfirmOrder + orderId, {headers: this.httpHeaders});
     }
     successOrder(orderId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
     }
     getSearchProduct(keyWord: string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlUser() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
     }
     createFeedback(feedback: FeedbackDTO[]){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlUser() + this.urlCreateFeedback, feedback);
+        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlCreateFeedback, feedback);
     }
 
     //admin Service 
     getAllCategory(type:string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlgetAllCategory + type, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetAllCategory + type, {headers: this.httpHeaders});
     }
     inActiveCategory(categoryId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlinActiveCategory + categoryId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlinActiveCategory + categoryId, {headers: this.httpHeaders});
     }
     getExistedCategory(categoryId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlgetExistedCategory + categoryId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetExistedCategory + categoryId, {headers: this.httpHeaders});
     }
     createCategory(category: CategoryDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlCreateCategory, category);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlCreateCategory, category);
     }
     updateCategory(category: ProductDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlUpdateCategory, category);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlUpdateCategory, category);
     }
     getWaitingOrder(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetWaitingOrder, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetWaitingOrder, {headers: this.httpHeaders});
     }
     getProcessingOrder(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetProcessingOrder, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetProcessingOrder, {headers: this.httpHeaders});
     }
     getSuccessOrder(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetSuccessOrder, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetSuccessOrder, {headers: this.httpHeaders});
     }
     getCancelOrder(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetCancelOrder, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetCancelOrder, {headers: this.httpHeaders});
     }
     createBrand(brand: any){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlCreateBrand, brand);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlCreateBrand, brand);
     }
     updateBrand(brand: any){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlUpdateBrand, brand);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlUpdateBrand, brand);
     }
     getAllBrand(type:string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetAllBrand + type, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetAllBrand + type, {headers: this.httpHeaders});
     }
     getExistedBrand(brandId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlGetExistedBrand + brandId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetExistedBrand + brandId, {headers: this.httpHeaders});
     }
     autoGeneratedProductID(){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlAutoGeneratedProductID,{headers: this.httpHeaders}); 
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlAutoGeneratedProductID,{headers: this.httpHeaders}); 
     }
     inActiveBrand(brandId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlinActiveBrand + brandId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlinActiveBrand + brandId, {headers: this.httpHeaders});
     }
     setManagerPermisson(userId : number){ 
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlSetManagerPermisson + userId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSetManagerPermisson + userId, {headers: this.httpHeaders});
     }
     createProduct(product: ProductDTO){
         delete product.BrandName;
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlCreateProduct, product);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlCreateProduct, product);
     }
     updateProduct(product: ProductDTO){
         delete product.BrandName;
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlUpdateProduct, product);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlUpdateProduct, product);
     }
     inActiveProduct(productId: number){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlinActiveProduct + productId, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlinActiveProduct + productId, {headers: this.httpHeaders});
     }
     editUser(user: AdminUserDTO){
-        return this.http.post<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlEditUser, user);
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlEditUser, user);
     }
     activeOrInActiveUser(loginName : string){
-        return this.http.get<any>(RegisterConstant.libraryApiUrlAdmin() + this.urlInActiveUser + loginName, {headers: this.httpHeaders});
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlInActiveUser + loginName, {headers: this.httpHeaders});
     }
 }
