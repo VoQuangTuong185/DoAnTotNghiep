@@ -18,14 +18,14 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
             _mailContent = mailContent;
             _ILog = Log.GetInstance;
         }
-        public void ProcessEvent(string message)
+        public async Task ProcessEvent(string message)
         {
             var eventType = DetermineEvent(message);
 
             switch (eventType)
             {
                 case EventType.MailPublished:
-                    sendMail(message);
+                    await sendMail(message);
                     break;
                 case EventType.CategoryPublished:
                     _ILog.LogException("--> Don't have any action!!");
@@ -53,7 +53,7 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                     return EventType.Undetermined;
             }
         }
-        private void sendMail(string mailPublishedMessage)
+        private async Task sendMail(string mailPublishedMessage)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
@@ -63,28 +63,28 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                     switch (categoryPublishedDto.Business)
                     {
                         case "CreateOrder":
-                            _mailContent.SendMailCreateOrderToAdmin(categoryPublishedDto);
+                            await _mailContent.SendMailCreateOrderToAdmin(categoryPublishedDto);
                             break;
                         case "CancelOrder":
-                            _mailContent.SendMailCancelOrder(categoryPublishedDto);
+                            await _mailContent.SendMailCancelOrder(categoryPublishedDto);
                             break;
                         case "ConfirmChangeEmail":
-                            _mailContent.SendMailConfirmChangeEmail(categoryPublishedDto);
+                            await _mailContent.SendMailConfirmChangeEmail(categoryPublishedDto);
                             break;
                         case "ConfirmChangePassword":
-                            _mailContent.SendMailConfirmChangePassword(categoryPublishedDto);
+                            await _mailContent.SendMailConfirmChangePassword(categoryPublishedDto);
                             break;
                         case "ConfirmForgetPassword":
-                            _mailContent.SendMailConfirmForgetPassword(categoryPublishedDto);
+                            await _mailContent.SendMailConfirmForgetPassword(categoryPublishedDto);
                             break;
                         case "ConfirmOrder":
-                            _mailContent.SendMailConfirmOrder(categoryPublishedDto);
+                            await _mailContent.SendMailConfirmOrder(categoryPublishedDto);
                             break;
                         case "ConfirmRegister":
-                            _mailContent.SendMailConfirmRegister(categoryPublishedDto);
+                            await _mailContent.SendMailConfirmRegister(categoryPublishedDto);
                             break;
                         case "SuccessOrder":
-                            _mailContent.SendMailSuccessOrder(categoryPublishedDto);
+                            await _mailContent.SendMailSuccessOrder(categoryPublishedDto);
                             break;
                         default:
                             break;
@@ -92,7 +92,7 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                 }
                 catch (Exception ex)
                 {
-                    _ILog.LogException($"--> Could not add decode messgae to DB {ex.Message}");
+                    _ILog.LogException($"--> Could not send mail {ex.Message}");
                 }
             }
         }

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mainservice
-          image: voquangtuong06022001/mainservice:1.1
+          image: voquangtuong06022001/mainservice:2.1
 ---
 apiVersion: v1
 kind: Service

@@ -1,10 +1,45 @@
+kubectl apply -f mainservice-np-srv.yaml
+kubectl apply -f adminservice-np-srv.yaml
+kubectl apply -f mailservice-np-srv.yaml
+
 docker build -t mainservice .
+docker tag mainservice voquangtuong06022001/mainservice:2.1
+docker push voquangtuong06022001/mainservice:2.1
+kubectl apply -f mainservice-depl.yaml
 
 docker build -t adminservice .
+docker tag adminservice voquangtuong06022001/adminservice:1.3
+docker push voquangtuong06022001/adminservice:1.3
+kubectl apply -f adminservice-depl.yaml
 
 docker build -t mailservice .
+docker tag mailservice voquangtuong06022001/mailservice:2.3
+docker push voquangtuong06022001/mailservice:2.3
+kubectl apply -f mailservice-depl.yaml
 
-//////////////////////////////////////
+docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
+docker push voquangtuong06022001/rabbitmq:latest
+
+kubectl apply -f rabbitmq-depl.yaml
+
+kubectl apply -f local-pvc.yaml
+
+kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
+
+kubectl apply -f mssql.yaml
+
+kubectl apply -f ingress-srv.yaml
+
+kubectl rollout restart deployment mainservice-depl
+kubectl rollout restart deployment adminservice-depl
+kubectl rollout restart deployment mailservice-depl
+
+
+
+
+
+
+
 
 kubectl apply -f deployment.yml
 
@@ -25,37 +60,3 @@ kubectl get ingress -A # Get all current ingress config
 kubectl logs <pods_name> # Check if any error occurs when creating Pod.
 
 kubectl describe pod <pods_name> # Check pod configuration
-
-kubectl delete service 
-kubectl delete deployment 
-kubectl delete pod 
-
-docker tag mainservice voquangtuong06022001/mainservice:latest
-docker push voquangtuong06022001/mainservice:latest
-
-docker tag adminservice voquangtuong06022001/adminservice:latest
-docker push voquangtuong06022001/adminservice:latest
-
-docker tag mailservice voquangtuong06022001/mailservice:latest
-docker push voquangtuong06022001/mailservice:latest
-
-docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
-docker push voquangtuong06022001/rabbitmq:latest
-
-kubectl apply -f local-pvc.yaml
-
-kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
-
-kubectl apply -f mssql.yaml
-
-kubectl apply -f mainservice-depl.yaml
-kubectl apply -f mainservice-np-srv.yaml
-
-kubectl apply -f adminservice-depl.yaml
-kubectl apply -f adminservice-np-srv.yaml
-
-kubectl apply -f mailservice-depl.yaml
-kubectl apply -f mailservice-np-srv.yaml
-
-kubectl apply -f ingress-srv.yaml
-
