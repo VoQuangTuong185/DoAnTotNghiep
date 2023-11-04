@@ -1,15 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: minimal-ingress
+  name: ingress-srv
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    - host: test.test
+    - host: acme.com
       http:
         paths:
-          - path: /api/User/get-all-product-by-oder-id?orderId=1
+          - path: /api/main
             pathType: Prefix
             backend:
               service:

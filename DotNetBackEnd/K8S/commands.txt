@@ -49,9 +49,13 @@ kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
 kubectl apply -f mssql.yaml
 
 kubectl apply -f mainservice-depl.yaml
+kubectl apply -f mainservice-np-srv.yaml
 
 kubectl apply -f adminservice-depl.yaml
+kubectl apply -f adminservice-np-srv.yaml
 
 kubectl apply -f mailservice-depl.yaml
+kubectl apply -f mailservice-np-srv.yaml
 
 kubectl apply -f ingress-srv.yaml
+
