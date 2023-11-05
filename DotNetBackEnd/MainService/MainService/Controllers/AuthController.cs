@@ -51,6 +51,7 @@ namespace WebAppAPI.Controllers
                                                                     .Include(x => x.UserAPIs)
                                                                     .ToListAsync();
                 _ILog.LogException(refreshToken);
+                _ILog.LogException(loginUser.FirstOrDefault().RefreshToken);
                 if (loginUser.FirstOrDefault().RefreshToken.Equals(refreshToken))
                 {
                     if (loginUser.FirstOrDefault().TokenExpires < DateTime.Now)

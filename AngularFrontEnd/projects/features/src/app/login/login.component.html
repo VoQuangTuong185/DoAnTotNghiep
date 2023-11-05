@@ -27,10 +27,10 @@
     </div> 
     </div>    
     <div class="center mb-1">   
-      <label class="example-margin mt-2">Bạn là:</label>
+      <label class="mt-2">Bạn là:</label>
       <mat-radio-group [(ngModel)]="userRole" (change)="handleUserRole($event)">
-        <mat-radio-button class="example-margin" value="admin">Quản trị viên</mat-radio-button>
-        <mat-radio-button class="example-margin" value="user" [checked]="true">Người dùng</mat-radio-button>
+        <mat-radio-button value="admin">Quản trị viên</mat-radio-button>
+        <mat-radio-button value="user" [checked]="true">Người dùng</mat-radio-button>
       </mat-radio-group>
     </div>
    
