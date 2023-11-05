@@ -6,6 +6,6 @@ export const environment = {
     //apiURL : `https://localhost:8082`,
     //apiAdminURL : `https://localhost:8083`
     //docker
-    apiURL : `http://acme.com/main`,
-    apiAdminURL : `http://acme.com/admin`,
+    apiURL : `https://acme.com/main`,
+    apiAdminURL : `https://acme.com/admin`,
 }

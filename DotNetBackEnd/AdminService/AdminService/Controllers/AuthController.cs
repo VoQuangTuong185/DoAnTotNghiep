@@ -56,6 +56,8 @@ namespace WebAppAPI.Controllers
                 var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == LoginName.ToUpper().TrimStart().TrimEnd() && x.IsActive)
                                                                     .Include(x => x.UserAPIs)
                                                                     .ToListAsync();
+                _ILog.LogException(refreshToken);
+                _ILog.LogException(loginUser.FirstOrDefault().RefreshToken);
                 if (loginUser.FirstOrDefault().RefreshToken.Equals(refreshToken))
                 {
                     if (loginUser.FirstOrDefault().TokenExpires < DateTime.Now)
