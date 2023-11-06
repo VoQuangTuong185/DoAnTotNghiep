@@ -97,7 +97,7 @@ export class ListOrderComponent implements OnInit {
   cancelOrder(orderId: string) {
     this.loading = true;
     this.websiteAPIService
-      .cancelOrder(Number(orderId))
+      .cancelOrderUser(Number(orderId))
       .subscribe((res: any) => {
         if(res.data){
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
@@ -120,7 +120,7 @@ export class ListOrderComponent implements OnInit {
   successOrder(orderId: string) {
     this.loading = true;
     this.websiteAPIService
-      .successOrder(Number(orderId))
+      .successOrderUser(Number(orderId))
       .subscribe((res: any) => {
         if(res.data){
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message, life: 3000});
@@ -186,7 +186,7 @@ export class ListOrderComponent implements OnInit {
     this.feedbackForm = this.createEmptyListFeedback();
   }
   getAllProductByOrder(orderId: number) {
-    this.websiteAPIService.getAllProductByOrderID(orderId).subscribe((res: any) => {
+    this.websiteAPIService.getAllProductByOrderIDUser(orderId).subscribe((res: any) => {
       if (res.isSuccess == true) {
         this.lstProduct = res.data;   
         this.lstProduct.forEach(x => {

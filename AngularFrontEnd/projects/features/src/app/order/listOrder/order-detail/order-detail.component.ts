@@ -10,24 +10,36 @@ import { CoreConstants } from '../../../core/src/lib/core.constant';
 })
 export class OrderDetailComponent implements OnInit {
   lstProduct: any[] = [];
+  userRole!: string;
   constructor(
     private websiteAPIService: WebsiteAPIService,
-    private dialogRef: MatDialogRef<OrderDetailComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    private dialogRef: MatDialogRef<OrderDetailComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.userRole = localStorage.getItem('userRole')!;
+    }
 
   ngOnInit() {
     this.getAllProductByOrder();
   }
 
   getAllProductByOrder() {
-    this.websiteAPIService
-      .getAllProductByOrderID(Number(this.data.id))
+    if (this.userRole == 'user'){
+      this.websiteAPIService
+      .getAllProductByOrderIDUser(Number(this.data.id))
       .subscribe((res: any) => {
         if (res.isSuccess === true) {
           this.lstProduct = res.data;
         }
       });
+    }
+    else if (this.userRole == 'admin'){
+      this.websiteAPIService
+      .getAllProductByOrderIDAdmin(Number(this.data.id))
+      .subscribe((res: any) => {
+        if (res.isSuccess === true) {
+          this.lstProduct = res.data;
+        }
+      }); 
+    }
   }
   
   getTotalMoney(price: number, quantity: number, discount: number) {
@@ -35,8 +47,9 @@ export class OrderDetailComponent implements OnInit {
   }
 
   createImgPath = (serverPath: string) => {
-    return CoreConstants.apiUrl() + `/${serverPath}`;
-  };
+    let apiUrl = this.userRole == 'admin' ? CoreConstants.apiAdminURL() : CoreConstants.apiUrl();
+    return apiUrl + `/${serverPath}`; 
+  }
 
   closeDialog() {
     this.dialogRef.close(1);

@@ -67,7 +67,7 @@ export class AdminCategoryComponent {
     });  
   }
   loadDataAllCategory(){
-    this.websiteAPIService.getAllCategory('admin').subscribe((res:any) => {
+    this.websiteAPIService.getAllCategoryAdmin().subscribe((res:any) => {
       this.dataCategories = res.data; 
     });
   }

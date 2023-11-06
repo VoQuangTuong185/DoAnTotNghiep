@@ -17,6 +17,7 @@ export class ProductDetailComponent implements OnInit {
   currentProduct!: any;
   @Output() valueChange = new EventEmitter<unknown>();
   quantityAddToCart: number = 1;
+  userRole!: string;
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
@@ -26,16 +27,15 @@ export class ProductDetailComponent implements OnInit {
   ){
     this.ActiveRoute.params.subscribe((params) =>{
       this.existedProductId = params['id'];
+      this.getExistedProduct();
     });
-    router.events.subscribe((val) => {
-      this.getExistedProduct(); 
-  });
+    this.userRole = localStorage.getItem('userRole')!;
   }
   ngOnInit(): void{
     this.responsiveOptions = [{ breakpoint: '1024px',  numVisible: 5 }, { breakpoint: '768px', numVisible: 3 }, { breakpoint: '560px', numVisible: 1 }];
   }
   getExistedProduct(){
-    this.websiteAPIService.getExistedProduct(this.existedProductId).subscribe((result : any) => {
+    this.websiteAPIService.getExistedProductUser(this.existedProductId).subscribe((result : any) => {
       this.currentProduct = result.data;
       let currentImageDetail = this.currentProduct.imageDetail || [];
       currentImageDetail.unshift(this.currentProduct.image);
@@ -43,6 +43,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
   createImgPath = (serverPath: string) => {
-    return CoreConstants.apiUrl() + `/${serverPath}`; 
+    let apiUrl = this.userRole == 'admin' ? CoreConstants.apiAdminURL() : CoreConstants.apiUrl();
+    return apiUrl + `/${serverPath}`; 
   }
 }

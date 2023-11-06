@@ -1,4 +1,5 @@
 ﻿using DoAnTotNghiep.DTO;
+using DoAnTotNghiep.Models.Entities;
 using Optional;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
@@ -30,10 +31,12 @@ namespace WebAppAPI.Services.Contracts
         Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId);
         Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId);
         Task<Option<bool, string>> CancelOrder(int orderId);
-        Task<Option<bool, string>> ConfirmOrder(int orderId);
         Task<Option<bool, string>> SuccessOrder(int orderId);
         Task<Option<bool, string>> UpdateCart(UpdateCart cart);
         Task<List<SearchProduct>> SearchProduct(string keyWord);
         Task<Option<bool, string>> CreateFeedback(List<FeedbackDTO> feedback);
+        Task<ProductDTOShow> GetExistedProduct(int ProductId);
+        Task<IEnumerable<Product>> GetAllProduct();
+        Task<IEnumerable<Category>> GetAllCategory();
     }
 }

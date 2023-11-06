@@ -167,22 +167,7 @@ namespace WebAppAPI.Controllers
                 _ILog.LogException(ex.Message);
             }
             return result;
-        }
-        [HttpGet("get-all-product")]
-        public async Task<ApiResult> GetAllProduct(string type)
-        {
-            var result = new ApiResult();
-            try
-            {
-                result.Data = await _IAdminService.GetAllProduct(type);
-            }
-            catch (Exception ex)
-            {
-                result.IsSuccess = false;
-                _ILog.LogException(ex.Message);
-            }
-            return result;
-        }      
+        }     
         [HttpPost("update-product")]
         public async Task<ApiResult> UpdateProduct(ProductDTOUpdate product)
         {
@@ -334,6 +319,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpPost("update-brand")]
         public async Task<ApiResult> UpdateBrand(BrandDTO brand)
         {
@@ -470,13 +456,14 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpGet("get-all-category")]
-        public async Task<ApiResult> GetAllCategory(string type)
+        public async Task<ApiResult> GetAllCategory()
         {
             var result = new ApiResult();
             try
             {
-                result.Data = await _IAdminService.GetAllCategory(type);
+                result.Data = await _IAdminService.GetAllCategory();
             }
             catch (Exception ex)
             {
@@ -537,6 +524,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpGet("get-existed-category")]
         public async Task<ApiResult> GetCategoryById(int categoryId)
         {
@@ -562,6 +550,116 @@ namespace WebAppAPI.Controllers
                 (await _IAdminService.InactiveCategory(categoryId)).Match(res =>
                 {
                     result.Message = "Thao tác thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("get-all-product-by-oder-id")]
+        public async Task<ApiResult> GetAllProductByOrderID(int orderId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.GetAllProductByOrderID(orderId);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("search-product")]
+        public async Task<ApiResult> SearchProduct(string keyWord)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.SearchProduct(keyWord);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("cancel-order")]
+        public async Task<ApiResult> CancelOrder(int orderId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IAdminService.CancelOrder(orderId)).Match(res =>
+                {
+                    result.Message = "Huỷ đơn hàng thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("confirm-order")]
+        public async Task<ApiResult> ConfirmOrder(int orderId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IAdminService.ConfirmOrder(orderId)).Match(res =>
+                {
+                    result.Message = "Xác nhận đơn hàng thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("success-order")]
+        public async Task<ApiResult> SuccessOrder(int orderId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IAdminService.SuccessOrder(orderId)).Match(res =>
+                {
+                    result.Message = "Hoàn tất đơn hành thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>

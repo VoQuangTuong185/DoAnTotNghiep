@@ -378,6 +378,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpGet("get-all-product-by-oder-id")]
         public async Task<ApiResult> GetAllProductByOrderID(int orderId)
         {
@@ -403,32 +404,6 @@ namespace WebAppAPI.Controllers
                 (await _IUserService.CancelOrder(orderId)).Match(res =>
                 {
                     result.Message = "Huỷ đơn hàng thành công!";
-                    result.Data = res;
-                    result.IsSuccess = true;
-                }, ex =>
-                {
-                    result.HttpStatusCode = 500;
-                    result.Message = ex;
-                    result.IsSuccess = false;
-                });
-            }
-            catch (Exception ex)
-            {
-                result.IsSuccess = false;
-                _ILog.LogException(ex.Message);
-            }
-            return result;
-        }
-        [Authorize]
-        [HttpGet("confirm-order")]
-        public async Task<ApiResult> ConfirmOrder(int orderId)
-        {
-            var result = new ApiResult();
-            try
-            {
-                (await _IUserService.ConfirmOrder(orderId)).Match(res =>
-                {
-                    result.Message = "Xác nhận đơn hàng thành công!";
                     result.Data = res;
                     result.IsSuccess = true;
                 }, ex =>
@@ -504,6 +479,51 @@ namespace WebAppAPI.Controllers
                     result.Message = ex;
                     result.IsSuccess = false;
                 });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpGet("get-existed-product")]
+        public async Task<ApiResult> GetExistedProduct(int productId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.GetExistedProduct(productId);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpGet("get-all-product")]
+        public async Task<ApiResult> GetAllProduct()
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.GetAllProduct();
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpGet("get-all-category")]
+        public async Task<ApiResult> GetAllCategory()
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.GetAllCategory();
             }
             catch (Exception ex)
             {

@@ -11,13 +11,13 @@ export class AuthGuard implements CanActivate {
    userData = new User();     
    constructor(private router: Router, private authService :AuthService, private messageService: MessageService) { }      
    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
-    if(localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null' && sessionStorage.getItem('userRole') != null && sessionStorage.getItem('userRole') != 'null'){ 
+    if(localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null' && localStorage.getItem('userRole') != null && localStorage.getItem('userRole') != 'null'){ 
        this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
        var date = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
        var dateNow = new Date();
        var tokenExpiredDate = new Date(date.expires)
 
-       let userRole = sessionStorage.getItem('userRole')!;
+       let userRole = localStorage.getItem('userRole')!;
 
        if (dateNow > tokenExpiredDate){
          this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => { 

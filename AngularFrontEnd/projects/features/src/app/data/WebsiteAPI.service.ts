@@ -7,9 +7,9 @@ import { RegisterUserDTO } from './RegisterUserDTO.model';
 import { AdminUserDTO } from './AdminUserDTO';
 import { UserProfile } from './UserProfile.model';
 import { CategoryDTO } from './CategoryDTO.model';
-import { AddCart } from './addCart.model';
-import { CartDTO } from './cartDTO.model';
-import { CreateOrder } from './createOrder.model';
+import { AddCart } from './AddCart.model';
+import { CartDTO } from './CartDTO.model';
+import { CreateOrder } from './CreateOrder.model';
 import { UpdateCart } from './UpdateCart.model';
 import { FeedbackDTO } from './FeedbackDTO.model.js';
 @Injectable({
@@ -26,7 +26,7 @@ export class WebsiteAPIService{
     private urlChangePassword = 'change-password';
     private urlUpdateProfile = 'update-profile';
     private urlGetInfoUser = 'get-info-user?userId=';    
-    private urlgetAllProduct = 'get-all-product?type=';
+    private urlgetAllProduct = 'get-all-product?';
     private urlgetExistedProduct = 'get-existed-product?productId=';
     private urlGetProductsByCategoryID = 'get-products-by-category-id?categoryId=';
     private urlAddCard = 'add-cart';
@@ -39,12 +39,12 @@ export class WebsiteAPIService{
     private urlInActiveCart = 'inactive-cart';
     private urlUpdateCart = 'update-cart';
     private urlCreateOrder = 'create-order';
-    private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
     private urlCancelOrder = 'cancel-order?orderId=';
     private urlConfirmOrder = 'confirm-order?orderId=';
     private urlSuccessOrder = 'success-order?orderId=';
     private urlSearchProduct = 'search-product?keyWord=';
     private urlCreateFeedback = 'create-feedback';
+    private urlgetAllCategoryUser = 'get-all-category?'; 
 
     //admin service
     private urlCreateBrand = 'create-brand'; 
@@ -59,7 +59,7 @@ export class WebsiteAPIService{
     private urlUpdateProduct = 'update-product';   
     private urlEditUser = 'edit-user';
     private urlInActiveUser = 'active-or-inactive-user?loginName=';
-    private urlgetAllCategory = 'get-all-category?type='; 
+    private urlgetAllCategoryAdmin = 'get-all-category?'; 
     private urlinActiveCategory = 'inactive-category?categoryId=';
     private urlgetExistedCategory = 'get-existed-category?categoryId=';
     private urlCreateCategory = 'create-category';
@@ -68,6 +68,7 @@ export class WebsiteAPIService{
     private urlGetProcessingOrder = 'get-processing-order';
     private urlGetSuccessOrder = 'get-success-order';
     private urlGetCancelOrder = 'get-cancel-order';
+    private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -89,9 +90,6 @@ export class WebsiteAPIService{
     registerUser(user: RegisterUserDTO){
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlRegisterUser, user);
     }
-    getUsers(){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetUsers,{ headers: this.httpHeaders});
-    }
     sendForgetCode(email: any){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSendForgetCode + email, {headers: this.httpHeaders});
     }
@@ -104,14 +102,11 @@ export class WebsiteAPIService{
     getInfoUser(userId : number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetInfoUser + userId, {headers: this.httpHeaders});
     }
-    getAllProduct(type:string){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetAllProduct + type, {headers: this.httpHeaders});
+    getAllProduct(){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllProduct, {headers: this.httpHeaders});
     }
-    getProductsByCategoryID(categoryId :number){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
-    }
-    getExistedProduct(productId: number){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});
+    getExistedProductUser(productId: number){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});
     }
     addCart(product: AddCart){
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlAddCard, product);
@@ -146,28 +141,31 @@ export class WebsiteAPIService{
     getProductsByCategoryIDUser(categoryId :number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
     }
-    getAllProductByOrderID(orderId :number){
+    getAllProductByOrderIDUser(orderId :number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetAllProductByOrderID + orderId, {headers: this.httpHeaders});
     }
-    cancelOrder(orderId: number){
+    cancelOrderUser(orderId: number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlCancelOrder + orderId, {headers: this.httpHeaders});
     }
-    confirmOrder(orderId: number){
-        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlConfirmOrder + orderId, {headers: this.httpHeaders});
-    }
-    successOrder(orderId: number){
+    successOrderUser(orderId: number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
     }
-    getSearchProduct(keyWord: string){
+    getSearchProductUser(keyWord: string){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
     }
     createFeedback(feedback: FeedbackDTO[]){
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlCreateFeedback, feedback);
     }
+    getAllCategoryUser(){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllCategoryUser, {headers: this.httpHeaders});
+    }
 
     //admin Service 
-    getAllCategory(type:string){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetAllCategory + type, {headers: this.httpHeaders});
+    getUsers(){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetUsers,{ headers: this.httpHeaders});
+    }
+    getAllCategoryAdmin(){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetAllCategoryAdmin, {headers: this.httpHeaders});
     }
     inActiveCategory(categoryId: number){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlinActiveCategory + categoryId, {headers: this.httpHeaders});
@@ -230,5 +228,26 @@ export class WebsiteAPIService{
     }
     activeOrInActiveUser(loginName : string){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlInActiveUser + loginName, {headers: this.httpHeaders});
+    }
+    getExistedProductAdmin(productId: number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});
+    }
+    getProductsByCategoryID(categoryId :number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetProductsByCategoryID + categoryId, {headers: this.httpHeaders});
+    }
+    getAllProductByOrderIDAdmin(orderId :number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlGetAllProductByOrderID + orderId, {headers: this.httpHeaders});
+    }
+    getSearchProductAdmin(keyWord: string){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
+    }
+    cancelOrderAdmin(orderId: number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlCancelOrder + orderId, {headers: this.httpHeaders});
+    }
+    confirmOrderAdmin(orderId: number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlConfirmOrder + orderId, {headers: this.httpHeaders});
+    }
+    successOrderAdmin(orderId: number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
     }
 }

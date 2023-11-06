@@ -6,7 +6,7 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { LoginUserDTO } from '../data/LoginUserDTO.model';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { AuthService } from '../core/src/lib/Auth.service';
-import { LoginService } from '../data/login.service';
+import { LoginService } from '../data/Login.service';
 import { User } from '../data/User.model';
 @Component({
   selector: 'app-login',
@@ -66,7 +66,7 @@ export class LoginComponent {
       });
       return;
     }
-    sessionStorage.setItem('userRole', this.userRole);
+    localStorage.setItem('userRole', this.userRole);
     this.authService
       .login(this.loginForm.getRawValue(), this.userRole)
       .subscribe((res: any) => {

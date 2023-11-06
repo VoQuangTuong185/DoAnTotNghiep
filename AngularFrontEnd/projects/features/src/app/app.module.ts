@@ -46,7 +46,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { AdminProductComponent } from './admin-product/admin-product.component';
 import { AuthGuard } from './core/src/lib/Auth.guard';
-import { LoginService } from './data/login.service';
+import { LoginService } from './data/Login.service';
 import { CreatProductComponent } from './create-product/create-product.component';
 import { UploadImageComponent } from './lib/upload-image/upload-image.component';
 import { CarouselModule } from 'primeng/carousel';
@@ -73,6 +73,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserGuard } from './core/src/lib/User.guard';
 import { CheckValidEmailService } from './data/CheckValidEmailService';
+import { CartService } from './data/Cart.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -155,6 +156,7 @@ import { CheckValidEmailService } from './data/CheckValidEmailService';
     UserGuard,
     CheckValidEmailService,
     AuthService,
+    CartService,
     {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'USD',
