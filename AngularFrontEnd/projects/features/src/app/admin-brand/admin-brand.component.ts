@@ -44,7 +44,7 @@ export class AdminBrandComponent {
       this.loadDataAllBrand();
     }
     loadDataAllBrand(){
-      this.websiteAPIService.getAllBrand('admin').subscribe((res:any) => {
+      this.websiteAPIService.getAllBrand('all').subscribe((res:any) => {
         this.dataBrand = res.data; 
       });
     }

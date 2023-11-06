@@ -18,8 +18,7 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> CreateProduct(ProductDTOShow product);     
         Task<Option<bool, string>> UpdateProduct(ProductDTOUpdate product);                  
         Task<Option<bool, string>> InActiveProduct(int productId);
-        Task<Option<bool, string>> InActiveBrand(int brandId);
-        Task<IEnumerable<Product>> GetAllProduct(string type);
+        Task<Option<bool, string>> InActiveBrand(int brandId);       
         Task<IEnumerable<Brand>> GetAllBrand(string type);
         Task<Brand> GetExistedBrand(int BrandId);
         Task<ProductDTOShow> GetExistedProduct(int ProductId);
@@ -30,10 +29,15 @@ namespace WebAppAPI.Services.Contracts
         Task<IEnumerable<OrderDTO>> GetProcessingOrder();
         Task<IEnumerable<OrderDTO>> GetSuccessOrder();
         Task<IEnumerable<OrderDTO>> GetCancelOrder();
-        Task<IEnumerable<Category>> GetAllCategory(string type);
+        Task<IEnumerable<Category>> GetAllCategory();
         Task<Option<bool, string>> CreateCategory(CategoryCreateDto category);
         Task<Option<bool, string>> UpdateCategory(Category category);
         Category GetCategoryById(int id);
         Task<Option<bool, string>> InactiveCategory(int categoryId);
+        Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId);
+        Task<List<SearchProduct>> SearchProduct(string keyWord);
+        Task<Option<bool, string>> CancelOrder(int orderId);
+        Task<Option<bool, string>> SuccessOrder(int orderId);
+        Task<Option<bool, string>> ConfirmOrder(int orderId);
     }
 }

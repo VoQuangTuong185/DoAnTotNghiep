@@ -100,7 +100,7 @@ export class AdminListOrderComponent implements OnInit {
 
   cancelOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.cancelOrder(Number(orderId)).subscribe((res: any) => {
+    this.websiteAPIService.cancelOrderAdmin(Number(orderId)).subscribe((res: any) => {
         if(res.isSuccess === true){
           if(this.statusOrderCode === enumData.statusOrder.wait.code){ 
             this.getWaitingOrder()
@@ -122,7 +122,7 @@ export class AdminListOrderComponent implements OnInit {
 
   confirmOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.confirmOrder(Number(orderId)).subscribe((res: any) => {
+    this.websiteAPIService.confirmOrderAdmin(Number(orderId)).subscribe((res: any) => {
         if(res.isSuccess === true){
           this.getWaitingOrder();
           this.messageService.add({
@@ -159,7 +159,7 @@ export class AdminListOrderComponent implements OnInit {
 
   successOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.successOrder(Number(orderId)).subscribe((res: any) => {
+    this.websiteAPIService.successOrderAdmin(Number(orderId)).subscribe((res: any) => {
         if(res.isSuccess === true){
           this.getProcessingOrder();
           this.messageService.add({

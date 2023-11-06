@@ -23,6 +23,7 @@ using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using DoAnTotNghiep.Models.Entities;
 
 namespace WebAppAPI.Services.Business
 {
@@ -486,26 +487,6 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
-        public async Task<Option<bool, string>> ConfirmOrder(int orderId)
-        {
-            return await (orderId)
-                .SomeNotNull().WithException("Null input")
-                .FlatMapAsync(async req =>
-                {
-                    var existedOrder = _unitOfWork.Repository<Order>().FirstOrDefault(x => x.Id == orderId);
-                    var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
-                    existedOrder.Status = "Processing";
-                    _unitOfWork.Repository<Order>().Update(existedOrder);
-
-                    if (await _unitOfWork.SaveChangesAsync())
-                    {
-                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
-                        _messageBusClient.PublishMail(mailInformation);
-                        return Option.Some<bool, string>(true);
-                    }
-                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
-                });
-        }
         public async Task<Option<bool, string>> SuccessOrder(int orderId)
         {
             return await (orderId)
@@ -637,6 +618,27 @@ namespace WebAppAPI.Services.Business
                     }
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
+        }
+        public async Task<ProductDTOShow> GetExistedProduct(int ProductId)
+        {
+            var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
+                                                          .Include(x => x.brand)
+                                                          .Include(x => x.category)
+                                                          .FirstOrDefaultAsync();
+            return _mapper.Map<ProductDTOShow>(existedProduct);
+        }
+        public async Task<IEnumerable<Product>> GetAllProduct()
+        {
+            return await _unitOfWork.Repository<Product>().Get(x => x.IsActive)
+                                                                    .Include(x => x.category)
+                                                                    .Include(x => x.brand)
+                                                                    .Where(x => x.category.IsActive && x.brand.IsActive)
+                                                                    .OrderByDescending(x => x.SoldQuantity)
+                                                                    .ToListAsync();
+        }
+        public async Task<IEnumerable<Category>> GetAllCategory()
+        {
+            return await _unitOfWork.Repository<Category>().Get(x => x.IsActive).ToListAsync();
         }
         #endregion
     }

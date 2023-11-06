@@ -130,7 +130,7 @@ export class CreatProductComponent {
     this.router.navigate(['/admin/admin-category/admin-product/'+ categoryId]);
   }
   getExistedProduct(){
-    this.websiteAPIService.getExistedProduct(this.existedProductId).subscribe((result : any) => {
+    this.websiteAPIService.getExistedProductAdmin(this.existedProductId).subscribe((result : any) => {
       var data = result.data;
       this.productForm = this.createExistedCourseForm(data);
     });
@@ -147,7 +147,7 @@ export class CreatProductComponent {
     });
   }  
   createImgPath = (serverPath: string) => {
-    return CoreConstants.apiUrl() + `/${serverPath}`; 
+    return CoreConstants.apiAdminURL() + `/${serverPath}`; 
   }
   uploadImageFinished = (event:any) => { 
     this.response = event; 
@@ -160,7 +160,7 @@ export class CreatProductComponent {
     this.productForm.controls['ImageDetail'].setValue(currentImageDetail);
   }
   loadDataAllBrands(){
-    this.websiteAPIService.getAllBrand('user').subscribe((res:any) => {
+    this.websiteAPIService.getAllBrand('active').subscribe((res:any) => {
       this.brandData = res.data; 
       this.brandData.forEach(element => {
         this.brands.push(element.brandName);

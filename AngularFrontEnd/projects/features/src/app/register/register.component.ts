@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { Subscription, finalize } from 'rxjs';
 import { AuthService } from '../core/src/lib/Auth.service';
-import { LoginService } from '../data/login.service';
+import { LoginService } from '../data/Login.service';
 import { AddressService } from '../data/Address.service';
 import { User } from '../data/User.model';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service'

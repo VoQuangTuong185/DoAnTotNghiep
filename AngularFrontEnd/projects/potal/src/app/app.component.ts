@@ -5,13 +5,14 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription, finalize } from 'rxjs';
 import { AuthService } from '../../../features/src/app/core/src/lib/Auth.service';
 import { UserProfile } from '../../../features/src/app/data/UserProfile.model';
-import { LoginService } from '../../../features/src/app/data/login.service';
+import { LoginService } from '../../../features/src/app/data/Login.service';
 import { User } from '../../../features/src/app/data/User.model';
 import { UserRole } from '../../../features/src/app/data/UserRole.model';
 import { WebsiteAPIService } from '../../../features/src/app/data/WebsiteAPI.service';
 import { AddressService } from '../../../features/src/app/data/Address.service';
 import { SearchProduct } from '../../../features/src/app/data/SearchProduct.model';
 import { CheckValidEmailService } from '../../../features/src/app/data/CheckValidEmailService';
+import { CartService } from '../../../features/src/app/data/Cart.service';
 
 @Component({
   selector: 'app-root',
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
   searchProductForm: FormGroup;
   filterProducts: SearchProduct[] = [];
   userRole!: string;
+  numberCart: number = 0;
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -57,8 +59,15 @@ export class AppComponent implements OnInit {
     private websiteAPIService: WebsiteAPIService,
     private formBuilder: FormBuilder,
     private addressService: AddressService,
-    private checkValidEmailService : CheckValidEmailService
+    private checkValidEmailService : CheckValidEmailService,
+    private cartService: CartService,
   ) {
+    this.subscription = cartService.cartCount$.subscribe((value) => {    
+      if (value) {
+        console.log(value)
+        this.getCartByUserID();
+      }
+    });
     this.searchProductForm = this.createEmptySearchProductForm();
     this.provices = [];
     this.districts = [];
@@ -68,14 +77,9 @@ export class AppComponent implements OnInit {
         this.currentTab = this.router.url;
       }
     });
-    if (
-      localStorage.getItem('authToken') != null &&
-      localStorage.getItem('authToken') != 'null'
-    ) {
-      this.userData = JSON.parse(
-        window.atob(localStorage.getItem('authToken')!.split('.')[1])
-      );
-      this.userRole = sessionStorage.getItem('userRole')!;
+    if (localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null') {
+      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+      this.userRole = localStorage.getItem('userRole')!;
       this.authService
         .checkValidToken(this.userData.loginName, this.userRole)
         .subscribe((res: any) => {
@@ -114,29 +118,17 @@ export class AppComponent implements OnInit {
     this.isAdmin ? (this.role = UserRole.Admin) : (this.role = UserRole.User);
   }
   ngOnInit() {
+    this.getCartByUserID();
     this.getAllProvices();
     this.loadDataUser();
     this.checkUser();
-    if (
-      localStorage.getItem('provinces') != null &&
-      localStorage.getItem('provinces') != 'null'
-    ) {
-      this.provices = JSON.parse(
-        window.atob(localStorage.getItem('provinces')!)
-      );
+    if (localStorage.getItem('provinces') != null && localStorage.getItem('provinces') != 'null') {
+      this.provices = JSON.parse(window.atob(localStorage.getItem('provinces')!));
     }
-    if (
-      localStorage.getItem('districts') != null &&
-      localStorage.getItem('districts') != 'null'
-    ) {
-      this.districts = JSON.parse(
-        window.atob(localStorage.getItem('districts')!)
-      );
+    if (localStorage.getItem('districts') != null && localStorage.getItem('districts') != 'null') {
+      this.districts = JSON.parse(window.atob(localStorage.getItem('districts')!));
     }
-    if (
-      localStorage.getItem('wards') != null &&
-      localStorage.getItem('wards') != 'null'
-    ) {
+    if (localStorage.getItem('wards') != null && localStorage.getItem('wards') != 'null') {
       this.wards = JSON.parse(window.atob(localStorage.getItem('wards')!));
     }
   }
@@ -405,13 +397,24 @@ export class AppComponent implements OnInit {
     return this.filterProducts;
   }
   getProduct(value: string){
-    return new Promise<SearchProduct[]>((resolve) => {
-      this.websiteAPIService.getSearchProduct(value).subscribe((result: any) => {
-        resolve(result.data)
+    if (this.userRole == 'admin'){
+      return new Promise<SearchProduct[]>((resolve) => {
+        this.websiteAPIService.getSearchProductAdmin(value).subscribe((result: any) => {
+          resolve(result.data)
+        });
+      }).then((value) => {
+        return value;
       });
-    }).then((value) => {
-      return value;
-    });
+    }
+    else{
+      return new Promise<SearchProduct[]>((resolve) => {
+        this.websiteAPIService.getSearchProductUser(value).subscribe((result: any) => {
+          resolve(result.data)
+        });
+      }).then((value) => {
+        return value;
+      });
+    }
   }
   createEmptySearchProductForm() {
     return this.formBuilder.group({
@@ -425,5 +428,12 @@ export class AppComponent implements OnInit {
     else {
       this.router.navigate(['product-detail/' + selectedProduct.id]);
     }
+  }
+  getCartByUserID() {
+    this.websiteAPIService
+      .getCartByUserID(Number(this.userData.id))
+      .subscribe((res: any) => {
+        this.numberCart = res.data.length;
+      });
   }
 }

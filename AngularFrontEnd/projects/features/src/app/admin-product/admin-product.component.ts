@@ -69,6 +69,6 @@ export class AdminProductComponent {
     });
   }
   createImgPath = (serverPath: string) => {
-    return CoreConstants.apiUrl() + `/${serverPath}`; 
+    return CoreConstants.apiAdminURL() + `/${serverPath}`; 
   }
 }

@@ -1,62 +1,43 @@
-kubectl apply -f mainservice-np-srv.yaml
-kubectl apply -f adminservice-np-srv.yaml
-kubectl apply -f mailservice-np-srv.yaml
+#first configuration
+docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
+docker push voquangtuong06022001/rabbitmq:latest
+kubectl apply -f rabbitmq-depl.yaml
+kubectl apply -f local-pvc.yaml
+kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
+kubectl apply -f mssql.yaml
+kubectl apply -f ingress-srv.yaml
 
+kubectl apply -f mainservice-np-srv.yaml #configure services mainservice
+kubectl apply -f adminservice-np-srv.yaml #configure services adminservice
+kubectl apply -f mailservice-np-srv.yaml #configure services mailservice
+
+#mainservice
 docker build -t mainservice .
 docker tag mainservice voquangtuong06022001/mainservice:2.4
 docker push voquangtuong06022001/mainservice:2.4
 kubectl apply -f mainservice-depl.yaml
 
+#adminservice
 docker build -t adminservice .
 docker tag adminservice voquangtuong06022001/adminservice:1.4
 docker push voquangtuong06022001/adminservice:1.4
 kubectl apply -f adminservice-depl.yaml
 
+#mailservice
 docker build -t mailservice .
 docker tag mailservice voquangtuong06022001/mailservice:2.3
 docker push voquangtuong06022001/mailservice:2.3
 kubectl apply -f mailservice-depl.yaml
 
-docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
-docker push voquangtuong06022001/rabbitmq:latest
-
-kubectl apply -f rabbitmq-depl.yaml
-
-kubectl apply -f local-pvc.yaml
-
-kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
-
-kubectl apply -f mssql.yaml
-
-kubectl apply -f ingress-srv.yaml
-
+#restart services
 kubectl rollout restart deployment mainservice-depl
 kubectl rollout restart deployment adminservice-depl
 kubectl rollout restart deployment mailservice-depl
 
-
-
-
-
-
-
-
-kubectl apply -f deployment.yml
-
-kubectl apply -f service.yml
-
-kubectl vi backend-deployment.yaml # Create/Edit backend pod configuration
-
-kubectl apply -f backend-deployment.yaml # Apply Pod configuration
-
+#debugs
 kubectl get pods # Check current pods in cluster
-
 kubectl get deployments # Get all current deployments in cluster
-
 kubectl get services # Get all current services in cluster
-
 kubectl get ingress -A # Get all current ingress config 
-
 kubectl logs <pods_name> # Check if any error occurs when creating Pod.
-
 kubectl describe pod <pods_name> # Check pod configuration

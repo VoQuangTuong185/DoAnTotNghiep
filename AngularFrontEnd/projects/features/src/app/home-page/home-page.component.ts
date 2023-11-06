@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProductDTO } from '../data/ProductDTO.model';
-import { LoginService } from '../data/login.service';
+import { LoginService } from '../data/Login.service';
 import { User } from '../data/User.model';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { CoreConstants } from '../core/src/lib/core.constant';
 import { AddressService } from '../data/Address.service';
-import { AddCart } from '../data/addCart.model';
+import { AddCart } from '../data/AddCart.model';
 import { Router } from '@angular/router';
+import { CartService } from '../data/Cart.service';
 
 @Component({
   selector: 'app-home-page',
@@ -38,13 +39,15 @@ export class HomePageComponent {
   cloneDatProduct !: any[];
   visible: boolean = true;
   userRole!: string;
+  numberCart: number = 0;
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private loginService: LoginService,
     private addressService: AddressService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService,
   ) {
     this.responsiveOptions = [
       { breakpoint: '1024px', numVisible: 4, numScroll: 4 },
@@ -58,14 +61,9 @@ export class HomePageComponent {
         this.getAllProduct();
       }
     });
-    this.userRole = sessionStorage.getItem('userRole')!;
-    if (
-      localStorage.getItem('authToken') != null &&
-      localStorage.getItem('authToken') != 'null'
-    ) {
-      this.userData = JSON.parse(
-        window.atob(localStorage.getItem('authToken')!.split('.')[1])
-      );
+    this.userRole = localStorage.getItem('userRole')!;
+    if (localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null') {
+      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
       this.userData.isLoggedIn = true;
     }
     this.provices = [];
@@ -76,14 +74,14 @@ export class HomePageComponent {
     this.activeCate = this.lstCate[0];
   }
   getAllProduct() {
-    this.websiteAPIService.getAllProduct('user').subscribe((res: any) => {
+    this.websiteAPIService.getAllProduct().subscribe((res: any) => {
       this.unloginedDataProduct = res.data;
       this.loginedDataProduct = res.data;
       this.lstProduct = res.data
     });
   }
   getAllCategory() {
-    this.websiteAPIService.getAllCategory('user').subscribe((res: any) => {
+    this.websiteAPIService.getAllCategoryUser().subscribe((res: any) => {
       if (res.isSuccess === true) {
         this.lstCate = [
           {
@@ -106,7 +104,7 @@ export class HomePageComponent {
   }
   handleChangeCate(cateId: number) {
     if (cateId === -1) {
-      this.websiteAPIService.getAllProduct('user').subscribe((res: any) => {
+      this.websiteAPIService.getAllProduct().subscribe((res: any) => {
         this.lstProduct = res.data
       });
       return;
@@ -172,6 +170,7 @@ export class HomePageComponent {
           detail: res.message,
           life: 3000,
         });
+        this.cartService.passData(true);
         this.displayDetailPopup = false;
       } else {
         this.messageService.add({

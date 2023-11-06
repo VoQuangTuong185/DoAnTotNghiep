@@ -3,7 +3,7 @@ import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from '../data/User.model';
 import { CoreConstants } from '../core/src/lib/core.constant';
-import { CartDTO } from '../data/cartDTO.model';
+import { CartDTO } from '../data/CartDTO.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressService } from '../data/Address.service';
 import { UpdateCart } from '../data/UpdateCart.model';
