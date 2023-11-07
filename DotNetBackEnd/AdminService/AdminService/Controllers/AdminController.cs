@@ -676,5 +676,21 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
+        [HttpGet("get-feedback-by-productId")]
+        public async Task<ApiResult> GetFeedbackByProductId(int productId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.GetFeedbackByProductId(productId);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
     }
 }

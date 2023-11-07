@@ -34,27 +34,45 @@ export class ProductDetailComponent implements OnInit {
       this.getExistedProduct();
       this.getFeedbacks();
     });
-    this.userRole = localStorage.getItem('userRole')!;
   }
   ngOnInit(): void{
     this.responsiveOptions = [{ breakpoint: '1024px',  numVisible: 5 }, { breakpoint: '768px', numVisible: 3 }, { breakpoint: '560px', numVisible: 1 }];
   }
   getExistedProduct(){
-    this.websiteAPIService.getExistedProductUser(this.existedProductId).subscribe((result : any) => {
-      this.currentProduct = result.data;
-      let currentImageDetail = this.currentProduct.imageDetail || [];
-      currentImageDetail.unshift(this.currentProduct.image);
-      this.currentProduct.imageDetail = currentImageDetail;
-    });
+    this.userRole = localStorage.getItem('userRole')!;
+    if (this.userRole == 'admin'){
+      this.websiteAPIService.getExistedProductAdmin(this.existedProductId).subscribe((result : any) => {
+        this.currentProduct = result.data;
+        let currentImageDetail = this.currentProduct.imageDetail || [];
+        currentImageDetail.unshift(this.currentProduct.image);
+        this.currentProduct.imageDetail = currentImageDetail;
+      });
+    }
+    else {
+      this.websiteAPIService.getExistedProductUser(this.existedProductId).subscribe((result : any) => {
+        this.currentProduct = result.data;
+        let currentImageDetail = this.currentProduct.imageDetail || [];
+        currentImageDetail.unshift(this.currentProduct.image);
+        this.currentProduct.imageDetail = currentImageDetail;
+      });
+    }
   }
   createImgPath = (serverPath: string) => {
+    this.userRole = localStorage.getItem('userRole')!;
     let apiUrl = this.userRole == 'admin' ? CoreConstants.apiAdminURL() : CoreConstants.apiUrl();
     return apiUrl + `/${serverPath}`; 
   }
   getFeedbacks(){
-    this.websiteAPIService.getFeedbackByProductIdUser(this.existedProductId).subscribe((result : any) => {
-      this.feedbacks = result.data;
-    });
+    if (this.userRole == 'admin'){
+      this.websiteAPIService.getFeedbackByProductIdAdmin(this.existedProductId).subscribe((result : any) => {
+        this.feedbacks = result.data;
+      });
+    }
+    else {
+      this.websiteAPIService.getFeedbackByProductIdUser(this.existedProductId).subscribe((result : any) => {
+        this.feedbacks = result.data;
+      });
+    }
   }
   openAdminReplyPopup(){
     this.displayAdminReplyPopup = true;

@@ -628,7 +628,10 @@ namespace WebAppAPI.Services.Business
                                                           .Include(x => x.Feedbacks)
                                                           .FirstOrDefaultAsync();         
             var result = _mapper.Map<ProductDTOShow>(existedProduct);
-            result.AverageVote = (int)Math.Ceiling(existedProduct.Feedbacks.Select(x => x.Votes).Average());
+            if (existedProduct.Feedbacks.Any())
+            {
+                result.AverageVote = (int)Math.Ceiling(existedProduct.Feedbacks.Select(x => x.Votes).Average());
+            }
             return result;
         }
         public async Task<IEnumerable<Product>> GetAllProduct()
