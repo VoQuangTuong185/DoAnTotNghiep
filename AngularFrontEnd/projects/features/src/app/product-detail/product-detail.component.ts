@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { CoreConstants } from '../core/src/lib/core.constant';
+import { FeedbackDetailShow } from '../data/FeedbackDetailShow.model';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,6 +19,9 @@ export class ProductDetailComponent implements OnInit {
   @Output() valueChange = new EventEmitter<unknown>();
   quantityAddToCart: number = 1;
   userRole!: string;
+  feedbacks!: FeedbackDetailShow[];
+  displayAdminReplyPopup: boolean = false;
+  adminReplyContent!: string;
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
@@ -28,6 +32,7 @@ export class ProductDetailComponent implements OnInit {
     this.ActiveRoute.params.subscribe((params) =>{
       this.existedProductId = params['id'];
       this.getExistedProduct();
+      this.getFeedbacks();
     });
     this.userRole = localStorage.getItem('userRole')!;
   }
@@ -45,5 +50,16 @@ export class ProductDetailComponent implements OnInit {
   createImgPath = (serverPath: string) => {
     let apiUrl = this.userRole == 'admin' ? CoreConstants.apiAdminURL() : CoreConstants.apiUrl();
     return apiUrl + `/${serverPath}`; 
+  }
+  getFeedbacks(){
+    this.websiteAPIService.getFeedbackByProductIdUser(this.existedProductId).subscribe((result : any) => {
+      this.feedbacks = result.data;
+    });
+  }
+  openAdminReplyPopup(){
+    this.displayAdminReplyPopup = true;
+  }
+  hideAdminReplyPopup(){
+    this.displayAdminReplyPopup = false;
   }
 }

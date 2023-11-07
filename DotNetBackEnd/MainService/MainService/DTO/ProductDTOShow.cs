@@ -20,5 +20,6 @@ namespace WebAppAPI.DTO
         public virtual Category category { get; set; } = null;
         public virtual Brand brand { get; set; } = null;
         public virtual IList<Cart> P_carts { get; set; } = null;
+        public int AverageVote { get; set; }
     }
 }

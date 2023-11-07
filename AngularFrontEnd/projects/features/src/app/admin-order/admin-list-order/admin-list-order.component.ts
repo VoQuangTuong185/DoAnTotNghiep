@@ -176,7 +176,7 @@ export class AdminListOrderComponent implements OnInit {
 
   confirmSuccessOrder(orderId: string) {
     this.confirmationService.confirm({
-      message: 'Do you want to confirm?',
+      message: 'Xác nhận hoàn tất đơn hàng này?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.successOrder(orderId);

@@ -4,6 +4,7 @@ using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
 using CategoryService;
 using DoAnTotNghiep.DTO;
+using doantotnghiep.DTO;
 
 namespace WebAppAPI.Services.Model
 {

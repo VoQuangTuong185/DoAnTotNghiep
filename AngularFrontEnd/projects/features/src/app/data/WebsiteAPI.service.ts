@@ -45,6 +45,7 @@ export class WebsiteAPIService{
     private urlSearchProduct = 'search-product?keyWord=';
     private urlCreateFeedback = 'create-feedback';
     private urlgetAllCategoryUser = 'get-all-category?'; 
+    private urlgetFeedbackByProductId = 'get-feedback-by-productId?productId=';
 
     //admin service
     private urlCreateBrand = 'create-brand'; 
@@ -158,6 +159,9 @@ export class WebsiteAPIService{
     }
     getAllCategoryUser(){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllCategoryUser, {headers: this.httpHeaders});
+    }
+    getFeedbackByProductIdUser(productId: number){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetFeedbackByProductId + productId, {headers: this.httpHeaders});
     }
 
     //admin Service 

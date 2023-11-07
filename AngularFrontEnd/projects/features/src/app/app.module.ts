@@ -74,6 +74,65 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserGuard } from './core/src/lib/User.guard';
 import { CheckValidEmailService } from './data/CheckValidEmailService';
 import { CartService } from './data/Cart.service';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { BadgeModule } from 'primeng/badge';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { ChipModule } from 'primeng/chip';
+import { ChipsModule } from 'primeng/chips';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DataViewModule } from 'primeng/dataview';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { DividerModule } from 'primeng/divider';
+import { DockModule } from 'primeng/dock';
+import { DragDropModule } from 'primeng/dragdrop';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { FieldsetModule } from 'primeng/fieldset';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InplaceModule } from 'primeng/inplace';
+import { InputMaskModule } from 'primeng/inputmask';
+import { KnobModule } from 'primeng/knob';
+import { ListboxModule } from 'primeng/listbox';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { MenuModule } from 'primeng/menu';
+import { MenubarModule } from 'primeng/menubar';
+import { MessagesModule } from 'primeng/messages';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OrderListModule } from 'primeng/orderlist';
+import { OrganizationChartModule } from 'primeng/organizationchart';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PaginatorModule } from 'primeng/paginator';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { PickListModule } from 'primeng/picklist';
+import { RatingModule } from 'primeng/rating';
+import { ScrollerModule } from 'primeng/scroller';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SidebarModule } from 'primeng/sidebar';
+import { SkeletonModule } from 'primeng/skeleton';
+import { SlideMenuModule } from 'primeng/slidemenu';
+import { SliderModule } from 'primeng/slider';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { SpinnerModule } from 'primeng/spinner';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { SplitterModule } from 'primeng/splitter';
+import { StepsModule } from 'primeng/steps';
+import { TagModule } from 'primeng/tag';
+import { TerminalModule } from 'primeng/terminal';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+import { TimelineModule } from 'primeng/timeline';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
+import { TreeModule } from 'primeng/tree';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { TreeTableModule } from 'primeng/treetable';
+import { AnimateModule } from 'primeng/animate';
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -116,7 +175,6 @@ import { CartService } from './data/Cart.service';
     MessageModule,
     InputTextModule,
     RippleModule,
-    BrowserModule,
     TableModule,
     CalendarModule,
     DropdownModule,
@@ -141,7 +199,94 @@ import { CartService } from './data/Cart.service';
     GalleriaModule,
     MatRadioModule,
     InputSwitchModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DataViewModule,
+    AvatarGroupModule,
+    BrowserModule,
+    FormsModule,
+    AutoCompleteModule,
+    BadgeModule,
+    BreadcrumbModule,
+    BlockUIModule,
+    ButtonModule,
+    CalendarModule,
+    CarouselModule,
+    CascadeSelectModule,
+    CheckboxModule,
+    ChipsModule,
+    ChipModule,
+    ColorPickerModule,
+    ConfirmDialogModule,
+    ConfirmPopupModule,
+    ContextMenuModule,
+    VirtualScrollerModule,
+    DataViewModule,
+    DialogModule,
+    DividerModule,
+    DockModule,
+    DragDropModule,
+    DropdownModule,
+    DynamicDialogModule,
+    FieldsetModule,
+    FileUploadModule,
+    GalleriaModule,
+    InplaceModule,
+    InputMaskModule,
+    InputSwitchModule,
+    InputTextModule,
+    InputTextareaModule,
+    InputNumberModule,
+    ImageModule,
+    KnobModule,
+    ListboxModule,
+    MegaMenuModule,
+    MenuModule,
+    MenubarModule,
+    MessageModule,
+    MessagesModule,
+    MultiSelectModule,
+    OrganizationChartModule,
+    OrderListModule,
+    OverlayPanelModule,
+    PaginatorModule,
+    PanelModule,
+    PanelMenuModule,
+    PasswordModule,
+    PickListModule,
+    ProgressSpinnerModule,
+    ProgressBarModule,
+    RadioButtonModule,
+    RatingModule,
+    SelectButtonModule,
+    SidebarModule,
+    ScrollerModule,
+    ScrollPanelModule,
+    ScrollTopModule,
+    SkeletonModule,
+    SlideMenuModule,
+    SliderModule,
+    SpeedDialModule,
+    SpinnerModule,
+    SplitterModule,
+    SplitButtonModule,
+    StepsModule,
+    TableModule,
+    TabMenuModule,
+    TabViewModule,
+    TagModule,
+    TerminalModule,
+    TieredMenuModule,
+    TimelineModule,
+    ToastModule,
+    ToggleButtonModule,
+    ToolbarModule,
+    TooltipModule,
+    TriStateCheckboxModule,
+    TreeModule,
+    TreeSelectModule,
+    TreeTableModule,
+    AnimateModule,
+    CardModule,
   ],
   providers: [
     {
