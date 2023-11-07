@@ -48,3 +48,8 @@
     padding: 0.5rem;
     border-radius: 10px;
 }
+:host ::ng-deep {
+    .comments.mat-mdc-form-field{
+        width: 44vh;
+    }
+}

@@ -1,4 +1,5 @@
-﻿using DoAnTotNghiep.DTO;
+﻿using doantotnghiep.DTO;
+using DoAnTotNghiep.DTO;
 using DoAnTotNghiep.Models.Entities;
 using Optional;
 using WebAppAPI.DTO;
@@ -38,5 +39,6 @@ namespace WebAppAPI.Services.Contracts
         Task<ProductDTOShow> GetExistedProduct(int ProductId);
         Task<IEnumerable<Product>> GetAllProduct();
         Task<IEnumerable<Category>> GetAllCategory();
+        Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
     }
 }

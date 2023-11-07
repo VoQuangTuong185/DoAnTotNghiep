@@ -214,7 +214,7 @@ export class CartComponent implements OnInit {
       return;
     }
     this.confirmationService.confirm({
-      message: 'Are you sure to confirm order ?',
+      message: 'Xác nhận đặt hàng ?',
       header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

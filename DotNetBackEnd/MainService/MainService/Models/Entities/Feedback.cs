@@ -12,6 +12,8 @@ namespace WebAppAPI.Models.Entities
         public int OrderId { get; set; }
         public virtual Product product { get; set; }
         public virtual User users { get; set; }
+        public string? AdminReply { get; set; }
+        public DateTimeOffset? ReplyDate { get; set; }
 
     }
 }

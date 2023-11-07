@@ -24,6 +24,7 @@ using WebAppAPI.Services.Model;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using DoAnTotNghiep.Models.Entities;
+using doantotnghiep.DTO;
 
 namespace WebAppAPI.Services.Business
 {
@@ -624,8 +625,11 @@ namespace WebAppAPI.Services.Business
             var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
                                                           .Include(x => x.brand)
                                                           .Include(x => x.category)
-                                                          .FirstOrDefaultAsync();
-            return _mapper.Map<ProductDTOShow>(existedProduct);
+                                                          .Include(x => x.Feedbacks)
+                                                          .FirstOrDefaultAsync();         
+            var result = _mapper.Map<ProductDTOShow>(existedProduct);
+            result.AverageVote = (int)Math.Ceiling(existedProduct.Feedbacks.Select(x => x.Votes).Average());
+            return result;
         }
         public async Task<IEnumerable<Product>> GetAllProduct()
         {
@@ -639,6 +643,21 @@ namespace WebAppAPI.Services.Business
         public async Task<IEnumerable<Category>> GetAllCategory()
         {
             return await _unitOfWork.Repository<Category>().Get(x => x.IsActive).ToListAsync();
+        }
+        public async Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId)
+        {
+            var existedFeedbacks = await _unitOfWork.Repository<Feedback>().Get(x => x.ProductId == ProductId).Include(x => x.users).ToListAsync();
+            return existedFeedbacks.Select(x => new FeedbackShowDetail()
+            {
+                ProductId = x.ProductId,
+                UserId = x.UserId,
+                UserName = x.users.Name,
+                LoginName = x.users.LoginName,
+                Comments = x.Comments,
+                Votes = x.Votes,
+                OrderId = x.OrderId,
+                CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
+            }).ToList();
         }
         #endregion
     }
