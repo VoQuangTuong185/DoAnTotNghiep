@@ -39,9 +39,7 @@
           <td>{{ product.quantity }}</td>
           <td>{{ product.discount }} %</td>
           <td>
-            {{
-              getTotalMoney(product.price, product.quantity, product.discount) | currency : "VND"
-            }}
+            {{ getTotalMoney(product.price, product.quantity, product.discount) | currency : "VND" }}
           </td>
         </tr>
       </ng-template>

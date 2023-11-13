@@ -22,6 +22,7 @@ export class ProductDetailComponent implements OnInit {
   feedbacks!: FeedbackDetailShow[];
   displayAdminReplyPopup: boolean = false;
   adminReplyContent!: string;
+  currentFeedback!: FeedbackDetailShow;
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
@@ -74,10 +75,34 @@ export class ProductDetailComponent implements OnInit {
       });
     }
   }
-  openAdminReplyPopup(){
+  openAdminReplyPopup(feedback: FeedbackDetailShow){
+    this.currentFeedback = feedback;
     this.displayAdminReplyPopup = true;
+    console.log(this.currentFeedback.adminReply)
+    this.adminReplyContent = this.currentFeedback.adminReply || '';
   }
   hideAdminReplyPopup(){
     this.displayAdminReplyPopup = false;
+  }
+  sumbitAdminReply(){
+    if(this.adminReplyContent == '' || this.adminReplyContent == undefined || (this.adminReplyContent != undefined && this.adminReplyContent.trimStart() == '')){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập nội dung phản hồi!',
+      });
+      return;
+    }
+    this.currentFeedback.adminReply = this.adminReplyContent;
+    this.websiteAPIService.replyFeedback(this.currentFeedback).subscribe((res: any) => {
+      if (res.data) 
+        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});
+      else 
+        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
+      
+      this.displayAdminReplyPopup = false;
+      this.getExistedProduct();
+    });
   }
 }

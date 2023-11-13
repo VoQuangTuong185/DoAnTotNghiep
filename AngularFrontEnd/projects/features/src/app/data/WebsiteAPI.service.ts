@@ -12,6 +12,7 @@ import { CartDTO } from './CartDTO.model';
 import { CreateOrder } from './CreateOrder.model';
 import { UpdateCart } from './UpdateCart.model';
 import { FeedbackDTO } from './FeedbackDTO.model.js';
+import { FeedbackDetailShow } from './FeedbackDetailShow.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -70,6 +71,7 @@ export class WebsiteAPIService{
     private urlGetSuccessOrder = 'get-success-order';
     private urlGetCancelOrder = 'get-cancel-order';
     private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
+    private urlReplyFeedback = 'reply-feedback'; 
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -257,5 +259,8 @@ export class WebsiteAPIService{
     }
     getFeedbackByProductIdAdmin(productId: number){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetFeedbackByProductId + productId, {headers: this.httpHeaders});
+    }
+    replyFeedback(feedback: FeedbackDetailShow){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlReplyFeedback, feedback);
     }
 }

@@ -692,5 +692,31 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
+        [HttpPost("reply-feedback")]
+        public async Task<ApiResult> ReplyFeedback(FeedbackShowDetail feedback)
+        {
+            var result = new ApiResult();
+            try
+            {
+                (await _IAdminService.ReplyFeedback(feedback)).Match(res =>
+                {
+                    result.Message = "Phản hồi đánh giá thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
     }
 }

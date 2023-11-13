@@ -3,7 +3,7 @@ using WebAppAPI.Models.Bases;
 
 namespace WebAppAPI.Models.Entities
 {
-    public class Feedback : BaseEntity
+    public class Feedback : DbEntity
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }
@@ -12,8 +12,11 @@ namespace WebAppAPI.Models.Entities
         public int OrderId { get; set; }
         public virtual Product product { get; set; }
         public virtual User users { get; set; }
+        public virtual Order orders { get; set; }
         public string? AdminReply { get; set; }
         public DateTimeOffset? ReplyDate { get; set; }
-
+        public DateTimeOffset CreatedDate { get; set; }
+        public bool IsActive { get; set; } = true;
+        public DateTimeOffset? UpdatedDate { get; set; }
     }
 }

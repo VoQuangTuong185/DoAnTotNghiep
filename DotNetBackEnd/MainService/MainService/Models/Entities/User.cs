@@ -22,5 +22,6 @@ namespace WebAppAPI.Models.Entities
         public virtual List<UserAPI>? UserAPIs { get; set; }
         public virtual List<Cart>? U_carts { get; set; }
         public virtual List<Order>? orders { get; set; }
+        public virtual List<Feedback>? feedbacks { get; set; }
     }
 }

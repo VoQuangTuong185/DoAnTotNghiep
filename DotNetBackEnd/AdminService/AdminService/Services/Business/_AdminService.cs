@@ -203,12 +203,12 @@ namespace WebAppAPI.Services.Business
             var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
                                                           .Include(x => x.brand)
                                                           .Include(x => x.category)
-                                                          .Include(x => x.Feedbacks)
+                                                          .Include(x => x.feedbacks)
                                                           .FirstOrDefaultAsync();
             var result = _mapper.Map<ProductDTOShow>(existedProduct);
-            if (existedProduct.Feedbacks.Any())
+            if (existedProduct.feedbacks.Any())
             {
-                result.AverageVote = (int)Math.Ceiling(existedProduct.Feedbacks.Select(x => x.Votes).Average());
+                result.AverageVote = (int)Math.Ceiling(existedProduct.feedbacks.Select(x => x.Votes).Average());
             }
             return result;
         }
@@ -588,8 +588,10 @@ namespace WebAppAPI.Services.Business
                 Comments = x.Comments,
                 Votes = x.Votes,
                 OrderId = x.OrderId,
+                AdminReply = x.AdminReply,
                 CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
-            }).ToList();
+                ReplyDate = x.ReplyDate
+            }).OrderByDescending(x => x.CreatedDate).ToList();
         }
         public async Task<string> ForgetPassword(string email)
         {
@@ -602,6 +604,28 @@ namespace WebAppAPI.Services.Business
                 _messageBusClient.PublishMail(mailInformation);
             }
             return confirmCode;
+        }
+        public async Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback)
+        {
+            return await(feedback)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    var replyFeedback = await _unitOfWork.Repository<Feedback>()
+                        .FirstOrDefaultAsync(x => x.UserId == feedback.UserId && x.OrderId == feedback.OrderId && x.ProductId == feedback.ProductId);
+
+                    if (replyFeedback == null)
+                        return Option.None<bool, string>("Không tìm thấy đánh giá này!");
+
+                    replyFeedback.AdminReply = feedback.AdminReply;
+                    replyFeedback.ReplyDate = DateTime.UtcNow;
+
+                    _unitOfWork.Repository<Feedback>().Update(replyFeedback);
+                    if (await _unitOfWork.SaveChangesAsync())
+                        return Option.Some<bool, string>(true);
+
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                });
         }
         #region Private
         string handlePayment(string payment)

@@ -24,7 +24,6 @@ namespace WebAppAPI.Services.Model
             CreateMap<Product, ProductDTOShow>().
                 AfterMap((des, source) => source.ImageDetail = des.ImageDetail?.Split(','));
             CreateMap<FeedbackDTO, Feedback>()
-                .ForMember(des => des.Id, s => s.MapFrom(x => 0))
                 .ForMember(des => des.CreatedDate, s => s.MapFrom(x => DateTime.UtcNow))
                 .ForMember(des => des.UpdatedDate, s => s.MapFrom(x => DateTime.UtcNow));
         }

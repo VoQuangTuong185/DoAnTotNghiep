@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="obj\**" />
+    <Content Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EASendMail" Version="7.9.1.1" />
     <PackageReference Include="FluentAssertions.Json" Version="6.1.0" />
     <PackageReference Include="FluentValidation" Version="11.4.0" />

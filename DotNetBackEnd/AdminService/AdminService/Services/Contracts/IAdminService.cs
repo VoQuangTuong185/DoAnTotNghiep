@@ -43,5 +43,6 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> SuccessOrder(int orderId);
         Task<Option<bool, string>> ConfirmOrder(int orderId);
         Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
+        Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback);
     }
 }
