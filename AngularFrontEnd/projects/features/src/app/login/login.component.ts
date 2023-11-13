@@ -95,7 +95,7 @@ export class LoginComponent {
             key: 'bc',
             severity: 'error',
             summary: 'Lỗi',
-            detail: res.message,
+            detail: res.data,
           });
         }
       });

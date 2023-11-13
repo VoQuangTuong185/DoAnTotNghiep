@@ -26,24 +26,17 @@ namespace WebAppAPI.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
-        private readonly IUserService _userService;
+        private readonly IAdminService _AdminService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ILog _ILog;
-        public AuthController(IConfiguration configuration, IUserService userService, IUnitOfWork unitOfWork, ILogger<AuthController> logger, IHttpContextAccessor httpContextAccessor)
+        public AuthController(IConfiguration configuration, IAdminService AdminService, IUnitOfWork unitOfWork, ILogger<AuthController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
-            _userService = userService;
+            _AdminService = AdminService;
             _unitOfWork = unitOfWork;
             //Get the Singleton Log Instance
             _ILog = Log.GetInstance;
             _httpContextAccessor = httpContextAccessor;
-        }
-        [HttpGet]
-        [Authorize]
-        public string GetMe()
-        {
-            var userName = _userService.GetMyName();
-            return userName;
         }
         [HttpPost("check-valid-token")]
         public async Task<ApiResult> RefreshToken([FromBody] string LoginName)
@@ -89,21 +82,6 @@ namespace WebAppAPI.Controllers
                     result.IsSuccess = false;
                     result.HttpStatusCode = 401;
                 }
-            }
-            catch (Exception ex)
-            {
-                result.IsSuccess = false;
-                _ILog.LogException(ex.Message);
-            }
-            return result;
-        }
-        [HttpPost("register")]
-        public async Task<ApiResult> Register(RegisterUserOldDTO request)
-        {
-            var result = new ApiResult();
-            try
-            {
-                result.Data = await _userService.RegisterUser(request);
             }
             catch (Exception ex)
             {
@@ -162,6 +140,52 @@ namespace WebAppAPI.Controllers
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpGet("send-forget-code")]
+        public async Task<ApiResult> ForgetPassword(string email)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _AdminService.ForgetPassword(email);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpPost("change-password")]
+        public async Task<ApiResult> ChangePassword(LoginUserDTO user)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _AdminService.ChangePassword(user);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpGet("get-info-user")]
+        public async Task<ApiResult> GetInfoUser(int userId)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _AdminService.GetInfoUser(userId);
             }
             catch (Exception ex)
             {

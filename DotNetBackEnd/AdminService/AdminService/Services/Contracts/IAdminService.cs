@@ -9,6 +9,12 @@ namespace WebAppAPI.Services.Contracts
 {
     public interface IAdminService
     {
+        Task<string> ForgetPassword(string email);
+        Task<bool> ChangePassword(LoginUserDTO user);
+        Task<UserProfile> GetInfoUser(int userId);
+        Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId);
+        Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId);
+        Task<List<SearchProduct>> SearchProduct(string keyWord);
         Task<IEnumerable<UserDTO>> GetUsers();
         Task<bool> ActiveOrInActiveUser(string loginName);
         Task<Option<bool, string>> EditUser(UserAdminDTO user);
@@ -24,7 +30,6 @@ namespace WebAppAPI.Services.Contracts
         Task<ProductDTOShow> GetExistedProduct(int ProductId);
         Task<Option<bool, string>> CreateBrand(CreateBrandDTO brand);
         Task<Option<bool, string>> UpdateBrand(BrandDTO brand);
-        Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryId);
         Task<IEnumerable<OrderDTO>> GetWaitingOrder();
         Task<IEnumerable<OrderDTO>> GetProcessingOrder();
         Task<IEnumerable<OrderDTO>> GetSuccessOrder();
@@ -34,10 +39,10 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> UpdateCategory(Category category);
         Category GetCategoryById(int id);
         Task<Option<bool, string>> InactiveCategory(int categoryId);
-        Task<IEnumerable<OrderDetailDTO>> GetAllProductByOrderID(int orderId);
-        Task<List<SearchProduct>> SearchProduct(string keyWord);
         Task<Option<bool, string>> CancelOrder(int orderId);
         Task<Option<bool, string>> SuccessOrder(int orderId);
         Task<Option<bool, string>> ConfirmOrder(int orderId);
+        Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
+        Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback);
     }
 }

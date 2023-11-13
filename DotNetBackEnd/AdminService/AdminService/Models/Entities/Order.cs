@@ -13,5 +13,6 @@ namespace WebAppAPI.Models.Entities
         public string Payment { get; set; }
         public virtual User? user { get; set; }
         public virtual List<OrderDetail> orderDetails { get; set; }
+        public ICollection<Feedback> feedbacks { get; set; } = new List<Feedback>();
     }
 }

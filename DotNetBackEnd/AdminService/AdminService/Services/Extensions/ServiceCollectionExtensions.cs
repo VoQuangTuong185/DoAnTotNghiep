@@ -7,7 +7,6 @@ namespace RBVH.HRL.Services.Extensions
     {
         public static void AddAPIServices(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, _UserService>();
             services.AddScoped<IAdminService, _AdminService>();           
         }
     }

@@ -10,6 +10,7 @@
         public int Votes { get; set; }
         public int OrderId { get; set; }
         public DateTimeOffset? CreatedDate { get; set; }
+        public string? AdminReply { get; set; }
     }
 }
 

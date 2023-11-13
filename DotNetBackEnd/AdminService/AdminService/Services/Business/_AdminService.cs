@@ -14,6 +14,7 @@ using AdminService.DTO;
 using Nest;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
 using DoAnTotNghiep.DTOM;
+using System.Security.Cryptography;
 
 namespace WebAppAPI.Services.Business
 {
@@ -23,14 +24,12 @@ namespace WebAppAPI.Services.Business
         private readonly ILogger<_AdminService> _logger;
         private readonly IMapper _mapper;
         private readonly IMessageBusClient _messageBusClient;
-        private readonly IUserService _IUserService;
-        public _AdminService(IUnitOfWork unitOfWork, ILogger<_AdminService> logger, IMapper mapper, IMessageBusClient messageBusClient, IUserService userService)
+        public _AdminService(IUnitOfWork unitOfWork, ILogger<_AdminService> logger, IMapper mapper, IMessageBusClient messageBusClient)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
             _messageBusClient = messageBusClient;
-            _IUserService = userService;
         }
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
@@ -204,8 +203,14 @@ namespace WebAppAPI.Services.Business
             var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
                                                           .Include(x => x.brand)
                                                           .Include(x => x.category)
+                                                          .Include(x => x.feedbacks)
                                                           .FirstOrDefaultAsync();
-            return _mapper.Map<ProductDTOShow>(existedProduct);
+            var result = _mapper.Map<ProductDTOShow>(existedProduct);
+            if (existedProduct.feedbacks.Any())
+            {
+                result.AverageVote = (int)Math.Ceiling(existedProduct.feedbacks.Select(x => x.Votes).Average());
+            }
+            return result;
         }
         public async Task<IEnumerable<Brand>> GetAllBrand(string type)
         {
@@ -571,6 +576,57 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
+        public async Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId)
+        {
+            var existedFeedbacks = await _unitOfWork.Repository<Feedback>().Get(x => x.ProductId == ProductId).Include(x => x.users).ToListAsync();
+            return existedFeedbacks.Select(x => new FeedbackShowDetail()
+            {
+                ProductId = x.ProductId,
+                UserId = x.UserId,
+                UserName = x.users.Name,
+                LoginName = x.users.LoginName,
+                Comments = x.Comments,
+                Votes = x.Votes,
+                OrderId = x.OrderId,
+                AdminReply = x.AdminReply,
+                CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
+                ReplyDate = x.ReplyDate
+            }).OrderByDescending(x => x.CreatedDate).ToList();
+        }
+        public async Task<string> ForgetPassword(string email)
+        {
+            var existedUser = _unitOfWork.Repository<User>().Any(x => x.Email.ToUpper().TrimStart().TrimEnd() == email.ToUpper().TrimStart().TrimEnd() && x.IsActive);
+            string confirmCode = string.Empty;
+            if (existedUser)
+            {
+                confirmCode = Get8CharacterRandomString();
+                var mailInformation = new MailPublishedDto("ConfirmForgetPassword", string.Empty, email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN QUÊN MẬT KHẨU", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
+                _messageBusClient.PublishMail(mailInformation);
+            }
+            return confirmCode;
+        }
+        public async Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback)
+        {
+            return await(feedback)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    var replyFeedback = await _unitOfWork.Repository<Feedback>()
+                        .FirstOrDefaultAsync(x => x.UserId == feedback.UserId && x.OrderId == feedback.OrderId && x.ProductId == feedback.ProductId);
+
+                    if (replyFeedback == null)
+                        return Option.None<bool, string>("Không tìm thấy đánh giá này!");
+
+                    replyFeedback.AdminReply = feedback.AdminReply;
+                    replyFeedback.ReplyDate = DateTime.UtcNow;
+
+                    _unitOfWork.Repository<Feedback>().Update(replyFeedback);
+                    if (await _unitOfWork.SaveChangesAsync())
+                        return Option.Some<bool, string>(true);
+
+                    return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
+                });
+        }
         #region Private
         string handlePayment(string payment)
         {
@@ -589,6 +645,55 @@ namespace WebAppAPI.Services.Business
                     break;
             }
             return paymentMethod;
+        }
+        public string Get8CharacterRandomString()
+        {
+            string path = Path.GetRandomFileName();
+            path = path.Replace(".", ""); // Remove period.
+            return path.Substring(0, 6);  // Return 6 character string
+        }
+        public async Task<bool> ChangePassword(LoginUserDTO user)
+        {
+            CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd() && x.IsActive);
+            existedUser.PasswordHash = passwordHash;
+            existedUser.PasswordSalt = passwordSalt;
+            _unitOfWork.Repository<User>().Update(existedUser);
+            bool IsChangePassword = _unitOfWork.SaveChanges();
+            if (IsChangePassword)
+            {
+                var mailInformation = new MailPublishedDto("ConfirmChangePassword", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN THAY ĐỔI MẬT KHẨU", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                _messageBusClient.PublishMail(mailInformation);
+            }
+            return IsChangePassword;
+        }
+        public async Task<UserProfile> GetInfoUser(int userId)
+        {
+            var result = new UserProfile();
+            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == userId);
+            result.Id = existedUser.Id;
+            result.Name = existedUser.Name;
+            result.LoginName = existedUser.LoginName;
+            result.Email = existedUser.Email;
+            result.TelNum = existedUser.TelNum;
+            string[] splitAdress = existedUser.Address.Split(", ");
+            string[] splitAdressCode = existedUser.AddressCode.Split(", ");
+            result.Streets = splitAdress[0];
+            result.Wards = splitAdress[1];
+            result.Districts = splitAdress[2];
+            result.Provinces = splitAdress[3];
+            result.WardCode = int.Parse(splitAdressCode[0]);
+            result.DistrictCode = int.Parse(splitAdressCode[1]);
+            result.ProvinceCode = int.Parse(splitAdressCode[2]);
+            return result;
+        }
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
         #endregion
     }

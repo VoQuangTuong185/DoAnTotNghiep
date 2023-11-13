@@ -97,11 +97,14 @@ namespace DoAnTotNghiep.Migrations
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Feedback", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<string>("AdminReply")
                         .HasColumnType("nvarchar(max)");
@@ -115,29 +118,20 @@ namespace DoAnTotNghiep.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset?>("ReplyDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset?>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Votes")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "OrderId", "ProductId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -382,17 +376,25 @@ namespace DoAnTotNghiep.Migrations
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Feedback", b =>
                 {
+                    b.HasOne("WebAppAPI.Models.Entities.Order", "orders")
+                        .WithMany("feedbacks")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("WebAppAPI.Models.Entities.Product", "product")
-                        .WithMany("Feedbacks")
+                        .WithMany("feedbacks")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAppAPI.Models.Entities.User", "users")
-                        .WithMany()
+                        .WithMany("feedbacks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("orders");
 
                     b.Navigation("product");
 
@@ -469,14 +471,16 @@ namespace DoAnTotNghiep.Migrations
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Order", b =>
                 {
+                    b.Navigation("feedbacks");
+
                     b.Navigation("orderDetails");
                 });
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Product", b =>
                 {
-                    b.Navigation("Feedbacks");
-
                     b.Navigation("P_carts");
+
+                    b.Navigation("feedbacks");
                 });
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Role", b =>
@@ -489,6 +493,8 @@ namespace DoAnTotNghiep.Migrations
                     b.Navigation("U_carts");
 
                     b.Navigation("UserAPIs");
+
+                    b.Navigation("feedbacks");
 
                     b.Navigation("orders");
                 });

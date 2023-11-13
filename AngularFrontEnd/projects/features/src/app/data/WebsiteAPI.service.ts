@@ -12,6 +12,7 @@ import { CartDTO } from './CartDTO.model';
 import { CreateOrder } from './CreateOrder.model';
 import { UpdateCart } from './UpdateCart.model';
 import { FeedbackDTO } from './FeedbackDTO.model.js';
+import { FeedbackDetailShow } from './FeedbackDetailShow.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -70,6 +71,7 @@ export class WebsiteAPIService{
     private urlGetSuccessOrder = 'get-success-order';
     private urlGetCancelOrder = 'get-cancel-order';
     private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
+    private urlReplyFeedback = 'reply-feedback'; 
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -101,7 +103,8 @@ export class WebsiteAPIService{
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlUpdateProfile, user);
     }
     getInfoUser(userId : number){
-        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlGetInfoUser + userId, {headers: this.httpHeaders});
+        let apiUrl = localStorage.getItem('userRole') == 'admin' ?  Constant.libraryAdminApiUrlAuth() : Constant.libraryApiUrlUser();
+        return this.http.get<any>(apiUrl + this.urlGetInfoUser + userId, {headers: this.httpHeaders});
     }
     getAllProduct(){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllProduct, {headers: this.httpHeaders});
@@ -253,5 +256,11 @@ export class WebsiteAPIService{
     }
     successOrderAdmin(orderId: number){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
+    }
+    getFeedbackByProductIdAdmin(productId: number){
+        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetFeedbackByProductId + productId, {headers: this.httpHeaders});
+    }
+    replyFeedback(feedback: FeedbackDetailShow){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlReplyFeedback, feedback);
     }
 }

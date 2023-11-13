@@ -7,5 +7,4 @@ export class Constant{
 
     public static apiAdminURL = () => `${CoreConstants.apiAdminURL()}`
     public static libraryAdminApiUrlAuth = () => `${Constant.apiAdminURL()}/api/Auth/`
-    public static libraryApiUrlCategory = () => `${Constant.apiAdminURL()}/api/Category/`
 }

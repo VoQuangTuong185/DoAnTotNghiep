@@ -8,4 +8,6 @@ export interface FeedbackDetailShow {
     votes: number;
     orderId: number;
     createdDate?: Date;
+    adminReply?: string;
+    replyDate?: Date;
 }

@@ -625,10 +625,13 @@ namespace WebAppAPI.Services.Business
             var existedProduct = await _unitOfWork.Repository<Product>().Get(x => x.Id == ProductId)
                                                           .Include(x => x.brand)
                                                           .Include(x => x.category)
-                                                          .Include(x => x.Feedbacks)
+                                                          .Include(x => x.feedbacks)
                                                           .FirstOrDefaultAsync();         
             var result = _mapper.Map<ProductDTOShow>(existedProduct);
-            result.AverageVote = (int)Math.Ceiling(existedProduct.Feedbacks.Select(x => x.Votes).Average());
+            if (existedProduct.feedbacks.Any())
+            {
+                result.AverageVote = (int)Math.Ceiling(existedProduct.feedbacks.Select(x => x.Votes).Average());
+            }
             return result;
         }
         public async Task<IEnumerable<Product>> GetAllProduct()
@@ -657,7 +660,7 @@ namespace WebAppAPI.Services.Business
                 Votes = x.Votes,
                 OrderId = x.OrderId,
                 CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
-            }).ToList();
+            }).OrderByDescending(x => x.CreatedDate).ToList();
         }
         #endregion
     }
