@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppAPI.Data;
 
@@ -11,9 +12,10 @@ using WebAppAPI.Data;
 namespace DoAnTotNghiep.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231115151754_add-discount-column-to-orderdetails-table")]
+    partial class adddiscountcolumntoorderdetailstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,28 +48,6 @@ namespace DoAnTotNghiep.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("doantotnghiep.Models.Entities.VIP", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Discount")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PriceFrom")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PriceTo")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VIPs");
                 });
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Brand", b =>
@@ -327,12 +307,7 @@ namespace DoAnTotNghiep.Migrations
                     b.Property<DateTime>("TokenExpires")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("vipsId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("vipsId");
 
                     b.ToTable("Users");
                 });
@@ -461,15 +436,6 @@ namespace DoAnTotNghiep.Migrations
                     b.Navigation("category");
                 });
 
-            modelBuilder.Entity("WebAppAPI.Models.Entities.User", b =>
-                {
-                    b.HasOne("doantotnghiep.Models.Entities.VIP", "vips")
-                        .WithMany("users")
-                        .HasForeignKey("vipsId");
-
-                    b.Navigation("vips");
-                });
-
             modelBuilder.Entity("WebAppAPI.Models.Entities.UserAPI", b =>
                 {
                     b.HasOne("WebAppAPI.Models.Entities.Role", "role")
@@ -501,11 +467,6 @@ namespace DoAnTotNghiep.Migrations
             modelBuilder.Entity("DoAnTotNghiep.Models.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("doantotnghiep.Models.Entities.VIP", b =>
-                {
-                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Brand", b =>

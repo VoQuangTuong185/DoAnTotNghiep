@@ -133,6 +133,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { AnimateModule } from 'primeng/animate';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { VipComponent } from './vip/vip.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -153,7 +154,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     AdminListOrderComponent,
     FooterComponent,
     AdminBrandComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    VipComponent
   ],
   imports: [
     BrowserModule,

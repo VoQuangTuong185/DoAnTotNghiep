@@ -117,7 +117,7 @@ namespace WebAppAPI.Controllers
                 {
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
-                    result.Data =  "Không tìm thấy tài khoản";
+                    result.Message =  "Không tìm thấy tài khoản";
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace WebAppAPI.Controllers
                     {
                         result.IsSuccess = false;
                         result.HttpStatusCode = 400;
-                        result.Data = "Sai mật khẩu";
+                        result.Message = "Sai mật khẩu";
                     }
                     else
                     {
@@ -153,6 +153,7 @@ namespace WebAppAPI.Controllers
                             SetRefreshToken(refreshToken);
                             result.Data = token;
                             result.IsSuccess = true;
+                            result.Message = "Đăng nhập thành công, đang chuyển hướng đến trang chủ";
                         }
                     }
                 }

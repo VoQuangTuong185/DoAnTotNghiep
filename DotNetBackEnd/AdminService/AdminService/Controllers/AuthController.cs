@@ -38,6 +38,21 @@ namespace WebAppAPI.Controllers
             _ILog = Log.GetInstance;
             _httpContextAccessor = httpContextAccessor;
         }
+        [HttpPost("check-existed-and-send-confirm-mail")]
+        public async Task<ApiResult> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _AdminService.CheckExistedAndSendConfirmMail(user);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
         [HttpPost("check-valid-token")]
         public async Task<ApiResult> RefreshToken([FromBody] string LoginName)
         {
@@ -101,7 +116,7 @@ namespace WebAppAPI.Controllers
                 {
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
-                    result.Data =  "Không tìm thấy tài khoản";
+                    result.Message =  "Không tìm thấy tài khoản";
                 }
                 else
                 {
@@ -112,7 +127,7 @@ namespace WebAppAPI.Controllers
                     {
                         result.IsSuccess = false;
                         result.HttpStatusCode = 400;
-                        result.Data = "Sai mật khẩu";
+                        result.Message = "Sai mật khẩu";
                     }
                     else
                     {
@@ -137,6 +152,7 @@ namespace WebAppAPI.Controllers
                             SetRefreshToken(refreshToken);
                             result.Data = token;
                             result.IsSuccess = true;
+                            result.Message = "Đăng nhập thành công, đang chuyển hướng đến trang chủ";
                         }
                     }
                 }

@@ -31,6 +31,23 @@ namespace WebAppAPI.Services.Business
             _mapper = mapper;
             _messageBusClient = messageBusClient;
         }
+        public async Task<string> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
+        {
+            bool existedUser = _unitOfWork.Repository<User>().Any(x => (x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd()
+                                                                        || x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd()) && x.IsActive);
+            string confirmCode = string.Empty;
+            if (!existedUser)
+            {
+                confirmCode = Get8CharacterRandomString();
+                var mailInformation = new MailPublishedDto("ConfirmRegister", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN ĐĂNG KÝ TÀI KHOẢN", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
+                _messageBusClient.PublishMail(mailInformation);
+            }
+            else
+            {
+                confirmCode = "existed";
+            }
+            return confirmCode;
+        }
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var result = Enumerable.Empty<UserDTO>();
@@ -428,12 +445,12 @@ namespace WebAppAPI.Services.Business
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedCategory = _unitOfWork.Repository<Product>().FirstOrDefault(x => x.Id == categoryId);
+                    var existedCategory = _unitOfWork.Repository<Category>().FirstOrDefault(x => x.Id == categoryId);
                     if (existedCategory != null)
                     {
                         existedCategory.IsActive = !existedCategory.IsActive;
                     }
-                    _unitOfWork.Repository<Product>().Update(existedCategory);
+                    _unitOfWork.Repository<Category>().Update(existedCategory);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
                         return Option.Some<bool, string>(true);
@@ -455,7 +472,7 @@ namespace WebAppAPI.Services.Business
                                          ProductName = prData.ProductName,
                                          Image = prData.Image,
                                          Price = orData.or.Price,
-                                         Discount = prData.Discount,
+                                         Discount = orData.or.Discount,
                                          Quantity = orData.or.Quantity,
                                      }).ToList();
             var result = secondJoin.GroupJoin(feedbacks,

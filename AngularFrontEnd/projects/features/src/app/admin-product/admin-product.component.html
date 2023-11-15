@@ -43,6 +43,7 @@
                                 <span *ngSwitchCase="'money'" pTooltip="{{rowData[col.field] | number}}" tooltipPosition="bottom">{{ rowData[col.field] | number }}</span> 
                                 <span *ngSwitchCase="'percent'" pTooltip="{{rowData[col.field]}}%" tooltipPosition="bottom">{{ rowData[col.field] }}%</span> 
                                 <span *ngSwitchCase="'date'" pTooltip="{{rowData[col.field] | date: 'hh:mm:ss a, dd/MM/yyyy'}}" tooltipPosition="bottom">{{ rowData[col.field] | date: 'hh:mm:ss a, dd/MM/yyyy' }}</span> 
+                                <span *ngSwitchCase="'boolean'" pTooltip="{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}" tooltipPosition="bottom">{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}</span> 
                                 <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{ rowData[col.field] }}</span> 
                             </span>                   
                             </td>

@@ -33,7 +33,7 @@ export class AdminCategoryComponent {
       { header : 'Hình ảnh', field : 'image', width:15, type:'image'},
       { header : 'Danh mục', field : 'categoryName', width:23, type:'string'},
       { header : 'Mô tả', field : 'description', width:35, type:'string'},   
-      { header : 'Trạng thái', field : 'isActive', width:10, type:'string'},    
+      { header : 'Trạng thái', field : 'isActive', width:10, type:'boolean'},    
       { header : 'Thao tác', field : 'button', width:20, type:'button'},   
       ];
       this.categoryForm = this.createEmptyUserForm();

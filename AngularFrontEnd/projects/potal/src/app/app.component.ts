@@ -64,7 +64,6 @@ export class AppComponent implements OnInit {
   ) {
     this.subscription = cartService.cartCount$.subscribe((value) => {    
       if (value) {
-        console.log(value)
         this.getCartByUserID();
       }
     });

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core/src/lib/Auth.guard';
 import { CartComponent } from '../cart/cart.component';
 import { OrderComponent } from '../order/order.component';
+import { VipComponent } from '../vip/vip.component';
 const UserRoutes: Routes = [
   {
     path: '',
@@ -18,6 +19,10 @@ const UserRoutes: Routes = [
     path: 'order',
     component: OrderComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'vip',
+    component: VipComponent,
   },
 ];
 
