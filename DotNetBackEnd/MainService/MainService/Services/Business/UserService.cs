@@ -309,7 +309,8 @@ namespace WebAppAPI.Services.Business
                             insertOderDtail.ProductId = x.ProductId;
                             insertOderDtail.Price = x.product.Price;
                             insertOderDtail.OrderId = recentlyOrder.Id;
-                            insertOderDtail.Quantity = x.Quantity;                           
+                            insertOderDtail.Quantity = x.Quantity;
+                            insertOderDtail.Discount = x.product.Discount;
                             if (existedProduct != null)
                             {
                                 existedProduct.Quanity = existedProduct.Quanity - x.Quantity;
@@ -429,7 +430,7 @@ namespace WebAppAPI.Services.Business
                                         ProductName = prData.ProductName,
                                         Image = prData.Image,
                                         Price = orData.or.Price,
-                                        Discount = prData.Discount,
+                                        Discount = orData.or.Discount,
                                         Quantity = orData.or.Quantity,
                                      }).ToList();
             var result = secondJoin.GroupJoin(feedbacks,

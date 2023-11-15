@@ -86,7 +86,7 @@ export class LoginComponent {
             key: 'bc',
             severity: 'success',
             summary: '',
-            detail: 'Đăng nhập thành công, đang chuyển hướng đến trang chủ...',
+            detail: res.message,
           });
           let navigateURL = this.userRole == 'user' ? 'home-page' : 'admin/admin-category';
           setTimeout(()=>{ this.router.navigate([navigateURL]); })          
@@ -95,7 +95,7 @@ export class LoginComponent {
             key: 'bc',
             severity: 'error',
             summary: 'Lỗi',
-            detail: res.data,
+            detail: res.message,
           });
         }
       });

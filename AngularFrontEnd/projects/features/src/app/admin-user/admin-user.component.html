@@ -33,6 +33,7 @@
                                         (click)="setManagerPermisson(rowData)" [pTooltip]="handleTooltipSetManager(rowData)"></button>
                                     </td> 
                                 </span>
+                                <span *ngSwitchCase="'boolean'" pTooltip="{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}" tooltipPosition="bottom">{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}</span>
                                 <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom" >{{ rowData[col.field] }}</span> 
                             </span>                   
                             </td>

@@ -2,14 +2,14 @@
   <div class="block">
       <div>
           <div class="menu">
-              <nav *ngIf="currentTab?.includes('admin') || currentTab?.includes('product-detail')" class="routing">
+              <nav *ngIf="currentTab?.includes('admin')" class="routing">
                   <a [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>                 
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-category']" routerLinkActive="active"><b>Danh mục</b></a>
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Nhãn hàng</b></a>
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>Tài khoản</b></a>
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-order']" routerLinkActive="active"><b>Đơn hàng</b></a>
               </nav>
-              <nav *ngIf="currentTab?.includes('/user') || currentTab?.includes('home-page')" class="routing">
+              <nav *ngIf="currentTab?.includes('/user') || currentTab?.includes('home-page') || currentTab?.includes('product-detail')" class="routing">
                   <a [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>
                   <a *ngIf="isAdmin && userData.isLoggedIn" [routerLink]="['/admin']" routerLinkActive="active" style="color: red;"><b>Quản trị</b></a>
                   <a *ngIf="userData.isLoggedIn && userRole == 'user'" [routerLink]="['/user/cart']" routerLinkActive="active"><b>Giỏ hàng <span style="color: red;">({{numberCart}})</span></b></a>
@@ -33,6 +33,7 @@
           <span *ngIf="!this.userData.isLoggedIn" class="user-info"><b>Đăng nhập ngay</b>!</span>
           <span *ngIf="this.userData.isLoggedIn" class="user-info">Xin chào <b>{{ userData.name }}</b> <i class="small-text">({{ role }})</i></span>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Thông tin cá nhân" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
+          <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton label="VIP" class="p-button-rounded p-button-help user-button" [routerLink]="['/user/vip']"></button>
           <button *ngIf="!this.userData.isLoggedIn" pButton label="Đăng nhập" class="p-button-rounded p-button-round user-button" [routerLink]="['login-user']"></button>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Đăng xuất" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>
       </div>

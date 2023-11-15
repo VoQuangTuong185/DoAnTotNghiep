@@ -1,0 +1,15 @@
+.title-vip{
+    justify-content: center;
+    display: flex;
+    font-size: 2em;
+    font-weight: bold;
+    color: brown;
+}
+:host ::ng-deep {
+    .card-vip .p-card .p-card-body{
+        background-color: silver;
+    }
+}
+.card-vip-note{
+    font-size: larger;
+}

@@ -16,8 +16,14 @@
                         </p-galleria>
                     </div>
                     <div class="button-box">            
-                        <button pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-secondary"></button>
-                        <button pButton pRipple label="Mua ngay" icon="pi pi-cart-plus" class="p-button-danger ml-3"></button>
+                        <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-secondary"
+                            pTooltip="Thêm vào giỏ hàng" tooltipPosition="bottom" (click)="addToCart(false)"></button>
+                        <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton pRipple label="Mua ngay" icon="pi pi-cart-plus" class="p-button-danger ml-3"
+                            pTooltip="Mua ngay" tooltipPosition="bottom" (click)="addToCart(true)"></button>
+                        <button *ngIf="!userData.isLoggedIn || userRole != 'user'" pButton pRipple label="Thêm vào giỏ hàng" icon="pi pi-cart-plus" class="p-button-secondary" [disabled]="true"
+                            pTooltip="Bạn cần đăng nhập để thực hiện mua hàng" tooltipPosition="bottom"></button>
+                        <button *ngIf="!userData.isLoggedIn || userRole != 'user'" pButton pRipple label="Mua ngay" icon="pi pi-cart-plus" class="p-button-danger ml-3" [disabled]="true"
+                            pTooltip="Bạn cần đăng nhập để thực hiện mua hàng" tooltipPosition="bottom"></button>
                     </div>
                 </div>
                 <div class="col-7">
@@ -63,7 +69,7 @@
                                 </p>                      
                                 <p style="display: inline-block;">
                                     <span class="old-price">{{currentProduct.price | currency : "VND"}}</span>
-                                    <span class="discount-percent">{{currentProduct.discount}}%</span>
+                                    <span class="discount-percent">-{{currentProduct.discount}}%</span>
                                 </p>
                             </div>
                         </div>    
