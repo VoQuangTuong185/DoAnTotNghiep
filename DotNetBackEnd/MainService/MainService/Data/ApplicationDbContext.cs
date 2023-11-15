@@ -2,6 +2,7 @@
 using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.Models.Entities;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
+using doantotnghiep.Models.Entities;
 
 namespace WebAppAPI.Data
 {
@@ -20,6 +21,7 @@ namespace WebAppAPI.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<VIP> VIPs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
