@@ -1,7 +1,7 @@
 ﻿using WebAppAPI.Models.Bases;
 using WebAppAPI.Models.Entities;
 
-namespace doantotnghiep.Models.Entities
+namespace WebAppAPI.Models.Entities
 {
     public class VIP : DbEntity
     {

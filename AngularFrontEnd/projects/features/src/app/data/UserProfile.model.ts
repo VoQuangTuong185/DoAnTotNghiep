@@ -11,4 +11,5 @@ export class UserProfile {
     public provinceCode!: number;
     public districtCode!: number;
     public wardCode!: number;
+    public discount!: number;
 }

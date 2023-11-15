@@ -51,7 +51,7 @@ namespace WebAppAPI.Services.Business
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var result = Enumerable.Empty<UserDTO>();
-            var listUsers = await _unitOfWork.Repository<User>().Get(x => x.LoginName != null).Include("UserAPIs").ToListAsync();
+            var listUsers = await _unitOfWork.Repository<User>().Get(x => x.LoginName != null).Include("UserAPIs").Include(x => x.vips).ToListAsync();
             foreach (var user in listUsers) {
                 user.UserAPIs.ForEach(x => x.user = null);
             }
@@ -65,6 +65,7 @@ namespace WebAppAPI.Services.Business
                 IsActive = x.IsActive,
                 Address = x.Address,
                 UserAPIs = x.UserAPIs,
+                Discount = x.vips?.Discount
             });
             return result;
         }
@@ -87,22 +88,21 @@ namespace WebAppAPI.Services.Business
                    {
                        var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() && x.Id != user.Id);
                        if (existedLoginName)
-                       {
                            return Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
-                       }
-                       else
-                       {
-                           var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == user.Id);
-                           existedUser.Name = user.Name;
-                           existedUser.LoginName = user.LoginName;
-                           existedUser.TelNum = user.TelNum;
-                           existedUser.Address = user.Address;
-                           _unitOfWork.Repository<User>().Update(existedUser);
-                       }
+
+                       var existedPhoneNumber = _unitOfWork.Repository<User>().Any(x => x.TelNum.TrimStart().TrimEnd() == user.TelNum.TrimStart().TrimEnd() && x.Id != user.Id);
+                       if (existedPhoneNumber)
+                           return Option.None<bool, string>("Số điện thoại đã tồn tại, hãy thử dùng số điện thoại khác!");
+                       
+                        var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == user.Id);
+                        existedUser.Name = user.Name;
+                        existedUser.LoginName = user.LoginName;
+                        existedUser.TelNum = user.TelNum;
+                        _unitOfWork.Repository<User>().Update(existedUser);
+                       
                        if (await _unitOfWork.SaveChangesAsync())
-                       {
                            return Option.Some<bool, string>(true);
-                       }
+
                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                    });
         }

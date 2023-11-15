@@ -11,9 +11,12 @@
             </p>
         </p-card>
         <p-card header="CHÍNH SÁCH GIẢM GIÁ DÀNH CHO KHÁCH HÀNG VIP" class="card-vip mt-3">
-            <p class="m-0 card-vip-note">
-                Khách hàng khi hoàn tất mua hàng có hoá đơn tại website của Văn Phòng Phẩm 2023 sẽ được tự động tạo thẻ VIP dựa trên <b>số điện thoại</b> được cung cấp khi đặt hàng.
+            <p class="mt-1 card-vip-note">
+                Tổng số tiền cộng dồn các hoá đơn đã mua:
             </p>
+            <h3 *ngFor="let vip of dataVIPs">
+                - Từ {{vip.priceFrom | currency : "VND"}} - {{vip.priceTo | currency : "VND"}} : <b>Giảm {{vip.discount}}%</b>
+            </h3>
         </p-card>        
     </div>
 </div>

@@ -25,6 +25,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using DoAnTotNghiep.Models.Entities;
 using doantotnghiep.DTO;
+using doantotnghiep.Models.Entities;
 
 namespace WebAppAPI.Services.Business
 {
@@ -155,14 +156,18 @@ namespace WebAppAPI.Services.Business
         public async Task<UserProfile> GetInfoUser(int userId)
         {
             var result = new UserProfile();
-            var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == userId);
-            result.Id = existedUser.Id;   
-            result.Name = existedUser.Name;
-            result.LoginName = existedUser.LoginName;
-            result.Email = existedUser.Email;
-            result.TelNum= existedUser.TelNum;
-            string[] splitAdress = existedUser.Address.Split(", ");
-            string[] splitAdressCode = existedUser.AddressCode.Split(", ");
+            var existedUser = await _unitOfWork.Repository<User>().Get(x => x.Id == userId).Include(x => x.vips).ToListAsync();
+
+            if (!existedUser.Any())
+                return null;
+
+            result.Id = existedUser[0].Id;   
+            result.Name = existedUser[0].Name;
+            result.LoginName = existedUser[0].LoginName;
+            result.Email = existedUser[0].Email;
+            result.TelNum= existedUser[0].TelNum;
+            string[] splitAdress = existedUser[0].Address.Split(", ");
+            string[] splitAdressCode = existedUser[0].AddressCode.Split(", ");
             result.Streets = splitAdress[0];
             result.Wards = splitAdress[1];
             result.Districts = splitAdress[2];
@@ -170,6 +175,7 @@ namespace WebAppAPI.Services.Business
             result.WardCode = int.Parse(splitAdressCode[0]);
             result.DistrictCode = int.Parse(splitAdressCode[1]);
             result.ProvinceCode = int.Parse(splitAdressCode[2]);
+            result.Discount = existedUser[0]?.vips.Discount;
             return result;
         }
         public async Task<Option<bool, string>> UpdateProfile(UserProfile user)
@@ -662,6 +668,10 @@ namespace WebAppAPI.Services.Business
                 OrderId = x.OrderId,
                 CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
             }).OrderByDescending(x => x.CreatedDate).ToList();
+        }
+        public async Task<IEnumerable<VIP>> GetAllVIP()
+        {
+            return await _unitOfWork.Repository<VIP>().Get(x => x.IsActive).ToListAsync();
         }
         #endregion
     }

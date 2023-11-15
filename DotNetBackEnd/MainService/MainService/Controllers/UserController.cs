@@ -547,5 +547,20 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [HttpGet("get-all-vip")]
+        public async Task<ApiResult> GetAllVIP()
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.GetAllVIP();
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
     }
 }

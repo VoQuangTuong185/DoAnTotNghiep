@@ -47,6 +47,7 @@ export class WebsiteAPIService{
     private urlCreateFeedback = 'create-feedback';
     private urlgetAllCategoryUser = 'get-all-category?'; 
     private urlgetFeedbackByProductId = 'get-feedback-by-productId?productId=';
+    private urlgetAllVIP = 'get-all-vip?';
 
     //admin service
     private urlCreateBrand = 'create-brand'; 
@@ -85,7 +86,8 @@ export class WebsiteAPIService{
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlLoginUser, user);
     }
     checkExistedAndSendConfirmMail(user: RegisterUserDTO){
-        return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlCheckExisted, user);
+        let apiUrl = localStorage.getItem('userRole') == 'admin' ?  Constant.libraryApiUrlAdmin() : Constant.libraryApiUrlUser();
+        return this.http.post<any>(apiUrl + this.urlCheckExisted, user);
     }
     checkExistedAndSendChangeConfirmMail(email: string){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlCheckExistedAndSendConfirmChangeMail + email, {headers: this.httpHeaders});
@@ -165,6 +167,9 @@ export class WebsiteAPIService{
     }
     getFeedbackByProductIdUser(productId: number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetFeedbackByProductId + productId, {headers: this.httpHeaders});
+    }
+    getAllVIP(){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllVIP, {headers: this.httpHeaders});
     }
 
     //admin Service 

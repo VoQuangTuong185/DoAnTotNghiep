@@ -33,7 +33,7 @@
           <span *ngIf="!this.userData.isLoggedIn" class="user-info"><b>Đăng nhập ngay</b>!</span>
           <span *ngIf="this.userData.isLoggedIn" class="user-info">Xin chào <b>{{ userData.name }}</b> <i class="small-text">({{ role }})</i></span>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Thông tin cá nhân" class="p-button-rounded p-button-success user-button" (click)="editUser()"></button>
-          <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton label="VIP" class="p-button-rounded p-button-help user-button" [routerLink]="['/user/vip']"></button>
+          <button *ngIf="userData.isLoggedIn && userRole == 'user'" pButton class="p-button-rounded p-button-help user-button" [routerLink]="['/user/vip']">VIP <span class="ml-1" style="font-weight: bold;"> -{{this.selectedUsers.discount}}%</span></button>
           <button *ngIf="!this.userData.isLoggedIn" pButton label="Đăng nhập" class="p-button-rounded p-button-round user-button" [routerLink]="['login-user']"></button>
           <button *ngIf="this.userData.isLoggedIn" pButton label="Đăng xuất" class="p-button-rounded p-button-danger user-button" (click)="logout()"></button>
       </div>
@@ -83,6 +83,9 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Số điện thoại</mat-label>
                                 <input matInput formControlName="TelNum" name="TelNum"/>
+                                <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('required')">
+                                    Hãy nhập số điện thoại
+                                </mat-error>
                                 <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
                                 Định dạng số điện thoại chưa chính xác!
                                 </mat-error>
