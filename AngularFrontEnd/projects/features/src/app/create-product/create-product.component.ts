@@ -95,6 +95,7 @@ export class CreatProductComponent {
       return;
     }
     if(this.existedProductId) {  
+      console.log(this.productForm.getRawValue())
       this.websiteAPIService.updateProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});

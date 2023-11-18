@@ -20,6 +20,7 @@ namespace WebAppAPI.Models.Entities
         public string Address { get; set; }
         public string AddressCode { get; set; }
         public bool IsActive { get; set; } = true;
+        public int VipsId { get; set; }
         public virtual VIP? vips { get; set; }
         public virtual List<UserAPI>? UserAPIs { get; set; }
         public virtual List<Cart>? U_carts { get; set; }

@@ -15,6 +15,8 @@ using Nest;
 using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
 using DoAnTotNghiep.DTOM;
 using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAppAPI.Services.Business
 {
@@ -181,7 +183,6 @@ namespace WebAppAPI.Services.Business
                         existedProduct.CategoryId = product.CategoryId;
                         existedProduct.BrandId = product.BrandId;
                         existedProduct.ImageDetail = String.Join(",", product.ImageDetail);
-
 
                         _unitOfWork.Repository<Product>().Update(existedProduct);
                         if (await _unitOfWork.SaveChangesAsync())
@@ -541,7 +542,16 @@ namespace WebAppAPI.Services.Business
                 {
                     var existedOrder = _unitOfWork.Repository<Order>().Get(x => x.Id == orderId).Include(x => x.orderDetails).FirstOrDefault();
                     var listProduct = _unitOfWork.Repository<Product>().Get(x => existedOrder.orderDetails.Select(x => x.ProductId).ToList().Contains(x.Id)).ToList();
-                    var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
+                    var user = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
+
+                    if (user == null)
+                        return Option.None<bool, string>("Lỗi không tìm thấy tài khoản mua hàng!");
+
+                    var allVIP = _unitOfWork.Repository<VIP>().Get(x => x.IsActive).ToList();
+                    var allOrder = _unitOfWork.Repository<Order>().Get(x => x.UserId == user.Id && x.Status == "Success" && x.IsActive).ToList();
+                    user.VipsId = handleUserVip(allOrder, existedOrder, allVIP);
+                    _unitOfWork.Repository<User>().Update(user);
+
                     existedOrder.Status = "Success";
                     existedOrder.UpdatedDate = DateTime.UtcNow;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
@@ -550,14 +560,12 @@ namespace WebAppAPI.Services.Business
                     {
                         var existedProduct = listProduct.Where(y => y.Id == x.ProductId).FirstOrDefault();
                         if (existedProduct != null)
-                        {
                             existedProduct.SoldQuantity = existedProduct.SoldQuantity + x.Quantity;
-                        }
                     });
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("SuccessOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -696,7 +704,19 @@ namespace WebAppAPI.Services.Business
                 CustomerName = x.user?.Name,
                 Email = x.user?.Email,
                 DiscountVIP = x.DiscountVIP
-            }).ToList();
+            })
+            .OrderByDescending(x => x.orderDate)
+            .ToList();
+        }
+        int handleUserVip(IList<Order> allOrder, Order newOrder, List<VIP> allVIP)
+        {
+            var sum = allOrder.Select(x => x.TotalBill).Sum() + newOrder.TotalBill;
+            var correctVIP = allVIP.FirstOrDefault(x => (x.PriceFrom <= sum && x.PriceTo >= sum) || (x.PriceFrom <= sum && x.PriceTo == 0));
+
+            if (correctVIP != null) 
+                return correctVIP.Id;
+
+            return 14;
         }
         #endregion
     }
