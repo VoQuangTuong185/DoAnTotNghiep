@@ -24,6 +24,7 @@
                             <td *ngFor="let col of columns" >
                             <span [ngSwitch]="col.type">
                                 <span *ngSwitchCase="'number'">{{ rowIndex + 1 }}</span>
+                                <span *ngSwitchCase="'percent'">{{ rowData[col.field] >=5 ? rowData[col.field] : 0 }}%</span>
                                 <span *ngSwitchCase="'button'" class="button"> 
                                     <td>
                                         <button pButton icon="pi pi-pencil" pTooltip="Chỉnh sửa" tooltipPosition="bottom" class="p-button-rounded p-button-success mr-2" (click)="editUser(rowData)"></button>
@@ -53,25 +54,40 @@
         <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="Thông tin tài khoản chi tiết" [modal]="true" styleClass="p-fluid">
                 <ng-template pTemplate="content">
                     <mat-form-field appearance="outline">
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName = "Name" name = "Name" required="">                              
+                        <mat-label>Họ và Tên</mat-label>
+                        <input matInput formControlName = "Name" name = "Name" required="">   
+                        <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
+                            Hãy nhập Họ và Tên!
+                        </mat-error>                            
                     </mat-form-field>
                     <mat-form-field appearance="outline">     
-                        <mat-label>Login Name</mat-label>
-                        <input matInput formControlName = "LoginName" name = "LoginName" required="">        
+                        <mat-label>Tài Khoản</mat-label>
+                        <input matInput formControlName = "LoginName" name = "LoginName" required=""> 
+                        <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('required')">
+                            Hãy nhập Tài khoản!
+                        </mat-error>        
                     </mat-form-field>      
-                    <mat-form-field appearance="outline" pTooltip="You can not change user's email" tooltipPosition="bottom"> 
-                        <mat-label>Email</mat-label>   
+                    <mat-form-field appearance="outline" pTooltip="Bạn không thể chỉnh sửa địa chỉ email của người dùng" tooltipPosition="bottom"> 
+                        <mat-label>Địa chỉ email</mat-label>   
                         <input matInput formControlName = "Email" name = "Email" required=""> 
                     </mat-form-field>        
                     <mat-form-field appearance="outline"> 
                         <mat-label>Telephone</mat-label>     
-                        <input matInput formControlName = "TelNum" name = "TelNum" required="">  
+                        <input matInput formControlName = "TelNum" name = "TelNum" required="">
+                        <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('required')">
+                            Hãy nhập số điện thoại
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
+                            Định dạng số điện thoại chưa chính xác!
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('maxlength')">
+                            Định dạng số điện thoại chưa chính xác!
+                        </mat-error>  
                     </mat-form-field>     
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <button pButton pRipple label="Huỷ" icon="pi pi-times" class="p-button-secondary" type="button" (click)="hideEditUserPopup()"></button>
-                    <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success" (click)="confirmEditUser()"></button>
+                    <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-success"></button>
                 </ng-template>
         </p-dialog>
     </form>

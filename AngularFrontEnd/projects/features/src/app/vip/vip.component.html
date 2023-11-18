@@ -1,19 +1,54 @@
 <div class="block">
     <div class="card">
-        <h1 class="ml-1"><b>Khách Hàng Vip</b></h1>
         <span class="title-vip">ĐIỀU KIỆN CẤP THẺ VÀ QUYỀN LỢI THẺ VIP</span>
+        <span class="vip-image-block">
+            <img class="vip-image" src="/assets/image/vip.png" alt="image">
+        </span>       
         <p-card header="ĐIỀU KIỆN CẤP THẺ VIP" class="card-vip mt-3">
-            <p class="m-0 card-vip-note">
-                Khách hàng khi hoàn tất mua hàng có hoá đơn tại website của Văn Phòng Phẩm 2023 sẽ được tự động tạo thẻ VIP dựa trên <b>số điện thoại</b> được cung cấp khi đặt hàng.
+            <p class="mt-1 card-vip-note">
+                - Mua hàng lần đầu tiên tại cửa hàng (chưa từng tạo thẻ VIP bằng số điện thoại).
+             </p>
+            <p class="mt-1 card-vip-note">
+               - Khách hàng khi hoàn tất mua hàng có hoá đơn tại website của Văn Phòng Phẩm 2023 sẽ được tự động tạo thẻ VIP dựa trên <b>số điện thoại</b> được cung cấp khi đặt hàng.
             </p>
-            <p class="mt-3 card-vip-note">
-                Khi thẻ tích đủ tối thiểu <b>500.000 VNĐ</b>, khách hàng sẽ được giảm giá vào các lần mua hàng tiếp theo.
+            <p class="mt-1 card-vip-note">
+               - Khi thẻ tích đủ tối thiểu <b>500.000 VNĐ</b>, khách hàng sẽ được giảm giá vào các lần mua hàng tiếp theo.
             </p>
         </p-card>
         <p-card header="CHÍNH SÁCH GIẢM GIÁ DÀNH CHO KHÁCH HÀNG VIP" class="card-vip mt-3">
-            <p class="m-0 card-vip-note">
-                Khách hàng khi hoàn tất mua hàng có hoá đơn tại website của Văn Phòng Phẩm 2023 sẽ được tự động tạo thẻ VIP dựa trên <b>số điện thoại</b> được cung cấp khi đặt hàng.
+            <p class="mt-1 card-vip-note">
+                Tổng số tiền cộng dồn các hoá đơn đã mua:
             </p>
+            <div class="grid p-fluid">
+                <div class="col-12 md:col-6">
+                    <h2><b>Tổng hóa đơn cộng dồn</b></h2>
+                </div>    
+                <div class="col-12 md:col-6">
+                    <h2><b>Giảm giá lần mua tiếp theo</b></h2>
+                </div>             
+            </div>
+            <h3 *ngFor="let vip of dataVIPs">
+                <span *ngIf="vip.priceTo != 0">
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <h3>- Từ {{vip.priceFrom | currency : "VND"}} - {{vip.priceTo | currency : "VND"}}</h3>
+                        </div>    
+                        <div class="col-12 md:col-6">
+                            <h3><b>Giảm {{vip.discount}}%</b></h3>
+                        </div>             
+                    </div>
+                </span>   
+                <span *ngIf="vip.priceTo == 0">
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-6">
+                            <h3>- Trên {{vip.priceFrom | currency : "VND"}}}}</h3>
+                        </div>    
+                        <div class="col-12 md:col-6">
+                            <h3><b>Giảm {{vip.discount}}%</b></h3>
+                        </div>             
+                    </div>
+                </span>              
+            </h3>
         </p-card>        
     </div>
 </div>

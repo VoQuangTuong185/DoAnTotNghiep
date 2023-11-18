@@ -27,12 +27,13 @@ export class AdminListOrderComponent implements OnInit {
   ) {
     this.ordersDataCols = [
       { header : 'STT', field : 'id', width:5, type:'stt'},
-      { header : 'Tên khách hàng', field : 'customerName', width:20, type:'string'},
+      { header : 'Tên khách hàng', field : 'customerName', width:25, type:'string'},
       { header : 'Địa chỉ mail', field : 'email', width:20, type:'string'},
       { header : 'Số sản phẩm', field : 'productCount', width:5, type:'number'},
       { header : 'Thời gian đặt hàng', field : 'orderDate', width:10, type:'date'},
       { header : 'Phương thức nhận hàng', field : 'payment', width:10, type:'string'},
-      { header : 'Tổng tiền', field : 'totalBill', width:25, type:'money'},
+      { header : 'VIP', field : 'discountVIP', width:10, type:'percent'},
+      { header : 'Tổng tiền', field : 'totalBill', width:10, type:'money'},
       { header : 'Thao tác', field : 'statusOrderCode', width:25, type:'button'},
       ];
     this.userId = Number(

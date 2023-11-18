@@ -7,7 +7,8 @@
       <th>Số sản phẩm</th>
       <th>Thời gian đặt hàng</th>
       <th>Phương thức nhận hàng</th>
-      <th>Tổng tiền</th>
+      <th>VIP</th>
+      <th>Tổng tiền</th>      
       <th style="text-align: center">Thao tác</th>
     </tr>
   </ng-template>
@@ -16,6 +17,7 @@
       <td>{{ order.productCount }}</td>
       <td>{{ order.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</td>
       <td>{{ order.payment }}</td>
+      <td>{{ order.discountVIP }}%</td>
       <td>{{ order.totalBill | currency : "VND" }}</td>
       <td style="text-align: center">
         <p-button *ngIf="this.statusOrderCode === this.enumData.statusOrder.wait.code" label="Huỷ" styleClass="p-button-danger"

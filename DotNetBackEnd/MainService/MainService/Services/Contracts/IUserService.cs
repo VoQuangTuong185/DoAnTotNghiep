@@ -1,4 +1,5 @@
 ﻿using doantotnghiep.DTO;
+using doantotnghiep.Models.Entities;
 using DoAnTotNghiep.DTO;
 using DoAnTotNghiep.Models.Entities;
 using Optional;
@@ -38,6 +39,7 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> CreateFeedback(List<FeedbackDTO> feedback);
         Task<ProductDTOShow> GetExistedProduct(int ProductId);
         Task<IEnumerable<Product>> GetAllProduct();
+        Task<IEnumerable<VIP>> GetAllVIP();
         Task<IEnumerable<Category>> GetAllCategory();
         Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
     }

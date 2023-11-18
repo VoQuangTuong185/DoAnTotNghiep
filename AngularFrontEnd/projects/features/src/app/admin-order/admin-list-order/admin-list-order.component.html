@@ -20,6 +20,8 @@ currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {tota
           </span>
           <span *ngSwitchCase="'money'" tooltipPosition="bottom">{{rowData[col.field] | currency : "VND"}}
           </span>
+          <span *ngSwitchCase="'percent'" tooltipPosition="bottom">{{rowData[col.field] }}%
+          </span>
           <span *ngSwitchCase="'button'" class="button"> 
               <td>
                 <button *ngIf="statusOrderCode === this.enumData.statusOrder.wait.code"

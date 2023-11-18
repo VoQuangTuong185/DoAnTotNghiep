@@ -13,5 +13,6 @@ namespace WebAppAPI.DTO
         public bool IsActive { get; set; }
         public string Address { get; set; }
         public virtual List<UserAPI> UserAPIs { get; set; }
+        public int? Discount { get; set; }
     }
 }

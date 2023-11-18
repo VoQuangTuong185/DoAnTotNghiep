@@ -16,6 +16,7 @@ namespace WebAppAPI.DTO
         public int? DistrictCode { get; set; }
         public int? WardCode { get; set; }
         public string? Streets { get; set; }
+        public int? Discount { get; set; }
 
     }
 }

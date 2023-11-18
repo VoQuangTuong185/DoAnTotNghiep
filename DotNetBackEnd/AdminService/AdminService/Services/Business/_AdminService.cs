@@ -51,7 +51,7 @@ namespace WebAppAPI.Services.Business
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
             var result = Enumerable.Empty<UserDTO>();
-            var listUsers = await _unitOfWork.Repository<User>().Get(x => x.LoginName != null).Include("UserAPIs").ToListAsync();
+            var listUsers = await _unitOfWork.Repository<User>().Get(x => x.LoginName != null).Include("UserAPIs").Include(x => x.vips).ToListAsync();
             foreach (var user in listUsers) {
                 user.UserAPIs.ForEach(x => x.user = null);
             }
@@ -65,6 +65,7 @@ namespace WebAppAPI.Services.Business
                 IsActive = x.IsActive,
                 Address = x.Address,
                 UserAPIs = x.UserAPIs,
+                Discount = x.vips?.Discount
             });
             return result;
         }
@@ -87,22 +88,21 @@ namespace WebAppAPI.Services.Business
                    {
                        var existedLoginName = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() && x.Id != user.Id);
                        if (existedLoginName)
-                       {
                            return Option.None<bool, string>("Tài khoản đã tồn tại, hãy thử dùng tên tài khoản khác!");
-                       }
-                       else
-                       {
-                           var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == user.Id);
-                           existedUser.Name = user.Name;
-                           existedUser.LoginName = user.LoginName;
-                           existedUser.TelNum = user.TelNum;
-                           existedUser.Address = user.Address;
-                           _unitOfWork.Repository<User>().Update(existedUser);
-                       }
+
+                       var existedPhoneNumber = _unitOfWork.Repository<User>().Any(x => x.TelNum.TrimStart().TrimEnd() == user.TelNum.TrimStart().TrimEnd() && x.Id != user.Id);
+                       if (existedPhoneNumber)
+                           return Option.None<bool, string>("Số điện thoại đã tồn tại, hãy thử dùng số điện thoại khác!");
+                       
+                        var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == user.Id);
+                        existedUser.Name = user.Name;
+                        existedUser.LoginName = user.LoginName;
+                        existedUser.TelNum = user.TelNum;
+                        _unitOfWork.Repository<User>().Update(existedUser);
+                       
                        if (await _unitOfWork.SaveChangesAsync())
-                       {
                            return Option.Some<bool, string>(true);
-                       }
+
                        return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                    });
         }
@@ -316,67 +316,35 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<IEnumerable<OrderDTO>> GetWaitingOrder()
         {
-            var existedProductInCart = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Pending" && x.IsActive).Include(x => x.orderDetails).Include(x => x.user).ToListAsync();
-            var result = existedProductInCart.Select(x => new OrderDTO
-            {
-                Id = x.Id,
-                ProductCount = x.orderDetails.Count(),
-                TotalBill = x.TotalBill,
-                orderDate = x.CreatedDate,
-                Payment = handlePayment(x.Payment),
-                Address = x.Address,
-                CustomerName = x.user?.Name,
-                Email = x.user?.Email
-            }).ToList();
-            return result;
+            var existedOrderByUserId = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Pending" && x.IsActive)
+                                                                            .Include(x => x.orderDetails)
+                                                                            .Include(x => x.user)
+                                                                            .ToListAsync();
+            return getListOrder(existedOrderByUserId);
         }
         public async Task<IEnumerable<OrderDTO>> GetProcessingOrder()
         {
-            var existedProductInCart = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Processing" && x.IsActive).Include(x => x.orderDetails).Include(x => x.user).ToListAsync();
-            var result = existedProductInCart.Select(x => new OrderDTO
-            {
-                Id = x.Id,
-                ProductCount = x.orderDetails.Count(),
-                TotalBill = x.TotalBill,
-                orderDate = x.CreatedDate,
-                Payment = handlePayment(x.Payment),
-                Address = x.Address,
-                CustomerName = x.user?.Name,
-                Email = x.user?.Email
-            }).ToList();
-            return result;
+            var existedOrderByUserId = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Processing" && x.IsActive)
+                                                                            .Include(x => x.orderDetails)
+                                                                            .Include(x => x.user)
+                                                                            .ToListAsync();
+            return getListOrder(existedOrderByUserId);
         }
         public async Task<IEnumerable<OrderDTO>> GetSuccessOrder()
         {
-            var existedProductInCart = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Success" && x.IsActive).Include(x => x.orderDetails).Include(x => x.user).ToListAsync();
-            var result = existedProductInCart.Select(x => new OrderDTO
-            {
-                Id = x.Id,
-                ProductCount = x.orderDetails.Count(),
-                TotalBill = x.TotalBill,
-                orderDate = x.CreatedDate,
-                Payment = handlePayment(x.Payment),
-                Address = x.Address,
-                CustomerName = x.user?.Name,
-                Email = x.user?.Email
-            }).ToList();
-            return result;
+            var existedOrderByUserId = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Success" && x.IsActive)
+                                                                            .Include(x => x.orderDetails)
+                                                                            .Include(x => x.user)
+                                                                            .ToListAsync();
+            return getListOrder(existedOrderByUserId);
         }
         public async Task<IEnumerable<OrderDTO>> GetCancelOrder()
         {
-            var existedProductInCart = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Cancel" && x.IsActive).Include(x => x.orderDetails).Include(x => x.user).ToListAsync();
-            var result = existedProductInCart.Select(x => new OrderDTO
-            {
-                Id = x.Id,
-                ProductCount = x.orderDetails.Count(),
-                TotalBill = x.TotalBill,
-                orderDate = x.CreatedDate,
-                Payment = handlePayment(x.Payment),
-                Address = x.Address,
-                CustomerName = x.user?.Name,
-                Email = x.user?.Email
-            }).ToList();
-            return result;
+            var existedOrderByUserId = await _unitOfWork.Repository<Order>().Get(x => x.Status == "Cancel" && x.IsActive)
+                                                                            .Include(x => x.orderDetails)
+                                                                            .Include(x => x.user)
+                                                                            .ToListAsync();
+            return getListOrder(existedOrderByUserId);
         }
         public async Task<IEnumerable<Category>> GetAllCategory()
         {
@@ -532,6 +500,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
 
                     existedOrder.Status = "Cancel";
+                    existedOrder.UpdatedDate = DateTime.UtcNow;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     if (await _unitOfWork.SaveChangesAsync())
@@ -552,6 +521,7 @@ namespace WebAppAPI.Services.Business
                     var existedOrder = _unitOfWork.Repository<Order>().FirstOrDefault(x => x.Id == orderId);
                     var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
                     existedOrder.Status = "Processing";
+                    existedOrder.UpdatedDate = DateTime.UtcNow;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     if (await _unitOfWork.SaveChangesAsync())
@@ -573,6 +543,7 @@ namespace WebAppAPI.Services.Business
                     var listProduct = _unitOfWork.Repository<Product>().Get(x => existedOrder.orderDetails.Select(x => x.ProductId).ToList().Contains(x.Id)).ToList();
                     var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
                     existedOrder.Status = "Success";
+                    existedOrder.UpdatedDate = DateTime.UtcNow;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     existedOrder.orderDetails.ForEach(async x =>
@@ -644,25 +615,6 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
-        #region Private
-        string handlePayment(string payment)
-        {
-            string paymentMethod = null;
-
-            switch (payment)
-            {
-                case "A":
-                    paymentMethod = "Thanh toán khi nhân hàng";
-                    break;
-                case "M":
-                    paymentMethod = "Thanh toán qua ngân hàng";
-                    break;
-                case "P":
-                    paymentMethod = "Thanh toán qua momo";
-                    break;
-            }
-            return paymentMethod;
-        }
         public string Get8CharacterRandomString()
         {
             string path = Path.GetRandomFileName();
@@ -704,6 +656,25 @@ namespace WebAppAPI.Services.Business
             result.ProvinceCode = int.Parse(splitAdressCode[2]);
             return result;
         }
+        #region Private
+        string handlePayment(string payment)
+        {
+            string paymentMethod = null;
+
+            switch (payment)
+            {
+                case "A":
+                    paymentMethod = "Thanh toán khi nhân hàng";
+                    break;
+                case "M":
+                    paymentMethod = "Thanh toán qua ngân hàng";
+                    break;
+                case "P":
+                    paymentMethod = "Thanh toán qua momo";
+                    break;
+            }
+            return paymentMethod;
+        }
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -711,6 +682,21 @@ namespace WebAppAPI.Services.Business
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
+        }
+        IEnumerable<OrderDTO> getListOrder(List<Order> listOrder)
+        {
+            return listOrder.Select(x => new OrderDTO
+            {
+                Id = x.Id,
+                ProductCount = x.orderDetails.Count(),
+                TotalBill = x.TotalBill,
+                orderDate = x.CreatedDate,
+                Payment = handlePayment(x.Payment),
+                Address = x.Address,
+                CustomerName = x.user?.Name,
+                Email = x.user?.Email,
+                DiscountVIP = x.DiscountVIP
+            }).ToList();
         }
         #endregion
     }

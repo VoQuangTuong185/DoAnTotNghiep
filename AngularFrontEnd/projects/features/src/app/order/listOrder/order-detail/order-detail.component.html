@@ -6,10 +6,11 @@
   <div class="order-info">
     <p><b>Tên khách hàng: </b>{{ this.data.customerName }}</p>
     <p><b>Địa chỉ mail: </b>{{ this.data.email }}</p>
-    <p><b>Số sản phẩm: </b>{{ this.data.address }}</p>
+    <p><b>Địa chỉ nhận hàng: </b>{{ this.data.address }}</p>
     <p><b>Thời gian đặt hàng: </b>{{ this.data.orderDate | date : "hh:mm:ss a, dd/MM/yyyy" }}</p>
     <p><b>Phương thức nhận hàng: </b>{{ this.data.payment }}</p>
     <p><b>Số sản phẩm: </b>{{ this.data.productCount }}</p>
+    <p><b>VIP: </b>{{ this.data.discountVIP }}%</p>
     <p><b>Tổng tiền: </b>{{ this.data.totalBill | currency : "VND" }}</p>
   </div>
   <div class="table-product">

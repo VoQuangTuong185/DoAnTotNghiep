@@ -38,10 +38,11 @@ export class AdminUserComponent {
     this.usersDataCols = [
         { header : 'STT', field : 'id', width:5, type:'number'},
         { header : 'Họ và tên', field : 'name', width:15, type:'string'},
-        { header : 'Tài khoản', field : 'loginName', width:15, type:'string'},
-        { header : 'Địa chỉ email', field : 'email', width:20, type:'string'},
-        { header : 'Địa chỉ', field : 'address', width:20, type:'string'},
-        { header : 'Số điện thoại', field : 'telNum', width:10, type:'string'},
+        { header : 'Tài khoản', field : 'loginName', width:10, type:'string'},
+        { header : 'Giảm giá VIP', field : 'discount', width:10, type:'percent'},
+        { header : 'Địa chỉ email', field : 'email', width:15, type:'string'},
+        { header : 'Địa chỉ', field : 'address', width:22, type:'string'},
+        { header : 'Số điện thoại', field : 'telNum', width:8, type:'string'},
         { header : 'Trạng thái', field : 'isActive', width:5, type:'boolean'},
         { header : 'Thao tác', field : 'action', width:20, type:'button'},
     ];
@@ -54,7 +55,7 @@ export class AdminUserComponent {
       Name: ["",[Validators.required]],
       LoginName: ["",[Validators.required]],
       Email: ["",[Validators.required]],
-      Tel: ["",[Validators.maxLength(10)]]
+      Tel: ["",Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
   createExistedUserForm(){
@@ -63,7 +64,7 @@ export class AdminUserComponent {
       Name: [this.selectedUsers.name,[Validators.required]],
       LoginName: [this.selectedUsers.loginName,[Validators.required]],
       Email: [{value: this.selectedUsers.email, disabled: true},[Validators.required]],
-      TelNum: [this.selectedUsers.telNum,[Validators.maxLength(10)]]
+      TelNum: [this.selectedUsers.telNum,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
   loadDataUsers(){
@@ -110,6 +111,15 @@ export class AdminUserComponent {
     });
   }
   confirmEditUser(){
+    if(this.editUserForm.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc!',
+      });
+      return;
+    }
     this.websiteAPIService.editUser(this.editUserForm.getRawValue()).subscribe((res:any) =>{
       if(res.data){
         this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
