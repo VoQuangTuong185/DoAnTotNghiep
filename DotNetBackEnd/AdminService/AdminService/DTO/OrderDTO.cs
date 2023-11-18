@@ -9,6 +9,7 @@
         public string? Address { get; set; }
         public string? CustomerName { get; set; }
         public string? Email { get; set; }
+        public double? DiscountVIP { get; set; }
         public DateTimeOffset orderDate { get; set; }
     }
 }

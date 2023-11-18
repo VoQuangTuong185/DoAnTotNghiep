@@ -4,13 +4,20 @@
     font-size: 2em;
     font-weight: bold;
     color: brown;
+    padding-top: 1.5em;
 }
 :host ::ng-deep {
     .card-vip .p-card .p-card-body{
-        background-color: silver;
         border-radius: 15px;
     }
 }
 .card-vip-note{
     font-size: larger;
+}
+.vip-image{
+    max-width: 800px;
+}
+.vip-image-block{
+    justify-content: center;
+    display: flex;
 }
