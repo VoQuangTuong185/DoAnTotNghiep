@@ -1,4 +1,5 @@
 ﻿using DoAnTotNghiep.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 using WebAppAPI.Models.Bases;
 
 namespace WebAppAPI.Models.Entities
@@ -6,10 +7,12 @@ namespace WebAppAPI.Models.Entities
     public class Product : BaseEntity
     {
         public string ProductName { get; set; }
+        [MaxLength(255)]
         public string? Description { get; set; }
-        public string? Image { get; set; }
+        [MaxLength(255)]
+        public string Image { get; set; }
         public double Price { get; set; }
-        public double Discount { get; set; }
+        public int Discount { get; set; }
         public int Quanity { get; set; }
         public int SoldQuantity { get; set; }
         public int CategoryId { get; set; }

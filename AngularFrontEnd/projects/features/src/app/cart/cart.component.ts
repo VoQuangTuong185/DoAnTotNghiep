@@ -234,12 +234,12 @@ export class CartComponent implements OnInit {
                     this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});                
                   } else {
                     this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
-                  }                
+                  }  
+                  this.getCartByUserID();              
                 });
             } else {
               this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message});
             }
-            this.getCartByUserID();
             this.showConfirmOrder = false;
           });
       },

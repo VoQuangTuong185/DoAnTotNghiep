@@ -144,7 +144,7 @@ namespace WebAppAPI.Controllers
         }
         [Authorize]
 		[HttpPost("create-product")]
-        public async Task<ApiResult> CreateProduct(ProductDTOShow product)
+        public async Task<ApiResult> CreateProduct(ProductDTOCreate product)
         {
             var result = new ApiResult();
             try

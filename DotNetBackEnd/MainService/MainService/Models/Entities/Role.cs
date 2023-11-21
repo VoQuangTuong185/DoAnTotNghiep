@@ -1,10 +1,12 @@
-﻿using WebAppAPI.Models.Bases;
+﻿using System.ComponentModel.DataAnnotations;
+using WebAppAPI.Models.Bases;
 
 namespace WebAppAPI.Models.Entities
 {
     public class Role : DbEntity
     {
         public int Id { get; set; }
+        [MaxLength(50)]
         public string Name { get; set; }
         public virtual List<UserAPI> UserRoles { get; set; }
     }

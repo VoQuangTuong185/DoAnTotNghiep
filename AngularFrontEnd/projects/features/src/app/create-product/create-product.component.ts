@@ -68,7 +68,7 @@ export class CreatProductComponent {
     return this.formBuilder.group({
       Id: [{value: data.id, disabled:true},[Validators.required]],
       ProductName: [data.productName,[Validators.required]],
-      Description: [data.description,[Validators.required]],
+      Description: [data.description],
       BrandName: [data.brand.brandName,Validators.required],
       BrandId: [{value: data.brandId, disabled: true}, [Validators.required]],
       CategoryId: [{value: data.categoryId, disabled: true},[Validators.required]],
@@ -85,6 +85,15 @@ export class CreatProductComponent {
     this.productForm.controls['BrandId'].setValue(tempData.id);
   }
   saveForm(){
+    if(this.productForm.controls['Image'].value == ''){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy tải lên hình ảnh mô tả!',
+      });
+      return;
+    }
     if(this.productForm.invalid){
       this.messageService.add({
         key: 'bc',
