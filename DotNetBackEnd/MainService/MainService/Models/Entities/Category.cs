@@ -10,8 +10,11 @@ namespace DoAnTotNghiep.Models.Entities
         [Key]
         [Required]
         public int Id { get; set; }
+        [MaxLength(50)]
         public string CategoryName { get; set; }
-        public string? Image { get; set; }
+        [MaxLength(255)]
+        public string Image { get; set; }
+        [MaxLength(255)]
         public string? Description { get; set; }
         [Required]
         public bool IsActive { get; set; } = true;

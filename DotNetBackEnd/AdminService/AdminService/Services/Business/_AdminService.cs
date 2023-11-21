@@ -137,7 +137,7 @@ namespace WebAppAPI.Services.Business
                         return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                     });       
         }
-        public async Task<Option<bool, string>> CreateProduct(ProductDTOShow product)
+        public async Task<Option<bool, string>> CreateProduct(ProductDTOCreate product)
         {
             return await (product)
                 .SomeNotNull().WithException("Null input")

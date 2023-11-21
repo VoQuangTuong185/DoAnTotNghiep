@@ -295,7 +295,7 @@ namespace WebAppAPI.Services.Business
                             return Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
                         }
 
-                        double discount = (double)(user.FirstOrDefault()?.vips != null ? user.FirstOrDefault()?.vips.Discount : 0);
+                        int discount = (int)(user.FirstOrDefault()?.vips != null ? user.FirstOrDefault()?.vips.Discount : 0);
 
                         var insertOrder = new Order();
                         insertOrder.UserId = order.UserId;

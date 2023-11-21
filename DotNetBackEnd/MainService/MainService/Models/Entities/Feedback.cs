@@ -7,12 +7,14 @@ namespace WebAppAPI.Models.Entities
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }
+        [MaxLength(255)]
         public string? Comments { get; set; }
         public int Votes { get; set; }
         public int OrderId { get; set; }
         public virtual Product product { get; set; }
         public virtual User users { get; set; }
         public virtual Order orders { get; set; }
+        [MaxLength(255)]
         public string? AdminReply { get; set; }
         public DateTimeOffset? ReplyDate { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
