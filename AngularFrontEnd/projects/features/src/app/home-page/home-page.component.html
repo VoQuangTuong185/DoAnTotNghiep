@@ -13,7 +13,7 @@
                           <div class="border-text">
                             <div pTooltip="{{ product.productName }}" tooltipPosition="bottom" class="long-text">{{ product.productName }}</div>
                             <span>{{ product.price - (product.price * product.discount) / 100 | currency : "VND" }}</span><br/>
-                            <span>Sold: {{ product.soldQuantity }}</span><br/>
+                            <span>Đã bán: <span style="color: red;">{{ product.soldQuantityPerMonth }}</span>/{{product.soldQuantity}}</span><br/>
                           </div>
                       </div>
                   </div>
@@ -42,7 +42,7 @@
                                 <div class="border-text">
                                   <div pTooltip="{{ product.productName }}" tooltipPosition="bottom" class="long-text">{{ product.productName }}</div>
                                   <span>{{ product.price - (product.price * product.discount) / 100 | currency : "VND" }}</span><br/>
-                                  <span>Sold: {{ product.soldQuantity }}</span><br/>
+                                  <span>Đã bán: {{ product.soldQuantity }}</span><br/>
                                 </div>
                             </div>
                         </div>

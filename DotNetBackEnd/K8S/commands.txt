@@ -14,14 +14,14 @@ kubectl apply -f mailservice-np-srv.yaml #configure services mailservice
 
 #mainservice
 docker build -t mainservice .
-docker tag mainservice voquangtuong06022001/mainservice:3.1
+docker tag mainservice voquangtuong06022001/mainservice:3.4
 docker push voquangtuong06022001/mainservice:3.1
 kubectl apply -f mainservice-depl.yaml
 
 #adminservice
 docker build -t adminservice .
-docker tag adminservice voquangtuong06022001/adminservice:2.2
-docker push voquangtuong06022001/adminservice:2.2
+docker tag adminservice voquangtuong06022001/adminservice:2.4
+docker push voquangtuong06022001/adminservice:2.4
 kubectl apply -f adminservice-depl.yaml
 
 #mailservice
@@ -42,3 +42,4 @@ kubectl get services # Get all current services in cluster
 kubectl get ingress -A # Get all current ingress config 
 kubectl logs <pods_name> # Check if any error occurs when creating Pod.
 kubectl describe pod <pods_name> # Check pod configuration
+	

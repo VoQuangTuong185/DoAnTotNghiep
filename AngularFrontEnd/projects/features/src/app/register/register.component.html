@@ -44,7 +44,7 @@
               <div>
                 <mat-form-field appearance="outline">
                   <mat-label>Số điện thoại</mat-label>
-                  <input matInput formControlName = "TelNum" name = "TelNum">
+                  <input matInput formControlName = "TelNum" name = "TelNum" required="">
                   <mat-error *ngIf="registerForm.get('TelNum')?.hasError('required')">
                     Hãy nhập số điện thoại!
                   </mat-error>
@@ -147,7 +147,9 @@
           </tr>
         </table>          
         </div>
-        <p-button class="center registerButton" label="Đăng ký" type="submit"></p-button> 
+        <span class="center registerButton">
+          <p-button label="Đăng ký" type="submit"></p-button> 
+        </span>
         <span class="center">
           <a class="hyper-link" routerLink="../login-user">Bạn đã có tài khoản?</a>
         </span> 
@@ -158,19 +160,21 @@
     <div class="example-container">
       <div>
           <mat-form-field appearance="outline" class="confirm">
-            <mat-label>Enter email</mat-label>
+            <mat-label>Nhập địa chỉ email</mat-label>
             <input matInput [(ngModel)]="confirmEmail" [disabled]="true" >
           </mat-form-field>
         </div>
       <div>
         <mat-form-field appearance="outline" class="confirm">
-          <mat-label>Enter confirm code</mat-label>
+          <mat-label>Nhập mã xác nhận</mat-label>
           <input matInput required="" [(ngModel)]="confirmCode">
         </mat-form-field>
       </div> 
     </div>
-    <div><a *ngIf="registerSuccessfully" routerLink="/app-login">Click here or wait 3 seconds to login</a></div>
-    <p-button class="center" label="Xác nhận" (click)="confirmRegister()"></p-button> 
+    <div><a *ngIf="registerSuccessfully" routerLink="/app-login">xxx</a></div>
+    <span class="center">
+      <p-button label="Xác nhận" (click)="confirmRegister()"></p-button> 
+    </span>
 </p-dialog>
 <p-toast position="bottom-center" key="c" (onClose)="onRejectLoginPage()" [style]="{width: '20vw'}" [baseZIndex]="5000">
   <ng-template let-message pTemplate="message">

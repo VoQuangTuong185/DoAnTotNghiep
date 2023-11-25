@@ -429,10 +429,12 @@ export class AppComponent implements OnInit {
     }
   }
   getCartByUserID() {
-    this.websiteAPIService
+    if (Number(this.userData.id)){
+      this.websiteAPIService
       .getCartByUserID(Number(this.userData.id))
       .subscribe((res: any) => {
         this.numberCart = res.data.length;
       });
+    }
   }
 }

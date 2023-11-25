@@ -19,7 +19,8 @@ import { FeedbackDetailShow } from './FeedbackDetailShow.model';
 export class WebsiteAPIService{
     private httpHeaders: HttpHeaders;
     private urlLoginUser = 'login-user';
-    private urlCheckExisted = 'check-existed-and-send-confirm-mail';
+    private urlCheckExisted = 'check-existed-loginame-telnum-email';
+    private urlSendConfirmCodeRegister = 'send-confirm-code-register';
     private urlCheckExistedAndSendConfirmChangeMail = 'check-existed-and-send-confirm-change-email?email=';
     private urlRegisterUser = 'register-user';
     private urlGetUsers = 'get-users';
@@ -27,7 +28,8 @@ export class WebsiteAPIService{
     private urlChangePassword = 'change-password';
     private urlUpdateProfile = 'update-profile';
     private urlGetInfoUser = 'get-info-user?userId=';    
-    private urlgetAllProduct = 'get-all-product?';
+    private urlgetAllProduct = 'get-all-product';
+    private urlgetMonthBestSellerProducts = 'get-month-best-seller-products';
     private urlgetExistedProduct = 'get-existed-product?productId=';
     private urlGetProductsByCategoryID = 'get-products-by-category-id?categoryId=';
     private urlAddCard = 'add-cart';
@@ -85,9 +87,13 @@ export class WebsiteAPIService{
     loginUser(user: LoginUserDTO){
         return this.http.post<any>(Constant.libraryApiUrlUser() + this.urlLoginUser, user);
     }
-    checkExistedAndSendConfirmMail(user: RegisterUserDTO){
+    checkExistedLoginNameTelNumEmail(user: RegisterUserDTO){
         let apiUrl = localStorage.getItem('userRole') == 'admin' ?  Constant.libraryApiUrlAdmin() : Constant.libraryApiUrlUser();
         return this.http.post<any>(apiUrl + this.urlCheckExisted, user);
+    }
+    sendConfirmCodeRegister(user: RegisterUserDTO){
+        let apiUrl = localStorage.getItem('userRole') == 'admin' ?  Constant.libraryApiUrlAdmin() : Constant.libraryApiUrlUser();
+        return this.http.post<any>(apiUrl + this.urlSendConfirmCodeRegister, user);
     }
     checkExistedAndSendChangeConfirmMail(email: string){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlCheckExistedAndSendConfirmChangeMail + email, {headers: this.httpHeaders});
@@ -110,6 +116,9 @@ export class WebsiteAPIService{
     }
     getAllProduct(){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetAllProduct, {headers: this.httpHeaders});
+    }
+    getMonthBestSellerProducts(){
+        return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetMonthBestSellerProducts, {headers: this.httpHeaders});
     }
     getExistedProductUser(productId: number){
         return this.http.get<any>(Constant.libraryApiUrlUser() + this.urlgetExistedProduct + productId, {headers: this.httpHeaders});

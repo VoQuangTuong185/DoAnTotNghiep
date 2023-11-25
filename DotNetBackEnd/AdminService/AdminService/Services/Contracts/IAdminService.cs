@@ -9,7 +9,8 @@ namespace WebAppAPI.Services.Contracts
 {
     public interface IAdminService
     {
-        Task<string> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user);
+        Task<Option<bool, string>> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user);
+        Task<string> SendConfirmCodeRegister(RegisterUserOldDTO user);
         Task<string> ForgetPassword(string email);
         Task<bool> ChangePassword(LoginUserDTO user);
         Task<UserProfile> GetInfoUser(int userId);

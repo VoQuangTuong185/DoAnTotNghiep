@@ -13,6 +13,7 @@ namespace WebAppAPI.DTO
         public int Discount { get; set; }
         public int Quanity { get; set; }
         public int? SoldQuantity { get; set; }
+        public int? SoldQuantityPerMonth { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public bool IsActive { get; set; } = true;

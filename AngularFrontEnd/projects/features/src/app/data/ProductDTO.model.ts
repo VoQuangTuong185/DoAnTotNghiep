@@ -10,6 +10,7 @@ export class ProductDTO{
     public Discount!: number;
     public Quanity!: number;
     public SoldQuantity!: number;
+    public SoldQuantityPerMonth!: number;
     public CategoryId!: number;
     public BrandName?: string;
     public BrandId?: number;

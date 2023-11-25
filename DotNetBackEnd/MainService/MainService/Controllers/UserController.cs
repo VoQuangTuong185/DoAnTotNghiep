@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAppAPI.DTO;
+using WebAppAPI.Models.Entities;
 using WebAppAPI.Services.Business;
 using WebAppAPI.Services.Contracts;
 using WebAppAPI.Services.Model;
@@ -19,13 +20,39 @@ namespace WebAppAPI.Controllers
             _IUserService = IUserService;
             _ILog = Log.GetInstance;
         }
-        [HttpPost("check-existed-and-send-confirm-mail")]
+        [HttpPost("check-existed-loginame-telnum-email")]
         public async Task<ApiResult> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
         {
             var result = new ApiResult();
             try
             {
-                result.Data = await _IUserService.CheckExistedAndSendConfirmMail(user);
+                (await _IUserService.CheckExistedAndSendConfirmMail(user)).Match(res =>
+                {
+                    result.Message = "Kiểm tra thông tin thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpPost("send-confirm-code-register")]
+        public async Task<ApiResult> SendConfirmCodeRegister(RegisterUserOldDTO user)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = _IUserService.SendConfirmCodeRegister(user);
+                result.Message = "Mã xác nhận đăng ký đã được gửi đi!";
             }
             catch (Exception ex)
             {
@@ -509,6 +536,21 @@ namespace WebAppAPI.Controllers
             try
             {
                 result.Data = await _IUserService.GetAllProduct();
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpGet("get-month-best-seller-products")]
+        public async Task<ApiResult> GetMonthBestSellerProducts()
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IUserService.GetMonthBestSellerProducts();
             }
             catch (Exception ex)
             {
