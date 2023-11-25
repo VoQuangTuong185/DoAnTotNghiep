@@ -117,9 +117,6 @@ export class RegisterComponent {
     this.registerForm.controls['ProvinceCode'].setValue(this.registerForm.get('Provinces')?.value.code);
     this.registerForm.controls['DistrictCode'].setValue(this.registerForm.get('Districts')?.value.code);
     this.registerForm.controls['WardCode'].setValue(this.registerForm.get('Wards')?.value.code);
-    this.registerForm.controls['Provinces'].setValue(this.provinceSelected.name);
-    this.registerForm.controls['Districts'].setValue(this.districtSelected.name);
-    this.registerForm.controls['Wards'].setValue(this.wardSelected.name);
     if(this.registerForm.invalid){
       this.messageService.add({
         key: 'bc',
@@ -147,17 +144,18 @@ export class RegisterComponent {
       });
       return;
     }
-    this.websiteAPIService.checkExistedAndSendConfirmMail(this.registerForm.getRawValue()).subscribe((res:any) =>{      
-      if(res.data != 'existed'){
-        this.confirmEmail = this.registerForm.getRawValue().Email;
-        this.displayConfirmPopUp = true;
-        this.displayRegisterPopUp = false;
-        this.confirmCodeSent = res.data;
-        this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: 'Mã xác nhận đăng ký đã được gửi đi!'});
-      }
-      else{
-        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: 'Đã tồn tại tài khoản hoặc địa chỉ email !'});
-      }
+    this.registerForm.controls['Provinces'].setValue(this.provinceSelected.name);
+    this.registerForm.controls['Districts'].setValue(this.districtSelected.name);
+    this.registerForm.controls['Wards'].setValue(this.wardSelected.name);
+
+    this.websiteAPIService.checkExistedLoginNameTelNumEmail(this.registerForm.getRawValue()).subscribe((res:any) =>{
+      if(res.data){
+        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});
+        this.sendConfirmCodeRegister();
+      } 
+      else {
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
+      }     
     });
   }
   confirmRegister() {
@@ -165,8 +163,9 @@ export class RegisterComponent {
     if(this.confirmCode == this.confirmCodeSent){
       this.authService.register(this.registerForm.getRawValue()).subscribe((res:any) =>{
         if(res.data){
+          this.displayConfirmPopUp = false;
           this.messageService.add({ key: 'bc', severity:'success', summary: 'Đăng ký thành công'});
-          this.messageService.add({key: 'c', sticky: true, severity:'success', summary:'Xác nhận?', detail:'Quay về trang đăng nhập'});
+          this.router.navigate(['login-user']);
         }
       });
     }
@@ -180,5 +179,19 @@ export class RegisterComponent {
   }
   onRejectLoginPage() {
     this.messageService.clear();
+  }
+  sendConfirmCodeRegister(){
+    this.websiteAPIService.sendConfirmCodeRegister(this.registerForm.getRawValue()).subscribe((res:any) =>{
+      if(res.data){
+        this.confirmEmail = this.registerForm.getRawValue().Email;
+        this.displayConfirmPopUp = true;
+        this.displayRegisterPopUp = false;
+        this.confirmCodeSent = res.data.result;
+        this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message});
+      } 
+      else {
+        this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
+      } 
+    });
   }
 }

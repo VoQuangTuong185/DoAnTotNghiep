@@ -38,13 +38,39 @@ namespace WebAppAPI.Controllers
             _ILog = Log.GetInstance;
             _httpContextAccessor = httpContextAccessor;
         }
-        [HttpPost("check-existed-and-send-confirm-mail")]
+        [HttpPost("check-existed-loginame-telnum-email")]
         public async Task<ApiResult> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
         {
             var result = new ApiResult();
             try
             {
-                result.Data = await _AdminService.CheckExistedAndSendConfirmMail(user);
+                (await _AdminService.CheckExistedAndSendConfirmMail(user)).Match(res =>
+                {
+                    result.Message = "Kiểm tra thông tin thành công!";
+                    result.Data = res;
+                    result.IsSuccess = true;
+                }, ex =>
+                {
+                    result.HttpStatusCode = 500;
+                    result.Message = ex;
+                    result.IsSuccess = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpPost("send-confirm-code-register")]
+        public async Task<ApiResult> SendConfirmCodeRegister(RegisterUserOldDTO user)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = _AdminService.SendConfirmCodeRegister(user);
+                result.Message = "Mã xác nhận đăng ký đã được gửi đi!";
             }
             catch (Exception ex)
             {

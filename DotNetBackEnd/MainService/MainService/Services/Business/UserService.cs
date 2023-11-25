@@ -54,22 +54,34 @@ namespace WebAppAPI.Services.Business
             }
             return result;
         }
-        public async Task<string> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
+        public async Task<Option<bool, string>> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
         {
-            bool existedUser = _unitOfWork.Repository<User>().Any(x => (x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd() 
-                                                                        || x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd()) && x.IsActive);
-            string confirmCode = string.Empty;
-            if (!existedUser)
-            {
-                confirmCode = Get8CharacterRandomString();
-                var mailInformation = new MailPublishedDto("ConfirmRegister", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN ĐĂNG KÝ TÀI KHOẢN", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
-                _messageBusClient.PublishMail(mailInformation);
-            }
-            else
-            {
-                confirmCode = "existed";
-            }
-            return confirmCode;
+            return await (user)
+                .SomeNotNull().WithException("Null input")
+                .FlatMapAsync(async req =>
+                {
+                    var existedUser = await _unitOfWork.Repository<User>().Get(x => (x.LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd()
+                                                                        || x.Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd()
+                                                                        || x.TelNum.TrimEnd() == user.TelNum.TrimEnd())
+                                                                        && x.IsActive)
+                               .ToListAsync();
+                    if (existedUser.Any())
+                    {
+                        if (existedUser.FirstOrDefault().LoginName.ToUpper().TrimStart().TrimEnd() == user.LoginName.ToUpper().TrimStart().TrimEnd())
+                        {
+                            return Option.None<bool, string>("Tên tài khoản này đã tồn tại!");
+                        }
+                        if (existedUser.FirstOrDefault().Email.ToUpper().TrimStart().TrimEnd() == user.Email.ToUpper().TrimStart().TrimEnd())
+                        {
+                            return Option.None<bool, string>("Địa chỉ email này đã tồn tại!");
+                        }
+                        if (existedUser.FirstOrDefault().TelNum.TrimEnd() == user.TelNum.TrimEnd())
+                        {
+                            return Option.None<bool, string>("Số điện thoại này đã tồn tại!");
+                        }
+                    }
+                    return Option.Some<bool, string>(true);
+                });
         }
         public async Task<bool> RegisterUser(RegisterUserOldDTO user)
         {
@@ -93,6 +105,7 @@ namespace WebAppAPI.Services.Business
             insertUser.UserAPIs = userAPIs;
             insertUser.Address = user.Address + ", " + user.Wards + ", " + user.Districts + ", " + user.Provinces;
             insertUser.AddressCode = user.WardCode.ToString() + ", " + user.DistrictCode.ToString() + ", " + user.ProvinceCode.ToString();
+            insertUser.VipsId = 14;
             _unitOfWork.Repository<User>().Add(insertUser);
             return _unitOfWork.SaveChanges();
         }
@@ -602,6 +615,32 @@ namespace WebAppAPI.Services.Business
                                                                     .OrderByDescending(x => x.SoldQuantity)
                                                                     .ToListAsync();
         }
+        public async Task<IEnumerable<ProductDTOShow>> GetMonthBestSellerProducts()
+        {
+            var existedSuccesOrderInCurrentMonth = _unitOfWork.Repository<Order>()
+                                                        .GetNoTracking(x => x.IsActive && x.Status == "Success" && x.UpdatedDate.Value.Month == DateTime.UtcNow.Month)
+                                                        .Include(x => x.orderDetails)
+                                                        .ToList();
+
+            var listProducts = existedSuccesOrderInCurrentMonth.SelectMany(x => x.orderDetails)
+                                                                .GroupBy(p => p.ProductId, p => p.Quantity,(key, g) 
+                                                                    => new { ProductId = key, Quantity = g.ToList().Count() }).ToList();            
+
+            var existedProducts =  await _unitOfWork.Repository<Product>().Get(x => x.IsActive && listProducts.Select(x => x.ProductId).Contains(x.Id))
+                                                                    .Include(x => x.category)
+                                                                    .Include(x => x.brand)
+                                                                    .Where(x => x.category.IsActive && x.brand.IsActive)
+                                                                    .ToListAsync();
+
+            var result = _mapper.Map<List<ProductDTOShow>>(existedProducts);
+
+            foreach (var x in result)
+            {
+                var soldQuantity = listProducts.First(y => y.ProductId == x.Id);
+                x.SoldQuantityPerMonth = soldQuantity.Quantity;
+            }
+            return result.OrderByDescending(x => x.SoldQuantityPerMonth);
+        }
         public async Task<IEnumerable<Category>> GetAllCategory()
         {
             return await _unitOfWork.Repository<Category>().Get(x => x.IsActive).ToListAsync();
@@ -624,6 +663,13 @@ namespace WebAppAPI.Services.Business
         public async Task<IEnumerable<VIP>> GetAllVIP()
         {
             return await _unitOfWork.Repository<VIP>().Get(x => x.IsActive).ToListAsync();
+        }
+        public async Task<string> SendConfirmCodeRegister(RegisterUserOldDTO user)
+        {
+            var confirmCode = Get8CharacterRandomString();
+            var mailInformation = new MailPublishedDto("ConfirmRegister", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] XÁC NHẬN ĐĂNG KÝ TÀI KHOẢN", "VĂN PHÒNG PHẨM 2023", confirmCode, "Mail_Published");
+            _messageBusClient.PublishMail(mailInformation);
+            return confirmCode;
         }
         #region Private
         double handleTotalBill(List<Cart> listCarts, double discountVIP)

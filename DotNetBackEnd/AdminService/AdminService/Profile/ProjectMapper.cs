@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DoAnTotNghiep.DTOM;
 using DoAnTotNghiep.Models.Entities;
 using WebAppAPI.DTO;
 using WebAppAPI.Models.Entities;
@@ -31,10 +30,10 @@ namespace WebAppAPI.Services.Model
             CreateMap<CategoryDTO, Category>()
                 .ForMember(des => des.Id, s => s.MapFrom(x => 0));
             CreateMap<Category, CategoryDTO>();
-
             CreateMap<BrandDTO, Brand>();
             CreateMap<CreateBrandDTO, Brand>();
             CreateMap<CategoryDTO, Category>();
+            CreateMap<Product, ProductHomeDTO>();
         }
     }
 }

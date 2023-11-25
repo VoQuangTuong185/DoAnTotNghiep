@@ -14,7 +14,8 @@ namespace WebAppAPI.Services.Contracts
     {
         string GetMyName();
         Task<bool> RegisterUser(RegisterUserOldDTO user);
-        Task<string> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user);
+        Task<Option<bool, string>> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user);
+        Task<string> SendConfirmCodeRegister(RegisterUserOldDTO user);
         Task<IEnumerable<UserAPI>> GetUserRoles();
         Task<string> ForgetPassword(string email);
         Task<bool> ChangePassword(LoginUserDTO user);
@@ -39,6 +40,7 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> CreateFeedback(List<FeedbackDTO> feedback);
         Task<ProductDTOShow> GetExistedProduct(int ProductId);
         Task<IEnumerable<Product>> GetAllProduct();
+        Task<IEnumerable<ProductDTOShow>> GetMonthBestSellerProducts();
         Task<IEnumerable<VIP>> GetAllVIP();
         Task<IEnumerable<Category>> GetAllCategory();
         Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);

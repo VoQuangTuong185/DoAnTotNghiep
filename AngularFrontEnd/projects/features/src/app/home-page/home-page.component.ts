@@ -69,15 +69,20 @@ export class HomePageComponent {
     this.provices = [];
   }
   ngOnInit() {
+    this.getMonthBestSellerProducts();
     this.getAllProduct();
     this.getAllCategory();
     this.activeCate = this.lstCate[0];
   }
   getAllProduct() {
     this.websiteAPIService.getAllProduct().subscribe((res: any) => {
+      this.lstProduct = res.data
+    });
+  }
+  getMonthBestSellerProducts() {
+    this.websiteAPIService.getMonthBestSellerProducts().subscribe((res: any) => {
       this.unloginedDataProduct = res.data;
       this.loginedDataProduct = res.data;
-      this.lstProduct = res.data
     });
   }
   getAllCategory() {
