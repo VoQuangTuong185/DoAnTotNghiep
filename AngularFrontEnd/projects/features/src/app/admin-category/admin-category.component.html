@@ -59,17 +59,11 @@
     </p-accordion>
 
     <form [formGroup]="categoryForm">
-        <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="Create Category" [modal]="true" styleClass="p-fluid" class="profile">
+        <p-dialog [(visible)]="displayEditUserPopup" [style]="{width: '450px'}" header="Danh mục" [modal]="true" styleClass="p-fluid" class="profile">
                 <ng-template pTemplate="content">
                     <div class="category">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Id</mat-label>
-                            <input matInput formControlName = "Id" name = "Id">                              
-                        </mat-form-field>
-                    </div>
-                    <div class="category">
                         <mat-form-field appearance="outline">     
-                            <mat-label>Category Name</mat-label>
+                            <mat-label>Danh mục</mat-label>
                             <input matInput formControlName = "CategoryName" name = "CategoryName" required=""> 
                             <mat-error *ngIf="categoryForm.get('CategoryName')?.hasError('required')">
                                 Hãy nhập danh mục!

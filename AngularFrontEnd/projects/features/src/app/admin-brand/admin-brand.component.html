@@ -53,14 +53,8 @@
     </p-accordion>
 
     <form [formGroup]="brandForm">
-        <p-dialog [(visible)]="displayEditBrandPopup" [style]="{width: '450px'}" header="Sửa nhãn hàng" [modal]="true" styleClass="p-fluid" class="profile">
+        <p-dialog [(visible)]="displayEditBrandPopup" [style]="{width: '450px'}" header="Nhãn hàng" [modal]="true" styleClass="p-fluid" class="profile">
                 <ng-template pTemplate="content">
-                    <div *ngIf="isEdit" class="category">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Id</mat-label>
-                            <input matInput formControlName = "Id" name = "Id">                              
-                        </mat-form-field>
-                    </div>
                     <div class="category">
                         <mat-form-field appearance="outline">     
                             <mat-label>Nhãn hàng</mat-label>

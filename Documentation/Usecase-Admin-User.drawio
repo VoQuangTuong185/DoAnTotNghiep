@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-11-05T13:03:54.528Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="i6MCIEAWDc6TCGGk-RXn" version="22.0.0" type="device" pages="4">
+<mxfile host="app.diagrams.net" modified="2023-11-26T09:11:58.188Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="75HeZWt1eXoLqipzkdGq" version="22.1.4" type="device" pages="5">
   <diagram name="Workflow" id="rrY7YYKp8UYqHfs8dElZ">
-    <mxGraphModel dx="2629" dy="2023" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2261" dy="1951" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1502,6 +1502,109 @@
         </mxCell>
         <mxCell id="lu0rfaTe1N00JWsHDoSa-79" value="1433" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#FFFFFF;fillColor=#004C99;" vertex="1" parent="1">
           <mxGeometry x="626" y="270" width="40" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="fgNKc61lIMpmfLIZFOlF" name="Trang-5">
+    <mxGraphModel dx="989" dy="539" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Reqid7QXedQCbUzlUa9I-54" value="" style="group;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="171" y="334" width="482" height="336" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-15" value="Cây thư mục" style="swimlane;startSize=20;horizontal=1;containerType=tree;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};container=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+          <mxGeometry x="5" y="1.81" width="429" height="270.97" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-30" value="AdminService" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="320" y="188.3274193548387" width="88.63" height="24.387096774193544" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-32" value="K8S" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="216" y="188.3274193548387" width="89" height="23.483870967741932" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-55" value="MailService.sln" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="133" y="241.6129032258064" width="87" height="16.25806451612903" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-60" value="" style="edgeStyle=entityRelationEdgeStyle;startArrow=none;endArrow=none;segment=10;curved=1;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" target="Reqid7QXedQCbUzlUa9I-62" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="386" y="244.32741935483867" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="263.0554156171285" y="301.2306451612902" />
+              <mxPoint x="282.8816120906801" y="296.7145161290322" />
+            </Array>
+            <mxPoint x="383.1788413098237" y="289.4887096774193" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-62" value="AdminService.sln" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1" collapsed="1">
+          <mxGeometry x="320" y="240.2629032258064" width="98" height="16.25806451612903" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-47" value="Dockerfile" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="11" y="222.19354838709674" width="64" height="15.354838709677416" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-52" value="DoAnTotNghiep.sln" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1" collapsed="1">
+          <mxGeometry x="7.829999999999998" y="241.6129032258064" width="108" height="14.90322580645161" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-19" value="AngularFrontEnd" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="11" y="105.67741935483869" width="116.62" height="20.774193548387093" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-20" value="DotNetBackEnd" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="157.11" y="105.67741935483869" width="116.62" height="20.774193548387093" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-29" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" source="Reqid7QXedQCbUzlUa9I-20" target="Reqid7QXedQCbUzlUa9I-30" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="481.32493702770785" y="364.90322580645153" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-31" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" source="Reqid7QXedQCbUzlUa9I-20" target="Reqid7QXedQCbUzlUa9I-32" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="492.98740554156177" y="373.0322580645161" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-87" value="Dockerfile" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-15" vertex="1">
+          <mxGeometry x="320" y="220.84354838709675" width="64.92" height="15.354838709677416" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-23" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;endArrow=none;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" target="Reqid7QXedQCbUzlUa9I-21" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="221.5869017632242" y="93.93548387096774" as="sourcePoint" />
+            <mxPoint x="367.367758186398" y="125.54838709677419" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="366.20151133501264" y="102.06451612903226" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="DoAnTotNghiep" treeRoot="1" id="Reqid7QXedQCbUzlUa9I-18">
+          <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+            <mxGeometry x="150.45" y="59.61290322580645" width="139.95" height="18.064516129032256" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-16" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" source="Reqid7QXedQCbUzlUa9I-18" target="Reqid7QXedQCbUzlUa9I-19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-17" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" source="Reqid7QXedQCbUzlUa9I-18" target="Reqid7QXedQCbUzlUa9I-20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-21" value="Documentation" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+          <mxGeometry x="307.89" y="109.29032258064515" width="116.62" height="19.870967741935484" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-24" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" source="Reqid7QXedQCbUzlUa9I-20" target="Reqid7QXedQCbUzlUa9I-25" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="488.6574307304786" y="336" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-25" value="MainService" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+          <mxGeometry x="12.83" y="189.6774193548387" width="87.47" height="25.29032258064516" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-27" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;startArrow=none;endArrow=none;rounded=0;curved=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" source="Reqid7QXedQCbUzlUa9I-20" target="Reqid7QXedQCbUzlUa9I-28" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="486.32493702770785" y="366.7096774193548" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-28" value="Mail Service" style="whiteSpace=wrap;html=1;align=center;verticalAlign=middle;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+          <mxGeometry x="113.13" y="189.6774193548387" width="94.47" height="25.29032258064516" as="geometry" />
+        </mxCell>
+        <mxCell id="Reqid7QXedQCbUzlUa9I-57" value="Dockerfile" style="whiteSpace=wrap;html=1;rounded=1;arcSize=50;align=center;verticalAlign=middle;strokeWidth=1;autosize=1;spacing=4;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;entityRelationEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;,&quot;segment&quot;:10,&quot;curved&quot;:1,&quot;sourcePerimeterSpacing&quot;:0,&quot;targetPerimeterSpacing&quot;:0};movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="Reqid7QXedQCbUzlUa9I-54" vertex="1">
+          <mxGeometry x="139" y="224" width="64.92" height="15.354838709677418" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

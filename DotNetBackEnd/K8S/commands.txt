@@ -1,6 +1,4 @@
 #first configuration
-docker tag rabbitmq voquangtuong06022001/rabbitmq:latest
-docker push voquangtuong06022001/rabbitmq:latest
 kubectl apply -f rabbitmq-depl.yaml
 kubectl apply -f local-pvc.yaml
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="1234s#xzdasdas"
@@ -14,13 +12,13 @@ kubectl apply -f mailservice-np-srv.yaml #configure services mailservice
 
 #mainservice
 docker build -t mainservice .
-docker tag mainservice voquangtuong06022001/mainservice:3.4
-docker push voquangtuong06022001/mainservice:3.1
+docker tag mainservice voquangtuong06022001/mainservice:3.7
+docker push voquangtuong06022001/mainservice:3.7
 kubectl apply -f mainservice-depl.yaml
 
 #adminservice
 docker build -t adminservice .
-docker tag adminservice voquangtuong06022001/adminservice:2.4
+docker tag adminservice voquangtuong06022001/adminservice:2.6
 docker push voquangtuong06022001/adminservice:2.4
 kubectl apply -f adminservice-depl.yaml
 

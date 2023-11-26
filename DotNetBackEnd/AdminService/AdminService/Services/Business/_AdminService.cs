@@ -406,10 +406,13 @@ namespace WebAppAPI.Services.Business
                     var existedCategoryName = await _unitOfWork.Repository<Category>().FirstOrDefaultAsync(x => x.CategoryName.ToUpper().TrimStart().TrimEnd()
                                                                                                             == category.CategoryName.ToUpper().TrimStart().TrimEnd() && x.IsActive);
                     if (existedCategoryName != null)
-                    {
-                        return Option.None<bool, string>("Đã tồn tại sản phẩm thuộc nhãn hàng " + existedCategoryName.CategoryName + ". Hãy thử lại!");
-                    }
-                    var insertCategory = _mapper.Map<Category>(category);
+                        return Option.None<bool, string>("Đã tồn tại danh mục " + existedCategoryName.CategoryName + ". Hãy thử lại!");
+
+                    var insertCategory = new Category();
+                    insertCategory.CategoryName = category.CategoryName;
+                    insertCategory.Description = category.Description; 
+                    insertCategory.Image = category.Image;
+
                     _unitOfWork.Repository<Category>().Add(insertCategory);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
