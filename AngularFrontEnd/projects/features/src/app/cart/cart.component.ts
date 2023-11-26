@@ -33,9 +33,9 @@ export class CartComponent implements OnInit {
   selectedPayment: string = '';
   userId!: number;
   methods: any[] = [
-    { name: 'Thanh toán khi nhân hàng', key: 'A' },
+    { name: 'Thanh toán khi nhận hàng', key: 'A' },
     { name: 'Thanh toán qua ngân hàng', key: 'M' },
-    { name: 'Thanh toán qua momo', key: 'P' },
+    { name: 'Thanh toán qua vnpay', key: 'P' },
   ];
   selectedAll: boolean = false;
   constructor(
