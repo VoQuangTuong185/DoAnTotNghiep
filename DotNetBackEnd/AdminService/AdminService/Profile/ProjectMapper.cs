@@ -32,7 +32,6 @@ namespace WebAppAPI.Services.Model
             CreateMap<Category, CategoryDTO>();
             CreateMap<BrandDTO, Brand>();
             CreateMap<CreateBrandDTO, Brand>();
-            CreateMap<CategoryDTO, Category>();
             CreateMap<Product, ProductHomeDTO>();
         }
     }
