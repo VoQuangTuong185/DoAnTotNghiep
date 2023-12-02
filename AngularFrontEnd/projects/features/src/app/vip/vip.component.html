@@ -29,7 +29,7 @@
             </div>
             <h3 *ngFor="let vip of dataVIPs">
                 <span *ngIf="vip.priceTo != 0">
-                    <div class="grid p-fluid">
+                    <div class="grid p-fluid vip-row">
                         <div class="col-12 md:col-6">
                             <h3>- Từ {{vip.priceFrom | currency : "VND"}} - {{vip.priceTo | currency : "VND"}}</h3>
                         </div>    

@@ -82,7 +82,7 @@
                           <div>
                             <mat-form-field appearance="outline">
                                 <mat-label>Số điện thoại</mat-label>
-                                <input matInput formControlName="TelNum" name="TelNum"/>
+                                <input matInput formControlName="TelNum" name="TelNum" required=""/>
                                 <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('required')">
                                     Hãy nhập số điện thoại
                                 </mat-error>
@@ -96,7 +96,7 @@
                           </div>
                       </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="!this.isAdmin">
                       <td>
                           <div class="mr-3">
                             <mat-form-field appearance="fill">
@@ -128,7 +128,7 @@
                           </div>
                       </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="!this.isAdmin">
                       <td>
                           <div class="mr-3">
                             <mat-form-field appearance="fill">
