@@ -9,7 +9,7 @@
                 <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
                     [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first" [loading]="loading"
                     [resizableColumns]="true" [reorderableColumns]="true" 
-                    [globalFilterFields]="['name','loginName','email','telNum', 'address']"
+                    [globalFilterFields]="['name','loginName','email','telNum', 'address','discount']"
                     [rowsPerPageOptions]="[5, 10, 20]"
                     currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                     <ng-template pTemplate="header" let-columns>

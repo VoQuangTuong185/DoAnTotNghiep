@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   filterProducts: SearchProduct[] = [];
   userRole!: string;
   numberCart: number = 0;
+await: any;
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -136,7 +137,7 @@ export class AppComponent implements OnInit {
       Id: [this.selectedUsers.id, [Validators.required]],
       Name: [this.selectedUsers.name, [Validators.required]],
       LoginName: [this.selectedUsers.loginName, [Validators.required]],
-      Email: [this.selectedUsers.email, [Validators.required]],
+      Email: [this.selectedUsers.email, Validators.compose([Validators.required, Validators.email])],
       TelNum: [this.selectedUsers.telNum, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
@@ -191,22 +192,13 @@ export class AppComponent implements OnInit {
     this.editUserForm = this.createExistedUserForm();
     this.displayEditUserPopup = true;
   }
-  confirmEditUser() {
+  async confirmEditUser() {
     if(this.editUserForm.invalid){
       this.messageService.add({
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
         detail: 'Hãy nhập các thông tin bắt buộc!',
-      });
-      return;
-    }
-    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
       });
       return;
     }

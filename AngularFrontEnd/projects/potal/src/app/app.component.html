@@ -71,9 +71,12 @@
                           <div class="mr-3">
                             <mat-form-field appearance="outline">
                                 <mat-label>Địa chỉ email</mat-label>
-                                <input matInput formControlName="Email" name="Email" required="" />
+                                <input matInput formControlName="Email" name="Email" required="" type="email" />
                                 <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
-                                Hãy nhập địa chỉ email!
+                                    Hãy nhập địa chỉ email!
+                                </mat-error>
+                                <mat-error *ngIf="editUserForm.get('Email')?.hasError('email')">
+                                    Địa chỉ email bạn nhập không hợp lệ!
                                 </mat-error>
                             </mat-form-field>
                           </div>
