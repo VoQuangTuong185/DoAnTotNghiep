@@ -7,6 +7,7 @@ import { UserGuard } from './core/src/lib/User.guard';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from './core/src/lib/Auth.guard';
 
 const routes: Routes = [
   {

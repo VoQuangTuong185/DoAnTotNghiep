@@ -31,6 +31,7 @@ export class HomePageComponent {
   quantityAddToCart: number = 1;
   provices: any[];
   lstProduct: ProductDTO[] = []
+  lstProductFilter: ProductDTO[] = []
   lstCate: MenuItem[] = [];
   activeCate: any;
   addCart = new AddCart();
@@ -73,6 +74,7 @@ export class HomePageComponent {
     this.getAllProduct();
     this.getAllCategory();
     this.activeCate = this.lstCate[0];
+    this.handleChangeCate(-1);
   }
   getAllProduct() {
     this.websiteAPIService.getAllProduct().subscribe((res: any) => {
@@ -110,12 +112,12 @@ export class HomePageComponent {
   handleChangeCate(cateId: number) {
     if (cateId === -1) {
       this.websiteAPIService.getAllProduct().subscribe((res: any) => {
-        this.lstProduct = res.data
+        this.lstProductFilter = res.data
       });
       return;
     }
-    this.cloneDatProduct = Object.values({...this.loginedDataProduct});
-    this.lstProduct = this.cloneDatProduct.filter((x) => x.category.id === cateId);  
+    this.cloneDatProduct = JSON.parse(JSON.stringify(this.lstProduct));
+    this.lstProductFilter = this.cloneDatProduct.filter((x) => x.category.id === cateId);  
     this.updateVisibility()
   }
   getProductByCategory(categoryId: number) {

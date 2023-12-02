@@ -8,10 +8,11 @@ import { MessageService } from 'primeng/api';
    providedIn: 'root'      
 })      
 export class AuthGuard implements CanActivate {
-   userData = new User();     
-   constructor(private router: Router, private authService :AuthService, private messageService: MessageService) { }      
-   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
+  userData = new User();     
+  constructor(private router: Router, private authService :AuthService, private messageService: MessageService) { }      
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
     if(localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null' && localStorage.getItem('userRole') != null && localStorage.getItem('userRole') != 'null'){ 
+      console.log('if dung')
        this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
        var date = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
        var dateNow = new Date();
@@ -19,13 +20,19 @@ export class AuthGuard implements CanActivate {
 
        let userRole = localStorage.getItem('userRole')!;
 
+        console.log(dateNow)
+        console.log(tokenExpiredDate)
+
        if (dateNow > tokenExpiredDate){
-         this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => { 
+         this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => {
+          console.log(res) 
            if(res.isSuccess){
+            console.log(1)
              localStorage.setItem('authToken', res.data);
              return true;
            }
            else{
+            console.log(2)
              localStorage.removeItem('authToken');
              this.messageService.add({key: 'bc', severity:'info', summary: 'Thông tin', detail: res.message});
              this.router.navigate(['login-user']);
@@ -34,9 +41,15 @@ export class AuthGuard implements CanActivate {
          });
        }
        else {
+        console.log(3)
         return true;
        }
-     }  
-     return true;
-    }     
+     } 
+     else {
+      console.log(4)
+      this.router.navigate(['login-user']);
+      return false;  
+     }
+     return true;     
+  } 
 }

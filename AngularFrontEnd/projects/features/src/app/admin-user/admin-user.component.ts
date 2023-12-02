@@ -100,7 +100,7 @@ export class AdminUserComponent {
       accept: () => {
         this.websiteAPIService.activeOrInActiveUser(data.loginName).subscribe((res:any) =>{
           if(res.data){
-            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: data.name + ' was ' + info, life: 3000});
+            this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Tài khoản của ' + data.name + ' đã ' + info, life: 3000});
             this.loadDataUsers();
           }
           else {

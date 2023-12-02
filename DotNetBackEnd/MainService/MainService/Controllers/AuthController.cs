@@ -113,11 +113,16 @@ namespace WebAppAPI.Controllers
             try
             {
                 var existedUser = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == request.LoginUser.ToUpper().TrimStart().TrimEnd() && x.IsActive);
+                var existedInActiveUser = _unitOfWork.Repository<User>().Any(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == request.LoginUser.ToUpper().TrimStart().TrimEnd() && !x.IsActive);
                 if (!existedUser)
                 {
+                    if (existedInActiveUser)
+                        result.Message = "Tài khoản của bạn đã bị khoá. Hãy liên hệ quản trị viên của web để được hỗ trợ.";
+                    else
+                        result.Message = "Không tìm thấy tài khoản";
+
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
-                    result.Message =  "Không tìm thấy tài khoản";
                 }
                 else
                 {

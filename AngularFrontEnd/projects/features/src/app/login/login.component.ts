@@ -105,9 +105,19 @@ export class LoginComponent {
     this.displayForgotPopup = true;   
   }
   sendForgetCode() {
+    if(this.confirmEmail.trimStart() == ''){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để quên mật khẩu!',
+      });
+      return;
+    }
     this.websiteAPIService
       .sendForgetCode(this.confirmEmail)
       .subscribe((res: any) => {
+        console.log(res.data)
         if (res.data != '') {
           this.messageService.add({
             key: 'bc',
