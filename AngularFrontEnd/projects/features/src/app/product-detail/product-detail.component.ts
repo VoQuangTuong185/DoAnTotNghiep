@@ -115,6 +115,7 @@ export class ProductDetailComponent implements OnInit {
       
       this.displayAdminReplyPopup = false;
       this.getExistedProduct();
+      this.getFeedbacks();
     });
   }
   getCartByUserID(){

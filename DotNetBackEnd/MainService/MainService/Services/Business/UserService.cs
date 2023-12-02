@@ -657,12 +657,14 @@ namespace WebAppAPI.Services.Business
                 Comments = x.Comments,
                 Votes = x.Votes,
                 OrderId = x.OrderId,
+                AdminReply = x.AdminReply,
                 CreatedDate = x.UpdatedDate != null ? x.UpdatedDate : x.CreatedDate,
+                ReplyDate = x.ReplyDate
             }).OrderByDescending(x => x.CreatedDate).ToList();
         }
         public async Task<IEnumerable<VIP>> GetAllVIP()
         {
-            return await _unitOfWork.Repository<VIP>().Get(x => x.IsActive).ToListAsync();
+            return await _unitOfWork.Repository<VIP>().Get(x => x.IsActive).OrderBy(x => x.Discount).ToListAsync();
         }
         public async Task<string> SendConfirmCodeRegister(RegisterUserOldDTO user)
         {
@@ -689,13 +691,13 @@ namespace WebAppAPI.Services.Business
             switch (payment)
             {
                 case "A":
-                    paymentMethod = "Thanh toán khi nhân hàng";
+                    paymentMethod = "Thanh toán khi nhận hàng";
                     break;
                 case "M":
                     paymentMethod = "Thanh toán qua ngân hàng";
                     break;
                 case "P":
-                    paymentMethod = "Thanh toán qua momo";
+                    paymentMethod = "Thanh toán qua VNPAY";
                     break;
             }
             return paymentMethod;

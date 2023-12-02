@@ -720,13 +720,13 @@ namespace WebAppAPI.Services.Business
             switch (payment)
             {
                 case "A":
-                    paymentMethod = "Thanh toán khi nhân hàng";
+                    paymentMethod = "Thanh toán khi nhận hàng";
                     break;
                 case "M":
                     paymentMethod = "Thanh toán qua ngân hàng";
                     break;
                 case "P":
-                    paymentMethod = "Thanh toán qua momo";
+                    paymentMethod = "Thanh toán qua VNPAY";
                     break;
             }
             return paymentMethod;
