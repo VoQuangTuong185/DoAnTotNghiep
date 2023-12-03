@@ -117,7 +117,6 @@ export class LoginComponent {
     this.websiteAPIService
       .sendForgetCode(this.confirmEmail)
       .subscribe((res: any) => {
-        console.log(res.data)
         if (res.data != '') {
           this.messageService.add({
             key: 'bc',

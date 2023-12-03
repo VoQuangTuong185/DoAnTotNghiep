@@ -43,8 +43,7 @@ export class CartComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
-    private addressService: AddressService,
-    private checkValidEmailService : CheckValidEmailService
+    private addressService: AddressService
   ) {
     this.provices = [];
     this.districts = [];
@@ -68,7 +67,7 @@ export class CartComponent implements OnInit {
     return this.formBuilder.group({
       UserId: [this.currentUser.id],
       Name: [this.currentUser.name, [Validators.required]],
-      Email: [{value: this.currentUser.email, disabled: true}, [Validators.required]],
+      Email: [{value: this.currentUser.email, disabled: true}, Validators.compose([Validators.required, Validators.email])],
       TelNum: [this.currentUser.telNum,  Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
@@ -200,19 +199,11 @@ export class CartComponent implements OnInit {
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+        detail: 'Hãy nhập các thông tin bắt buộc để đặt hàng!',
       });
       return;
     }
-    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
-      });
-      return;
-    }
+
     this.confirmationService.confirm({
       message: 'Xác nhận đặt hàng ?',
       header: 'Xác nhận',
