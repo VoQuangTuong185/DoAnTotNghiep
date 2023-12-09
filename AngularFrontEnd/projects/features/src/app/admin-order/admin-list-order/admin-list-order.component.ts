@@ -4,6 +4,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { enumData } from '../../core/src/lib/enumData';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderDetailComponent } from '../../order/listOrder/order-detail/order-detail.component';
+import { OrderAdminModel } from '../../data/OrderAdminModel';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
+import { User } from '../../data/User.model';
 
 @Component({
   selector: 'app-admin-list-order',
@@ -19,6 +22,7 @@ export class AdminListOrderComponent implements OnInit {
   ordersDataCols:any[] = [];
   first:number = 10;
   rows:number = 10;
+  userData = new User();
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
@@ -36,9 +40,8 @@ export class AdminListOrderComponent implements OnInit {
       { header : 'Tổng tiền', field : 'totalBill', width:10, type:'money'},
       { header : 'Thao tác', field : 'statusOrderCode', width:25, type:'button'},
       ];
-    this.userId = Number(
-      JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1])).id
-    );
+    this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
+    this.userId = this.userData.id;
   }
 
   ngOnInit() {
@@ -101,7 +104,10 @@ export class AdminListOrderComponent implements OnInit {
 
   cancelOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.cancelOrderAdmin(Number(orderId)).subscribe((res: any) => {
+    let adminOrder = new OrderAdminModel();
+    adminOrder.orderId = Number(orderId);
+    adminOrder.updateBy = Number(this.userId);
+    this.websiteAPIService.cancelOrderAdmin(adminOrder).subscribe((res: any) => {
         if(res.isSuccess === true){
           if(this.statusOrderCode === enumData.statusOrder.wait.code){ 
             this.getWaitingOrder()
@@ -123,7 +129,10 @@ export class AdminListOrderComponent implements OnInit {
 
   confirmOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.confirmOrderAdmin(Number(orderId)).subscribe((res: any) => {
+    let adminOrder = new OrderAdminModel();
+    adminOrder.orderId = Number(orderId);
+    adminOrder.updateBy = Number(this.userId);
+    this.websiteAPIService.confirmOrderAdmin(adminOrder).subscribe((res: any) => {
         if(res.isSuccess === true){
           this.getWaitingOrder();
           this.messageService.add({
@@ -160,7 +169,10 @@ export class AdminListOrderComponent implements OnInit {
 
   successOrder(orderId: string) {
     this.loading = true;
-    this.websiteAPIService.successOrderAdmin(Number(orderId)).subscribe((res: any) => {
+    let adminOrder = new OrderAdminModel();
+    adminOrder.orderId = Number(orderId);
+    adminOrder.updateBy = Number(this.userId);
+    this.websiteAPIService.successOrderAdmin(adminOrder).subscribe((res: any) => {
         if(res.isSuccess === true){
           this.getProcessingOrder();
           this.messageService.add({

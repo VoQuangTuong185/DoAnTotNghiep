@@ -5,6 +5,7 @@ import { AdminUserDTO } from '../data/AdminUserDTO';
 import { WebsiteAPIService } from '../data/WebsiteAPI.service'
 import { User } from '../data/User.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-admin-user',
@@ -47,7 +48,7 @@ export class AdminUserComponent {
         { header : 'Thao tác', field : 'action', width:20, type:'button'},
     ];
     if(localStorage.getItem('authToken') != 'null'){
-      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     }  
   }
   createEmptyUserForm(){

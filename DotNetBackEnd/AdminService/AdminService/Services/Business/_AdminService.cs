@@ -528,13 +528,13 @@ namespace WebAppAPI.Services.Business
                                                               BrandName = x.brand.BrandName
                                                           }).ToListAsync();
         }
-        public async Task<Option<bool, string>> CancelOrder(int orderId)
+        public async Task<Option<bool, string>> CancelOrder(AdminOrderModel order)
         {
-            return await (orderId)
+            return await (order)
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedOrder = _unitOfWork.Repository<Order>().Get(x => x.Id == orderId).Include(x => x.orderDetails).FirstOrDefault();
+                    var existedOrder = _unitOfWork.Repository<Order>().Get(x => x.Id == order.OrderId).Include(x => x.orderDetails).FirstOrDefault();
                     var listProduct = _unitOfWork.Repository<Product>().Get(x => existedOrder.orderDetails.Select(x => x.ProductId).ToList().Contains(x.Id)).ToList();
                     var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
 
@@ -550,6 +550,7 @@ namespace WebAppAPI.Services.Business
 
                     existedOrder.Status = "Cancel";
                     existedOrder.UpdatedDate = DateTime.UtcNow;
+                    existedOrder.UpdatedBy = order.UpdateBy;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     if (await _unitOfWork.SaveChangesAsync())
@@ -561,16 +562,17 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
-        public async Task<Option<bool, string>> ConfirmOrder(int orderId)
+        public async Task<Option<bool, string>> ConfirmOrder(AdminOrderModel order)
         {
-            return await (orderId)
+            return await (order)
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedOrder = _unitOfWork.Repository<Order>().FirstOrDefault(x => x.Id == orderId);
+                    var existedOrder = _unitOfWork.Repository<Order>().FirstOrDefault(x => x.Id == order.OrderId);
                     var existedUser = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
                     existedOrder.Status = "Processing";
                     existedOrder.UpdatedDate = DateTime.UtcNow;
+                    existedOrder.UpdatedBy = order.UpdateBy;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     if (await _unitOfWork.SaveChangesAsync())
@@ -582,13 +584,13 @@ namespace WebAppAPI.Services.Business
                     return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
                 });
         }
-        public async Task<Option<bool, string>> SuccessOrder(int orderId)
+        public async Task<Option<bool, string>> SuccessOrder(AdminOrderModel order)
         {
-            return await (orderId)
+            return await (order)
                 .SomeNotNull().WithException("Null input")
                 .FlatMapAsync(async req =>
                 {
-                    var existedOrder = _unitOfWork.Repository<Order>().Get(x => x.Id == orderId).Include(x => x.orderDetails).FirstOrDefault();
+                    var existedOrder = _unitOfWork.Repository<Order>().Get(x => x.Id == order.OrderId).Include(x => x.orderDetails).FirstOrDefault();
                     var listProduct = _unitOfWork.Repository<Product>().Get(x => existedOrder.orderDetails.Select(x => x.ProductId).ToList().Contains(x.Id)).ToList();
                     var user = _unitOfWork.Repository<User>().FirstOrDefault(x => x.Id == existedOrder.UserId);
 
@@ -602,6 +604,7 @@ namespace WebAppAPI.Services.Business
 
                     existedOrder.Status = "Success";
                     existedOrder.UpdatedDate = DateTime.UtcNow;
+                    existedOrder.UpdatedBy = order.UpdateBy;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     existedOrder.orderDetails.ForEach(async x =>

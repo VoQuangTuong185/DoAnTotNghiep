@@ -41,9 +41,9 @@ namespace WebAppAPI.Services.Contracts
         Task<Option<bool, string>> UpdateCategory(Category category);
         Category GetCategoryById(int id);
         Task<Option<bool, string>> InactiveCategory(int categoryId);
-        Task<Option<bool, string>> CancelOrder(int orderId);
-        Task<Option<bool, string>> SuccessOrder(int orderId);
-        Task<Option<bool, string>> ConfirmOrder(int orderId);
+        Task<Option<bool, string>> CancelOrder(AdminOrderModel order);
+        Task<Option<bool, string>> SuccessOrder(AdminOrderModel order);
+        Task<Option<bool, string>> ConfirmOrder(AdminOrderModel order);
         Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
         Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback);
     }

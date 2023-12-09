@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressService } from '../data/Address.service';
 import { UpdateCart } from '../data/UpdateCart.model';
 import { CheckValidEmailService } from '../data/CheckValidEmailService';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-cart',
@@ -52,9 +53,7 @@ export class CartComponent implements OnInit {
       localStorage.getItem('authToken') != null &&
       localStorage.getItem('authToken') != 'null'
     ) {
-      this.userData = JSON.parse(
-        window.atob(localStorage.getItem('authToken')!.split('.')[1])
-      );
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     }
     this.loadDataUser();
     this.selectedPayment = this.methods[0].key;
@@ -110,7 +109,7 @@ export class CartComponent implements OnInit {
     this.showConfirmOrder = true;
   }
   loadDataUser() {
-    this.userId = Number(JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1])).id);
+    this.userId = Number(this.userData.id);
     this.websiteAPIService.getInfoUser(this.userId).subscribe((res: any) => {
       if (res.isSuccess) {
         this.currentUser = res.data;

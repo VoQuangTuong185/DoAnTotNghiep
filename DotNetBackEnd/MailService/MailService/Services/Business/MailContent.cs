@@ -48,21 +48,28 @@ namespace MailService.Services.Business
         }
         public async Task SendMailConfirmChangeEmail(MailPublishedDto content)
         {
-            string emailTemplate = _mailService.GetEmail("ConfirmChangeEmail.html");
-            var client = _mailService.GetEmailClient();
-            string sysEmail = Config.Email;
-            MailMessage mail = new MailMessage
+            try
             {
-                IsBodyHtml = true,
-                Subject = content.Subject,
-                From = new MailAddress(sysEmail, content.Title),
-            };
-            var toEmail = new MailAddress(content.Email);
-            mail.To.Add(toEmail);
-            emailTemplate = emailTemplate.Replace("{0}", content.Email);
-            emailTemplate = emailTemplate.Replace("{1}", content.Content);
-            mail.Body = emailTemplate;
-            await client.SendMailAsync(mail);
+                string emailTemplate = _mailService.GetEmail("ConfirmChangeEmail.html");
+                var client = _mailService.GetEmailClient();
+                string sysEmail = Config.Email;
+                MailMessage mail = new MailMessage
+                {
+                    IsBodyHtml = true,
+                    Subject = content.Subject,
+                    From = new MailAddress(sysEmail, content.Title),
+                };
+                var toEmail = new MailAddress(content.Email);
+                mail.To.Add(toEmail);
+                emailTemplate = emailTemplate.Replace("{0}", content.Email);
+                emailTemplate = emailTemplate.Replace("{1}", content.Content);
+                mail.Body = emailTemplate;
+                await client.SendMailAsync(mail);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
         public async Task SendMailConfirmChangePassword(MailPublishedDto content)
         {

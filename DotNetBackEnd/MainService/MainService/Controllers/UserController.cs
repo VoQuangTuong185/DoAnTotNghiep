@@ -180,6 +180,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpPost("add-cart")]
         public async Task<ApiResult> AddCart(AddCart addCart)
         {

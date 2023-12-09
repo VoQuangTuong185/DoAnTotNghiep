@@ -10,6 +10,7 @@ import { AddressService } from '../data/Address.service';
 import { AddCart } from '../data/AddCart.model';
 import { Router } from '@angular/router';
 import { CartService } from '../data/Cart.service';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-home-page',
@@ -64,7 +65,7 @@ export class HomePageComponent {
     });
     this.userRole = localStorage.getItem('userRole')!;
     if (localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null') {
-      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
       this.userData.isLoggedIn = true;
     }
     this.provices = [];

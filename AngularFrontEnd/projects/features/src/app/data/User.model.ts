@@ -3,5 +3,6 @@ export class User {
     name!: string;    
     loginName!: string;    
     isLoggedIn!: boolean;    
-    role!: string;    
+    role!: string;   
+    expires!: Date; 
 }  

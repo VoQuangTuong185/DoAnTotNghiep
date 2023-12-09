@@ -7,6 +7,7 @@ import { FeedbackDetailShow } from '../data/FeedbackDetailShow.model';
 import { User } from '../data/User.model';
 import { AddCart } from '../data/AddCart.model';
 import { CartService } from '../data/Cart.service';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-product-detail',
@@ -44,7 +45,7 @@ export class ProductDetailComponent implements OnInit {
       this.getFeedbacks();
     });
     if (localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null') {
-      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
       this.userData.isLoggedIn = true;
     }
   }
