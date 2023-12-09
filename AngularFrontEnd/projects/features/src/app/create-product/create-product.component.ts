@@ -73,7 +73,7 @@ export class CreatProductComponent {
       BrandId: [{value: data.brandId, disabled: true}, [Validators.required]],
       CategoryId: [{value: data.categoryId, disabled: true},[Validators.required]],
       SoldQuantity: [{value: data.soldQuantity, disabled:true},[Validators.required]],
-      Quanity: [data.quanity, [Validators.required, Validators.max(100), Validators.min(1)]],
+      Quanity: [data.quanity, [Validators.required, Validators.max(100), Validators.min(0)]],
       Discount: [data.discount,[Validators.required, Validators.max(100), Validators.min(1)]],
       Price: [data.price, [Validators.required]],
       Image: [data.image, [Validators.required]],

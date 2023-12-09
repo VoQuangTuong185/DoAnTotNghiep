@@ -13,6 +13,7 @@ import { CreateOrder } from './CreateOrder.model';
 import { UpdateCart } from './UpdateCart.model';
 import { FeedbackDTO } from './FeedbackDTO.model.js';
 import { FeedbackDetailShow } from './FeedbackDetailShow.model';
+import { OrderAdminModel } from './OrderAdminModel';
 @Injectable({
   providedIn: 'root',
 })
@@ -75,6 +76,9 @@ export class WebsiteAPIService{
     private urlGetCancelOrder = 'get-cancel-order';
     private urlGetAllProductByOrderID = 'get-all-product-by-oder-id?orderId=';
     private urlReplyFeedback = 'reply-feedback'; 
+    private urlAdminCancelOrder = 'cancel-order';
+    private urlAdminConfirmOrder = 'confirm-order';
+    private urlAdminSuccessOrder = 'success-order';
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -262,14 +266,14 @@ export class WebsiteAPIService{
     getSearchProductAdmin(keyWord: string){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSearchProduct + keyWord, {headers: this.httpHeaders});
     }
-    cancelOrderAdmin(orderId: number){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlCancelOrder + orderId, {headers: this.httpHeaders});
+    cancelOrderAdmin(info: OrderAdminModel){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlAdminCancelOrder, info);
     }
-    confirmOrderAdmin(orderId: number){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlConfirmOrder + orderId, {headers: this.httpHeaders});
+    confirmOrderAdmin(info: OrderAdminModel){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlAdminConfirmOrder, info);
     }
-    successOrderAdmin(orderId: number){
-        return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlSuccessOrder + orderId, {headers: this.httpHeaders});
+    successOrderAdmin(info: OrderAdminModel){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlAdminSuccessOrder, info);
     }
     getFeedbackByProductIdAdmin(productId: number){
         return this.http.get<any>(Constant.libraryApiUrlAdmin() + this.urlgetFeedbackByProductId + productId, {headers: this.httpHeaders});

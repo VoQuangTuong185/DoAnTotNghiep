@@ -8,6 +8,7 @@ import { WebsiteAPIService } from '../data/WebsiteAPI.service';
 import { AuthService } from '../core/src/lib/Auth.service';
 import { LoginService } from '../data/Login.service';
 import { User } from '../data/User.model';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -55,6 +56,9 @@ export class LoginComponent {
   }
   openLoginPopUp() {
     this.displayLoginPopUp = true;
+    if (this.displayForgotPopup){
+      this.displayForgotPopup = false;  
+    }   
   }
   login() {
     if(this.loginForm.invalid){
@@ -72,14 +76,9 @@ export class LoginComponent {
       .subscribe((res: any) => {
         if (res.isSuccess) {
           localStorage.setItem('authToken', res.data);
-          const userDetails = new User();
-          var result = JSON.parse(
-            window.atob(localStorage.getItem('authToken')!.split('.')[1])
-          );
-          userDetails.id = result.id;
-          userDetails.loginName = result.loginName;
+          let userDetails = new User();
+          userDetails = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
           userDetails.isLoggedIn = true;
-          userDetails.role = result.role;
           this.loginService.passData(userDetails);
           this.displayLoginPopUp = false;
           this.messageService.add({
@@ -105,6 +104,15 @@ export class LoginComponent {
     this.displayForgotPopup = true;   
   }
   sendForgetCode() {
+    if(this.confirmEmail.trimStart() == ''){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc để quên mật khẩu!',
+      });
+      return;
+    }
     this.websiteAPIService
       .sendForgetCode(this.confirmEmail)
       .subscribe((res: any) => {

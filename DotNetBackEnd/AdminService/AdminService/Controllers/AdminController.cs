@@ -599,13 +599,13 @@ namespace WebAppAPI.Controllers
             return result;
         }
         [Authorize]
-        [HttpGet("cancel-order")]
-        public async Task<ApiResult> CancelOrder(int orderId)
+        [HttpPost("cancel-order")]
+        public async Task<ApiResult> CancelOrder(AdminOrderModel order)
         {
             var result = new ApiResult();
             try
             {
-                (await _IAdminService.CancelOrder(orderId)).Match(res =>
+                (await _IAdminService.CancelOrder(order)).Match(res =>
                 {
                     result.Message = "Huỷ đơn hàng thành công!";
                     result.Data = res;
@@ -625,13 +625,13 @@ namespace WebAppAPI.Controllers
             return result;
         }
         [Authorize]
-        [HttpGet("confirm-order")]
-        public async Task<ApiResult> ConfirmOrder(int orderId)
+        [HttpPost("confirm-order")]
+        public async Task<ApiResult> ConfirmOrder(AdminOrderModel order)
         {
             var result = new ApiResult();
             try
             {
-                (await _IAdminService.ConfirmOrder(orderId)).Match(res =>
+                (await _IAdminService.ConfirmOrder(order)).Match(res =>
                 {
                     result.Message = "Xác nhận đơn hàng thành công!";
                     result.Data = res;
@@ -651,13 +651,13 @@ namespace WebAppAPI.Controllers
             return result;
         }
         [Authorize]
-        [HttpGet("success-order")]
-        public async Task<ApiResult> SuccessOrder(int orderId)
+        [HttpPost("success-order")]
+        public async Task<ApiResult> SuccessOrder(AdminOrderModel order)
         {
             var result = new ApiResult();
             try
             {
-                (await _IAdminService.SuccessOrder(orderId)).Match(res =>
+                (await _IAdminService.SuccessOrder(order)).Match(res =>
                 {
                     result.Message = "Hoàn tất đơn hành thành công!";
                     result.Data = res;

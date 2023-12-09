@@ -13,6 +13,7 @@ import { AddressService } from '../../../features/src/app/data/Address.service';
 import { SearchProduct } from '../../../features/src/app/data/SearchProduct.model';
 import { CheckValidEmailService } from '../../../features/src/app/data/CheckValidEmailService';
 import { CartService } from '../../../features/src/app/data/Cart.service';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-root',
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
   filterProducts: SearchProduct[] = [];
   userRole!: string;
   numberCart: number = 0;
+await: any;
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -77,7 +79,7 @@ export class AppComponent implements OnInit {
       }
     });
     if (localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null') {
-      this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
       this.userRole = localStorage.getItem('userRole')!;
       this.authService
         .checkValidToken(this.userData.loginName, this.userRole)
@@ -112,7 +114,9 @@ export class AppComponent implements OnInit {
     });
   }
   checkUser() {
-    this.loginName = this.userData.loginName;
+    this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
+    this.loginName = this.userData.name;
+    this.userData.isLoggedIn = true;
     this.isAdmin = this.userData.role === UserRole.Admin;
     this.isAdmin ? (this.role = UserRole.Admin) : (this.role = UserRole.User);
   }
@@ -122,13 +126,13 @@ export class AppComponent implements OnInit {
     this.loadDataUser();
     this.checkUser();
     if (localStorage.getItem('provinces') != null && localStorage.getItem('provinces') != 'null') {
-      this.provices = JSON.parse(window.atob(localStorage.getItem('provinces')!));
+      this.provices = jwt_decode(localStorage.getItem('provinces')!);
     }
     if (localStorage.getItem('districts') != null && localStorage.getItem('districts') != 'null') {
-      this.districts = JSON.parse(window.atob(localStorage.getItem('districts')!));
+      this.districts = jwt_decode(localStorage.getItem('districts')!);
     }
     if (localStorage.getItem('wards') != null && localStorage.getItem('wards') != 'null') {
-      this.wards = JSON.parse(window.atob(localStorage.getItem('wards')!));
+      this.wards = jwt_decode(localStorage.getItem('wards')!);
     }
   }
   createExistedUserForm() {
@@ -136,7 +140,7 @@ export class AppComponent implements OnInit {
       Id: [this.selectedUsers.id, [Validators.required]],
       Name: [this.selectedUsers.name, [Validators.required]],
       LoginName: [this.selectedUsers.loginName, [Validators.required]],
-      Email: [this.selectedUsers.email, [Validators.required]],
+      Email: [this.selectedUsers.email, Validators.compose([Validators.required, Validators.email])],
       TelNum: [this.selectedUsers.telNum, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
@@ -191,22 +195,13 @@ export class AppComponent implements OnInit {
     this.editUserForm = this.createExistedUserForm();
     this.displayEditUserPopup = true;
   }
-  confirmEditUser() {
+  async confirmEditUser() {
     if(this.editUserForm.invalid){
       this.messageService.add({
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
         detail: 'Hãy nhập các thông tin bắt buộc!',
-      });
-      return;
-    }
-    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
       });
       return;
     }

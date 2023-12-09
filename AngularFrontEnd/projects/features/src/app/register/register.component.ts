@@ -40,8 +40,7 @@ export class RegisterComponent {
     private messageService: MessageService,
     private router: Router,
     private authService: AuthService,
-    private addressService: AddressService,
-    private checkValidEmailService : CheckValidEmailService
+    private addressService: AddressService
     ) {
       this.registerForm = this.createEmptyRegisterForm();
       this.provices = [];
@@ -53,7 +52,7 @@ export class RegisterComponent {
       return this.formBuilder.group({
         Name: ['',Validators.required],
         LoginName: ['',Validators.required],
-        Email: ['',Validators.required],
+        Email: ['',Validators.compose([Validators.required, Validators.email])],
         Provinces: ['',Validators.required],
         Districts: ['',Validators.required],
         Wards: ['',Validators.required],
@@ -70,7 +69,7 @@ export class RegisterComponent {
       return this.formBuilder.group({
         Name: ['',Validators.required],
         LoginName: ['',Validators.required],
-        Email: ['',Validators.required],
+        Email: ['',Validators.compose([Validators.required, Validators.email])],
         Provinces: [this.provices,Validators.required],
         Districts: [this.districts,Validators.required],
         Wards: [this.wards,Validators.required],
@@ -123,15 +122,6 @@ export class RegisterComponent {
         severity: 'error',
         summary: 'Lỗi',
         detail: 'Hãy nhập các thông tin bắt buộc để đăng ký!',
-      });
-      return;
-    }
-    if (!this.checkValidEmailService.isValidEmail(this.registerForm.controls['Email'].value)){
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
       });
       return;
     }

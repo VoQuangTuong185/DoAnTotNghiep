@@ -4,23 +4,22 @@ import { Observable } from 'rxjs';
 import { User } from '../../../data/User.model';
 import { AuthService } from './Auth.service';
 import { MessageService } from 'primeng/api';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
+
 @Injectable({      
    providedIn: 'root'      
 })      
 export class AuthGuard implements CanActivate {
-   userData = new User();     
-   constructor(private router: Router, private authService :AuthService, private messageService: MessageService) { }      
-   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
+  userData = new User();     
+  constructor(private router: Router, private authService :AuthService, private messageService: MessageService) { }      
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
     if(localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null' && localStorage.getItem('userRole') != null && localStorage.getItem('userRole') != 'null'){ 
-       this.userData = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
-       var date = JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1]));
+       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
        var dateNow = new Date();
-       var tokenExpiredDate = new Date(date.expires)
-
+       var tokenExpiredDate = new Date(this.userData.expires);
        let userRole = localStorage.getItem('userRole')!;
-
        if (dateNow > tokenExpiredDate){
-         this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => { 
+         this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => {
            if(res.isSuccess){
              localStorage.setItem('authToken', res.data);
              return true;
@@ -36,7 +35,11 @@ export class AuthGuard implements CanActivate {
        else {
         return true;
        }
-     }  
-     return true;
-    }     
+     } 
+     else {
+      this.router.navigate(['login-user']);
+      return false;  
+     }
+     return true;     
+  } 
 }

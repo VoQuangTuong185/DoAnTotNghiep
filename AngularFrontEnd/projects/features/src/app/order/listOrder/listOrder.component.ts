@@ -7,6 +7,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Feedback } from '../../data/Feedback.model';
 import { FeedbackDTO } from '../../data/FeedbackDTO.model';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
+import { User } from '../../data/User.model';
 
 @Component({
   selector: 'app-listOrder',
@@ -25,6 +27,8 @@ export class ListOrderComponent implements OnInit {
   listFeedback: any[] = [];
   listSubmitFeedback: FeedbackDTO[] = [];
   currentOrderId!: number;
+  userData = new User();
+
   constructor(
     private websiteAPIService: WebsiteAPIService,
     private confirmationService: ConfirmationService,
@@ -32,7 +36,8 @@ export class ListOrderComponent implements OnInit {
     private dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {
-    this.userId = Number(JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1])).id);
+    this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
+    this.userId = Number(this.userData.id);
     this.feedbackForm = this.createEmptyListFeedback();
   }
   get feedbacks(){
@@ -159,6 +164,15 @@ export class ListOrderComponent implements OnInit {
     });
   }
   submitFeedback(){
+    if(this.feedbacks.invalid){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Hãy nhập các thông tin bắt buộc (đánh giá điểm cho các sản phẩm trong đơn hàng)!',
+      });
+      return;
+    }
     this.listFeedback = this.feedbacks.value;
     this.listFeedback.forEach(x => {
       let feedback = new FeedbackDTO();

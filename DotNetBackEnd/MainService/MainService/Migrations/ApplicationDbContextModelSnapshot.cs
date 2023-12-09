@@ -447,7 +447,7 @@ namespace DoAnTotNghiep.Migrations
                     b.HasOne("WebAppAPI.Models.Entities.Order", "orders")
                         .WithMany("feedbacks")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAppAPI.Models.Entities.Product", "product")

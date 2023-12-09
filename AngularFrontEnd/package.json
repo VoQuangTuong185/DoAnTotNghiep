@@ -23,6 +23,7 @@
     "@material/form-field": "^15.0.0-canary.fd95ca7ef.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@popperjs/core": "^2.11.6",
+    "@types/jwt-decode": "^3.1.0",
     "bootstrap": "^5.2.3",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",

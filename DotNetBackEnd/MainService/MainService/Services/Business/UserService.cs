@@ -468,6 +468,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
 
                     existedOrder.Status = "Cancel";
+                    existedOrder.UpdatedBy = existedUser.Id;
                     existedOrder.UpdatedDate = DateTime.UtcNow;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
@@ -500,6 +501,7 @@ namespace WebAppAPI.Services.Business
 
                     existedOrder.Status = "Success";
                     existedOrder.UpdatedDate = DateTime.UtcNow;
+                    existedOrder.UpdatedBy = user.Id;
                     _unitOfWork.Repository<Order>().Update(existedOrder);
 
                     existedOrder.orderDetails.ForEach(async x =>

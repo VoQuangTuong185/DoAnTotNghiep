@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressService } from '../data/Address.service';
 import { UpdateCart } from '../data/UpdateCart.model';
 import { CheckValidEmailService } from '../data/CheckValidEmailService';
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 @Component({
   selector: 'app-cart',
@@ -43,8 +44,7 @@ export class CartComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
-    private addressService: AddressService,
-    private checkValidEmailService : CheckValidEmailService
+    private addressService: AddressService
   ) {
     this.provices = [];
     this.districts = [];
@@ -53,9 +53,7 @@ export class CartComponent implements OnInit {
       localStorage.getItem('authToken') != null &&
       localStorage.getItem('authToken') != 'null'
     ) {
-      this.userData = JSON.parse(
-        window.atob(localStorage.getItem('authToken')!.split('.')[1])
-      );
+      this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     }
     this.loadDataUser();
     this.selectedPayment = this.methods[0].key;
@@ -68,7 +66,7 @@ export class CartComponent implements OnInit {
     return this.formBuilder.group({
       UserId: [this.currentUser.id],
       Name: [this.currentUser.name, [Validators.required]],
-      Email: [{value: this.currentUser.email, disabled: true}, [Validators.required]],
+      Email: [{value: this.currentUser.email, disabled: true}, Validators.compose([Validators.required, Validators.email])],
       TelNum: [this.currentUser.telNum,  Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
@@ -111,7 +109,7 @@ export class CartComponent implements OnInit {
     this.showConfirmOrder = true;
   }
   loadDataUser() {
-    this.userId = Number(JSON.parse(window.atob(localStorage.getItem('authToken')!.split('.')[1])).id);
+    this.userId = Number(this.userData.id);
     this.websiteAPIService.getInfoUser(this.userId).subscribe((res: any) => {
       if (res.isSuccess) {
         this.currentUser = res.data;
@@ -200,19 +198,11 @@ export class CartComponent implements OnInit {
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Hãy nhập các thông tin bắt buộc để cập nhật!',
+        detail: 'Hãy nhập các thông tin bắt buộc để đặt hàng!',
       });
       return;
     }
-    if (!this.checkValidEmailService.isValidEmail(this.editUserForm.controls['Email'].value)){
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Địa chỉ email bạn nhập không hợp lệ, hãy thử lại!',
-      });
-      return;
-    }
+
     this.confirmationService.confirm({
       message: 'Xác nhận đặt hàng ?',
       header: 'Xác nhận',

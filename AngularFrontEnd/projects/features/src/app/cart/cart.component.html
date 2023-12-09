@@ -81,11 +81,14 @@
                         </td>
                         <td>
                             <div>
-                                <mat-form-field appearance="outline" formControlName="Email" name="Email" required="">
+                                <mat-form-field appearance="outline" formControlName="Email" name="Email" type="email" required="">
                                     <mat-label>Địa chỉ email</mat-label>
                                     <input matInput formControlName="Email" name="Email" required="" />
                                     <mat-error *ngIf="editUserForm.get('Email')?.hasError('required')">
                                     Hãy nhập địa chỉ email!
+                                    </mat-error>
+                                    <mat-error *ngIf="editUserForm.get('Email')?.hasError('email')">
+                                        Địa chỉ email bạn nhập không hợp lệ!
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -96,7 +99,10 @@
                             <div class="mr-5">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Số điện thoại</mat-label>
-                                    <input matInput formControlName="TelNum" name="TelNum"/>
+                                    <input matInput formControlName="TelNum" name="TelNum" required=""/>
+                                    <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('required')">
+                                        Hãy nhập số điện thoại
+                                    </mat-error>
                                     <mat-error *ngIf="editUserForm.get('TelNum')?.hasError('minlength')">
                                     Định dạng số điện thoại chưa chính xác!
                                     </mat-error>

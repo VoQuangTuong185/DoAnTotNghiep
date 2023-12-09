@@ -23,6 +23,6 @@ namespace WebAppAPI.Models.Entities
         public string? Description { get; set; }
         public virtual User? user { get; set; }
         public virtual List<OrderDetail> orderDetails { get; set; }
-        public ICollection<Feedback> feedbacks { get; set; } = new List<Feedback>();
+        public virtual List<Feedback> feedbacks { get; set; }
     }
 }
