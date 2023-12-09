@@ -345,8 +345,13 @@ namespace WebAppAPI.Services.Business
                             var allUser = _unitOfWork.Repository<UserAPI>().Get(x => x.IsActive && x.RoleId == 2).Include(x => x.user).ToList();
                             var listAdmin = allUser.Select(x => x.user).ToList();
                             var customerName = _unitOfWork.Repository<User>().FirstOrDefault(x => x.IsActive && x.Id == order.UserId).Name;
-                            var mailInformation = new MailPublishedDto("CreateOrder", listAdmin.FirstOrDefault().Name, listAdmin.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC TẠO THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", customerName, "Mail_Published");
-                            _messageBusClient.PublishMail(mailInformation);
+                            foreach (var admin in listAdmin)
+                            {
+                                var mailInformationToAdmin = new MailPublishedDto("CreateOrderAdmin", listAdmin.FirstOrDefault().Name + "##" + customerName, listAdmin.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG MỚI", "VĂN PHÒNG PHẨM 2023", recentlyOrder.Id.ToString(), "Mail_Published");
+                                _messageBusClient.PublishMail(mailInformationToAdmin);
+                            }
+                            var mailInformationToUser = new MailPublishedDto("CreateOrderUser", customerName, user.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG CỦA BẠN ĐÃ ĐƯỢC TẠO THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", recentlyOrder.Id.ToString(), "Mail_Published");
+                            _messageBusClient.PublishMail(mailInformationToUser);
                             return Option.Some<bool, string>(true);
                         }
                         return Option.None<bool, string>("Đã xảy ra lỗi trong quá trình xử lý. Hãy thử lại!");
@@ -474,7 +479,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", orderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -513,7 +518,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", orderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }

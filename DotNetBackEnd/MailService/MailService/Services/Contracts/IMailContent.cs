@@ -5,6 +5,7 @@ namespace MailService.Services.Contracts
     public interface IMailContent
     {   
         Task SendMailCreateOrderToAdmin(MailPublishedDto content);
+        Task SendMailCreateOrderToUser(MailPublishedDto content);
         Task SendMailConfirmRegister(MailPublishedDto content);
         Task SendMailConfirmForgetPassword(MailPublishedDto content);
         Task SendMailConfirmChangeEmail(MailPublishedDto content);

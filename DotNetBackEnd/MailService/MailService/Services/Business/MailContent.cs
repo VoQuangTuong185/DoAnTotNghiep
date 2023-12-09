@@ -13,7 +13,27 @@ namespace MailService.Services.Business
         }
         public async Task SendMailCreateOrderToAdmin(MailPublishedDto content)
         {
-            string emailTemplate = _mailService.GetEmail("CreateOrder.html");
+            string emailTemplate = _mailService.GetEmail("CreateOrderAdmin.html");
+            var client = _mailService.GetEmailClient();
+            string sysEmail = Config.Email;
+            MailMessage mail = new MailMessage
+            {
+                IsBodyHtml = true,
+                Subject = content.Subject,
+                From = new MailAddress(sysEmail, content.Title),
+            };
+            var toEmail = new MailAddress(content.Email);
+            mail.To.Add(toEmail);
+            emailTemplate = emailTemplate.Replace("{0}", content.UserName.Split("##")[0]);
+            emailTemplate = emailTemplate.Replace("{1}", content.UserName.Split("##")[1]);
+            emailTemplate = emailTemplate.Replace("{2}", content.Content);
+            mail.Body = emailTemplate;
+            await Task.Delay(5000);
+            await client.SendMailAsync(mail);
+        }
+        public async Task SendMailCreateOrderToUser(MailPublishedDto content)
+        {
+            string emailTemplate = _mailService.GetEmail("CreateOrderUser.html");
             var client = _mailService.GetEmailClient();
             string sysEmail = Config.Email;
             MailMessage mail = new MailMessage

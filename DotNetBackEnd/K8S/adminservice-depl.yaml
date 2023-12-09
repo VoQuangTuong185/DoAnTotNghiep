@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: adminservice
-          image: voquangtuong06022001/adminservice:2.8
+          image: voquangtuong06022001/adminservice:2.9
 ---
 apiVersion: v1
 kind: Service

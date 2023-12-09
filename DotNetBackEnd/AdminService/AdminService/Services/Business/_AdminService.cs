@@ -555,7 +555,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -577,7 +577,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -616,7 +616,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
