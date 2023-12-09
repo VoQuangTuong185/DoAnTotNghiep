@@ -67,13 +67,19 @@
                             <input matInput formControlName = "CategoryName" name = "CategoryName" required=""> 
                             <mat-error *ngIf="categoryForm.get('CategoryName')?.hasError('required')">
                                 Hãy nhập danh mục!
-                            </mat-error>       
+                            </mat-error>    
+                            <mat-error *ngIf="categoryForm.get('CategoryName')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 50!
+                            </mat-error>     
                         </mat-form-field>  
                     </div>
                     <div class="category">
                         <mat-form-field appearance="outline" formControlName = "Description" name = "Description" required=""> 
                             <mat-label>Mô tả</mat-label>   
                             <input matInput formControlName = "Description" name = "Description"> 
+                            <mat-error *ngIf="categoryForm.get('Description')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 255!
+                            </mat-error>  
                         </mat-form-field> 
                     </div>    
                     <app-upload-image (onUploadFinished)="uploadFinished($event)">

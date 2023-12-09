@@ -58,18 +58,30 @@
                         <input matInput formControlName = "Name" name = "Name" required="">   
                         <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
                             Hãy nhập Họ và Tên!
-                        </mat-error>                            
+                        </mat-error>         
+                        <mat-error *ngIf="editUserForm.get('Name')?.hasError('maxlength')">
+                            Số lượng kí tự tối đa là 50!
+                          </mat-error>                     
                     </mat-form-field>
                     <mat-form-field appearance="outline">     
                         <mat-label>Tài Khoản</mat-label>
                         <input matInput formControlName = "LoginName" name = "LoginName" required=""> 
                         <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('required')">
                             Hãy nhập Tài khoản!
-                        </mat-error>        
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('maxlength')">
+                            Số lượng kí tự tối đa là 50!
+                          </mat-error>         
                     </mat-form-field>      
                     <mat-form-field appearance="outline" pTooltip="Bạn không thể chỉnh sửa địa chỉ email của người dùng" tooltipPosition="bottom"> 
                         <mat-label>Địa chỉ email</mat-label>   
                         <input matInput formControlName = "Email" name = "Email" required=""> 
+                        <mat-error *ngIf="editUserForm.get('Email')?.hasError('email')">
+                            Địa chỉ email bạn nhập không hợp lệ!
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('Email')?.hasError('maxlength')">
+                          Số lượng kí tự tối đa là 255!
+                        </mat-error>  
                     </mat-form-field>        
                     <mat-form-field appearance="outline"> 
                         <mat-label>Số điện thoại</mat-label>     

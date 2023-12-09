@@ -7,6 +7,9 @@
       <mat-form-field appearance="outline">
         <mat-label>Tài khoản</mat-label>
         <input matInput formControlName = "LoginUser" name = "LoginUser" required="">
+        <mat-error *ngIf="loginForm.get('LoginUser')?.hasError('maxlength')">
+          Số lượng kí tự tối đa là 50!
+        </mat-error>  
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         <mat-error *ngIf="loginForm.get('LoginUser')?.hasError('required')">
           Hãy nhập Tài khoản!
@@ -23,6 +26,9 @@
         <mat-error *ngIf="loginForm.get('Password')?.hasError('required')">
           Hãy nhập mật khẩu!
         </mat-error>
+        <mat-error *ngIf="loginForm.get('Password')?.hasError('maxlength')">
+          Số lượng kí tự tối đa là 50!
+        </mat-error> 
       </mat-form-field>     
     </div> 
     </div>    

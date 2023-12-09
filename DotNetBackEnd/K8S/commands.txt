@@ -12,8 +12,8 @@ kubectl apply -f mailservice-np-srv.yaml #configure services mailservice
 
 #mainservice
 docker build -t mainservice .
-docker tag mainservice voquangtuong06022001/mainservice:4.2
-docker push voquangtuong06022001/mainservice:4.2
+docker tag mainservice voquangtuong06022001/mainservice:4.4
+docker push voquangtuong06022001/mainservice:4.4
 kubectl apply -f mainservice-depl.yaml
 
 #adminservice

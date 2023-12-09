@@ -645,7 +645,7 @@ namespace WebAppAPI.Services.Business
         }
         public async Task<IEnumerable<Category>> GetAllCategory()
         {
-            return await _unitOfWork.Repository<Category>().Get(x => x.IsActive).ToListAsync();
+            return await _unitOfWork.Repository<Category>().Get(x => x.IsActive).OrderBy(x => x.CategoryName).ToListAsync();
         }
         public async Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId)
         {

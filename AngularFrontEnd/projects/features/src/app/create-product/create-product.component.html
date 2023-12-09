@@ -47,12 +47,18 @@
                             <mat-error *ngIf="productForm.get('ProductName')?.hasError('required')">
                                 Hãy nhập tên sản phẩm!
                             </mat-error>            
+                            <mat-error *ngIf="productForm.get('ProductName')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 255!
+                            </mat-error>  
                           </mat-form-field>         
                     </div>                       
                     <div class="col-12 md:col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Mô tả</mat-label>
-                            <input matInput formControlName = "Description" name = "Description">             
+                            <input matInput formControlName = "Description" name = "Description">  
+                            <mat-error *ngIf="productForm.get('Description')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 255!
+                            </mat-error>             
                         </mat-form-field> 
                     </div>
                 </div>
@@ -70,6 +76,12 @@
                             <mat-error *ngIf="productForm.get('Quanity')?.hasError('required')">
                                 Hãy nhập số lượng sẵn có!
                             </mat-error>          
+                            <mat-error *ngIf="productForm.get('Quanity')?.hasError('max')">
+                                Số lượng tối đa là 1000!
+                            </mat-error>   
+                            <mat-error *ngIf="productForm.get('Quanity')?.hasError('min')">
+                                Số lượng tối thiểu là 0!
+                            </mat-error>  
                         </mat-form-field>               
                     </div>   
                     <div class="col-12 md:col-4"> 
@@ -78,6 +90,9 @@
                             <input matInput formControlName = "Price" name = "Price" required="" type="number">
                             <mat-error *ngIf="productForm.get('Price')?.hasError('required')">
                                 Hãy nhập giá!
+                            </mat-error>  
+                            <mat-error *ngIf="productForm.get('Price')?.hasError('min')">
+                                Số lượng tối thiểu là 1000!
                             </mat-error>  
                             <span matTextSuffix>VND</span>             
                         </mat-form-field> 
@@ -90,7 +105,13 @@
                             <input matInput formControlName = "Discount" name = "Discount" type="number">  
                             <mat-error *ngIf="productForm.get('Discount')?.hasError('required')">
                                 Hãy nhập giảm giá!
-                            </mat-error>          
+                            </mat-error>           
+                            <mat-error *ngIf="productForm.get('Discount')?.hasError('max')">
+                                Số lượng tối đa là 99!
+                            </mat-error>   
+                            <mat-error *ngIf="productForm.get('Discount')?.hasError('min')">
+                                Số lượng tối thiểu là 0!
+                            </mat-error>  
                             <span matTextSuffix>%</span>      
                         </mat-form-field>                               
                     </div>              
@@ -103,6 +124,9 @@
                     <span>Hình ảnh mô tả</span>                    
                     <img *ngIf="this.productForm.controls['Image'].value" [src]="createImgPath(this.productForm.controls['Image'].value)" alt="product picture" class="image-db mb-2"> 
                     <app-upload-image (onUploadFinished)="uploadImageFinished($event)"></app-upload-image>
+                    <mat-error *ngIf="productForm.get('Image')?.hasError('required')">
+                        Hãy chọn ảnh!
+                    </mat-error>
                 </div>
                 <div class="mt-3">
                     <span style="display: block">Hình ảnh chi tiết</span>                    

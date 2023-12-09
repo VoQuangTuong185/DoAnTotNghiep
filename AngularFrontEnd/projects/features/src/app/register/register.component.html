@@ -12,6 +12,9 @@
                   <mat-error *ngIf="registerForm.get('Name')?.hasError('required')">
                     Hãy nhập họ và tên!
                   </mat-error>        
+                  <mat-error *ngIf="registerForm.get('Name')?.hasError('maxlength')">
+                    Số lượng kí tự tối đa là 50!
+                  </mat-error>  
                 </mat-form-field>
             </div>
             </td>
@@ -24,6 +27,9 @@
                   <mat-error *ngIf="registerForm.get('LoginName')?.hasError('required')">
                     Hãy nhập Tài khoản!
                   </mat-error> 
+                  <mat-error *ngIf="registerForm.get('LoginName')?.hasError('maxlength')">
+                    Số lượng kí tự tối đa là 50!
+                  </mat-error>  
                 </mat-form-field>
             </div>
             </td>
@@ -40,6 +46,9 @@
                   <mat-error *ngIf="registerForm.get('Email')?.hasError('email')">
                     Địa chỉ email bạn nhập không hợp lệ!
                 </mat-error>
+                <mat-error *ngIf="registerForm.get('Email')?.hasError('maxlength')">
+                  Số lượng kí tự tối đa là 255!
+                </mat-error>  
                 </mat-form-field>
             </div>
           </td>
@@ -73,6 +82,9 @@
                   <mat-error *ngIf="registerForm.get('Password')?.hasError('required')">
                     Hãy nhập mật khẩu!
                   </mat-error>
+                  <mat-error *ngIf="registerForm.get('Password')?.hasError('maxlength')">
+                    Số lượng kí tự tối đa là 50!
+                  </mat-error>
                 </mat-form-field>
             </div>
             </td>
@@ -86,6 +98,9 @@
                   </button>
                   <mat-error *ngIf="registerForm.get('ConfirmPassword')?.hasError('required')">
                     Hãy nhập lại mật khẩu!
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('ConfirmPassword')?.hasError('maxlength')">
+                    Số lượng kí tự tối đa là 50!
                   </mat-error>
                 </mat-form-field>
               </div> 
@@ -145,6 +160,9 @@
                 <mat-error *ngIf="registerForm.get('Address')?.hasError('required')">
                   Hãy nhập số nhà, đường!
                 </mat-error>
+                <mat-error *ngIf="registerForm.get('Password')?.hasError('maxlength')">
+                  Số lượng kí tự tối đa là 50!
+                </mat-error> 
             </mat-form-field>
             </td>
           </tr>

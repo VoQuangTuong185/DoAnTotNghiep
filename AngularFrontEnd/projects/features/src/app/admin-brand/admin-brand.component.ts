@@ -36,8 +36,8 @@ export class AdminBrandComponent {
     createEmptyBrandForm() {
       return this.formBuilder.group({
         Id: [{value: '', disabled: true}],
-        BrandName: ['',Validators.required],
-        Description: ['']
+        BrandName: ['',[Validators.required,Validators.maxLength(50)]],
+        Description: ['',Validators.maxLength(255)]
       })
     }
     ngOnInit() {
@@ -68,8 +68,8 @@ export class AdminBrandComponent {
     createExistedBrandForm(data: any){
       return this.formBuilder.group({
         Id: [{value: data.id, disabled: true}, [Validators.required]],
-        BrandName: [data.brandName, [Validators.required]],
-        Description: [data.description]
+        BrandName: [data.brandName, [Validators.required,Validators.maxLength(50)]],
+        Description: [data.description, Validators.maxLength(255)]
       })
     }
     hideEditUserPopup() {

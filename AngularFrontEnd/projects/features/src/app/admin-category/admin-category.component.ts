@@ -41,9 +41,9 @@ export class AdminCategoryComponent {
     createEmptyUserForm() {
       return this.formBuilder.group({
         Id: [{value: '', disabled: true}],
-        CategoryName: ['',Validators.required],
+        CategoryName: ['',[Validators.required,Validators.maxLength(50)]],
         Image: ['',Validators.required],
-        Description: ['']
+        Description: ['',Validators.maxLength(255)]
       })
     }
   ngOnInit() {
@@ -94,9 +94,9 @@ export class AdminCategoryComponent {
   createExistedUserForm(data: any){
     return this.formBuilder.group({
       Id: [{value: data.id, disabled: true}, [Validators.required]],
-      CategoryName: [data.categoryName, [Validators.required]],
+      CategoryName: [data.categoryName, [Validators.required, Validators.maxLength(50)]],
       Image: [data.image, [Validators.required]],
-      Description: [data.description]
+      Description: [data.description,Validators.maxLength(255)]
     })
   }
   createImgPath = (serverPath: string) => {

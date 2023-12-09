@@ -43,7 +43,7 @@ const routes: Routes = [
   {
     path:'user',
     loadChildren: () => import('../../../features/src/app/user/user-routing.module').then((m) => m.UserRoutingModule),
-    canActivate : [UserGuard]
+    canActivate : [AuthGuard]
   },
   {
     path:'unauthorize',

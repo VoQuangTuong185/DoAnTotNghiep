@@ -53,18 +53,18 @@ export class AdminUserComponent {
   }
   createEmptyUserForm(){
     return this.formBuilder.group({
-      Name: ["",[Validators.required]],
-      LoginName: ["",[Validators.required]],
-      Email: ["",[Validators.required]],
+      Name: ["",[Validators.required,Validators.maxLength(50)]],
+      LoginName: ["",[Validators.required, Validators.maxLength(50)]],
+      Email: ["",Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
       Tel: ["",Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
   createExistedUserForm(){
     return this.formBuilder.group({
       Id: [this.selectedUsers.id,[Validators.required]],
-      Name: [this.selectedUsers.name,[Validators.required]],
-      LoginName: [this.selectedUsers.loginName,[Validators.required]],
-      Email: [{value: this.selectedUsers.email, disabled: true},[Validators.required]],
+      Name: [this.selectedUsers.name,[Validators.required,Validators.maxLength(50)]],
+      LoginName: [this.selectedUsers.loginName,[Validators.required, Validators.maxLength(50)]],
+      Email: [{value: this.selectedUsers.email, disabled: true},Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
       TelNum: [this.selectedUsers.telNum,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
@@ -124,6 +124,7 @@ export class AdminUserComponent {
     this.websiteAPIService.editUser(this.editUserForm.getRawValue()).subscribe((res:any) =>{
       if(res.data){
         this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
+        this.displayEditUserPopup = false;
         this.loadDataUsers();
       }
       else {

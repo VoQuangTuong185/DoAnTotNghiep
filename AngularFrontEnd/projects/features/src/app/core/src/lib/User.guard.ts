@@ -15,11 +15,11 @@ export class UserGuard implements CanActivate {
       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
    }      
    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
-      if (this.isUser()) {    
+      if (this.isUser()) {    debugger
         return true;      
       }           
-      this.router.navigate(['admin']);      
-    return false;      
+         this.router.navigate(['admin']);      
+      return false;      
 }      
 public isUser(): boolean {        
    return this.userData.role == UserRole.User;

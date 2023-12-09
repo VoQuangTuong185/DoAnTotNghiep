@@ -306,7 +306,7 @@ import { VipComponent } from './vip/vip.component';
     CartService,
     {
       provide: DEFAULT_CURRENCY_CODE,
-      useValue: 'USD',
+      useValue: 'VND',
     },
     {
       provide: HTTP_INTERCEPTORS,

@@ -30,9 +30,10 @@ export class AdminListOrderComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.ordersDataCols = [
-      { header : 'STT', field : 'id', width:5, type:'stt'},
+      { header : 'STT', field : 'stt', width:5, type:'stt'},
+      { header : 'Mã đơn hàng', field : 'id', width:5, type:'number'},
       { header : 'Tên khách hàng', field : 'customerName', width:25, type:'string'},
-      { header : 'Địa chỉ mail', field : 'email', width:20, type:'string'},
+      { header : 'Địa chỉ mail', field : 'email', width:15, type:'string'},
       { header : 'Số sản phẩm', field : 'productCount', width:5, type:'number'},
       { header : 'Thời gian đặt hàng', field : 'orderDate', width:10, type:'date'},
       { header : 'Phương thức nhận hàng', field : 'payment', width:10, type:'string'},
