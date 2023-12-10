@@ -107,6 +107,8 @@ namespace WebAppAPI.Services.Business
             insertUser.AddressCode = user.WardCode.ToString() + ", " + user.DistrictCode.ToString() + ", " + user.ProvinceCode.ToString();
             insertUser.VipsId = 14;
             _unitOfWork.Repository<User>().Add(insertUser);
+            var mailInformation = new MailPublishedDto("RegisterSuccessfullyEmail", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+            _messageBusClient.PublishMail(mailInformation);
             return _unitOfWork.SaveChanges();
         }
         public async Task<string> ForgetPassword(string email)
@@ -345,11 +347,10 @@ namespace WebAppAPI.Services.Business
                             var allUser = _unitOfWork.Repository<UserAPI>().Get(x => x.IsActive && x.RoleId == 2).Include(x => x.user).ToList();
                             var listAdmin = allUser.Select(x => x.user).ToList();
                             var customerName = _unitOfWork.Repository<User>().FirstOrDefault(x => x.IsActive && x.Id == order.UserId).Name;
-                            foreach (var admin in listAdmin)
-                            {
-                                var mailInformationToAdmin = new MailPublishedDto("CreateOrderAdmin", listAdmin.FirstOrDefault().Name + "##" + customerName, listAdmin.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG MỚI", "VĂN PHÒNG PHẨM 2023", recentlyOrder.Id.ToString(), "Mail_Published");
-                                _messageBusClient.PublishMail(mailInformationToAdmin);
-                            }
+
+                            var mailInformationToAdmin = new MailPublishedDto("CreateOrderAdmin", customerName, string.Join("##", listAdmin.Select(x => x.Email)), "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG MỚI", "VĂN PHÒNG PHẨM 2023", recentlyOrder.Id.ToString(), "Mail_Published");
+                            _messageBusClient.PublishMail(mailInformationToAdmin);
+
                             var mailInformationToUser = new MailPublishedDto("CreateOrderUser", customerName, user.FirstOrDefault().Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG CỦA BẠN ĐÃ ĐƯỢC TẠO THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", recentlyOrder.Id.ToString(), "Mail_Published");
                             _messageBusClient.PublishMail(mailInformationToUser);
                             return Option.Some<bool, string>(true);

@@ -7,6 +7,7 @@ namespace MailService.Services.Contracts
         Task SendMailCreateOrderToAdmin(MailPublishedDto content);
         Task SendMailCreateOrderToUser(MailPublishedDto content);
         Task SendMailConfirmRegister(MailPublishedDto content);
+        Task SendMailSuccessRegister(MailPublishedDto content);
         Task SendMailConfirmForgetPassword(MailPublishedDto content);
         Task SendMailConfirmChangeEmail(MailPublishedDto content);
         Task SendMailConfirmChangePassword(MailPublishedDto content);

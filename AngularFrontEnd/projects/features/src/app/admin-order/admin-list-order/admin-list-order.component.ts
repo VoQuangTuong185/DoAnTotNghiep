@@ -32,14 +32,14 @@ export class AdminListOrderComponent implements OnInit {
     this.ordersDataCols = [
       { header : 'STT', field : 'stt', width:5, type:'stt'},
       { header : 'Mã đơn hàng', field : 'id', width:5, type:'number'},
-      { header : 'Tên khách hàng', field : 'customerName', width:25, type:'string'},
+      { header : 'Tên khách hàng', field : 'customerName', width:15, type:'string'},
       { header : 'Địa chỉ mail', field : 'email', width:15, type:'string'},
-      { header : 'Số sản phẩm', field : 'productCount', width:5, type:'number'},
-      { header : 'Thời gian đặt hàng', field : 'orderDate', width:10, type:'date'},
+      { header : 'Số sản phẩm', field : 'productCount', width:3, type:'number'},
+      { header : 'Thời gian đặt hàng', field : 'orderDate', width:17, type:'date'},
       { header : 'Phương thức nhận hàng', field : 'payment', width:10, type:'string'},
-      { header : 'VIP', field : 'discountVIP', width:10, type:'percent'},
+      { header : 'VIP', field : 'discountVIP', width:5, type:'percent'},
       { header : 'Tổng tiền', field : 'totalBill', width:10, type:'money'},
-      { header : 'Thao tác', field : 'statusOrderCode', width:25, type:'button'},
+      { header : 'Thao tác', field : 'statusOrderCode', width:15, type:'button'},
       ];
     this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     this.userId = this.userData.id;

@@ -1,0 +1,19 @@
+Ưu điểm Kubernetes:
+- Đảm bảo việc deploy ứng dụng lên môi trường production 1 cách nhanh chóng, ko có khoảng thời gian hệ thống bị ngưng hoạt động
+- Hiện tại đang để replica cho mỗi services là 1, tức là luôn có 1 bản service được backup và chạy
+- khi deploy phiên bản mới, hệ thống vẫn sử dụng phiên bản cũ (cách deploy truyền thống thì sẽ tạm tắt máy chủ, sau đó xoá hết các file để chạy phiên bản cũ,
+sau đó dán các file phiên bản mới lên, sau đó mới khởi động lại máy chủ. lúc này nếu phiên bản mới gặp lỗi, k thể khởi chạy thì hệ thống sẽ bị ngưng hoạt động trong 
+1 khoảng thời gian dài, lúc này phần CI/CD của truyền thống cần dùng phiên bản đã backup để restore lại, sau đó mới khởi động lại và tiếp tục sử dụng phiên bản cũ)
+=> còn với Docker/Kubernetes: bộ điều phối container sẽ kiểm tra trước rồi mới chuyển từ phiên bản cũ sang phiên bản mới
+
+- Tự scale up tài nguyên khi lượng người dùng tăng đột biến
+- Cân bằng tải
+
+Ưu điểm của Microservice:
+ + Độ phức tạp của dự án có thể tăng theo thời gian => việc deploy 1 lần cho toàn bộ dự án -> lâu có thể làm cả hệ thống phải ngừng hoạt động trong 1 thời gian dài
+ => microservice: mỗi lần deploy, chỉ cần deploy những services cần được deploy, ko gây ảnh hưởng đến các services khác
+ 
+ + Có thể mỗi service dùng 1 công nghệ, ngôn ngữ khác sau. Sau đó đóng gói thành Docker Image và chạy trên Docker để chúng tương tác với nhau
+ +
+ 
+Ưu điểm của Docker: 

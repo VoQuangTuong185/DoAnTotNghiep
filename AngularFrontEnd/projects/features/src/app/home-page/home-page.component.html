@@ -27,10 +27,10 @@
               <p-tabMenu [model]="lstCate" [activeItem]="activeCate">
                   <ng-template pTemplate="item" let-item let-i="index">
                     <div pTooltip="{{item.description}}" tooltipPosition="bottom">
-                        <div style="display: flex; justify-content: center;">
-                            <img  [src]="createImgPath(item.image, item.id)" alt="Image" height="40" style="margin-right: 10px; border-radius: 10px;" (click)="handleChangeCate(item.id)" />
+                        <div style="display: flex; justify-content: center;"  (click)="handleChangeCate(item.id)">
+                            <img  [src]="createImgPath(item.image, item.id)" alt="Image" height="40" style="margin-right: 10px; border-radius: 10px;"/>
                         </div>
-                        <p (click)="handleChangeCate(item.id)">{{ item.categoryName }}</p>
+                        <p>{{ item.categoryName }}</p>
                     </div>
                   </ng-template>
               </p-tabMenu>

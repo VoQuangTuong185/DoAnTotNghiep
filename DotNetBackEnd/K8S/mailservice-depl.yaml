@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mailservice
-          image: voquangtuong06022001/mailservice:2.7
+          image: voquangtuong06022001/mailservice:3.1
 ---
 apiVersion: v1
 kind: Service

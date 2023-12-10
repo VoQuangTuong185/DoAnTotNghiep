@@ -93,6 +93,8 @@ namespace WebAppAPI.Services.Business
             insertUser.AddressCode = user.WardCode.ToString() + ", " + user.DistrictCode.ToString() + ", " + user.ProvinceCode.ToString();
             insertUser.VipsId = 14;
             _unitOfWork.Repository<User>().Add(insertUser);
+            var mailInformation = new MailPublishedDto("RegisterSuccessfullyEmail", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+            _messageBusClient.PublishMail(mailInformation);
             return _unitOfWork.SaveChanges();
         }
         public async Task<IEnumerable<UserDTO>> GetUsers()

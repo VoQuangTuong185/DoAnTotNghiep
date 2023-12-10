@@ -12,20 +12,20 @@ kubectl apply -f mailservice-np-srv.yaml #configure services mailservice
 
 #mainservice
 docker build -t mainservice .
-docker tag mainservice voquangtuong06022001/mainservice:4.5
-docker push voquangtuong06022001/mainservice:4.5
+docker tag mainservice voquangtuong06022001/mainservice:4.8
+docker push voquangtuong06022001/mainservice:4.8
 kubectl apply -f mainservice-depl.yaml
 
 #adminservice
 docker build -t adminservice .
-docker tag adminservice voquangtuong06022001/adminservice:2.9
-docker push voquangtuong06022001/adminservice:2.9
+docker tag adminservice voquangtuong06022001/adminservice:3.1
+docker push voquangtuong06022001/adminservice:3.1
 kubectl apply -f adminservice-depl.yaml
 
 #mailservice
 docker build -t mailservice .
-docker tag mailservice voquangtuong06022001/mailservice:2.7
-docker push voquangtuong06022001/mailservice:2.7
+docker tag mailservice voquangtuong06022001/mailservice:3.1
+docker push voquangtuong06022001/mailservice:3.1
 kubectl apply -f mailservice-depl.yaml
 
 #restart services

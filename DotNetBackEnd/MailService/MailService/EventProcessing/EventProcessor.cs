@@ -89,6 +89,9 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                         case "SuccessOrder":
                             await _mailContent.SendMailSuccessOrder(categoryPublishedDto);
                             break;
+                        case "RegisterSuccessfullyEmail":
+                            await _mailContent.SendMailSuccessRegister(categoryPublishedDto);
+                            break;
                         default:
                             break;
                     }                   

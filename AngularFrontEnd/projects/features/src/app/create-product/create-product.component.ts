@@ -68,14 +68,14 @@ export class CreatProductComponent {
     return this.formBuilder.group({
       Id: [{value: data.id, disabled:true},[Validators.required]],
       ProductName: [data.productName,[Validators.required, Validators.maxLength(255)]],
-      Description: [data.description, Validators.maxLength(255)],
-      BrandName: [data.brand.brandName,Validators.required],
+      Description: [data.description, [Validators.maxLength(255)]],
+      BrandName: [data.brand.brandName,[Validators.required]],
       BrandId: [{value: data.brandId, disabled: true}, [Validators.required]],
       CategoryId: [{value: data.categoryId, disabled: true},[Validators.required]],
       SoldQuantity: [{value: data.soldQuantity, disabled:true},[Validators.required]],
       Quanity: [data.quanity, [Validators.required, Validators.max(100), Validators.min(0)]],
       Discount: [data.discount,[Validators.required, Validators.max(99), Validators.min(0)]],
-      Price: [data.price, [Validators.required], Validators.min(1000)],
+      Price: [data.price, [Validators.required, Validators.min(1000)]],
       Image: [data.image, [Validators.required]],
       ImageDetail: [data.imageDetail],
     })
