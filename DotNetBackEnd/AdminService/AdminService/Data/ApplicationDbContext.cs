@@ -57,6 +57,12 @@ namespace WebAppAPI.Data
                 entity.HasOne(fb => fb.orders).WithMany(f => f.feedbacks).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.OrderId).OnDelete(DeleteBehavior.Restrict);
                 entity.HasOne(fb => fb.product).WithMany(f => f.feedbacks).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.ProductId);
             });
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(fb => new { fb.OrderId, fb.ProductId });
+                entity.HasOne(fb => fb.orders).WithMany(f => f.orderDetails).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.OrderId);
+                entity.HasOne(fb => fb.product).WithMany(f => f.orderDetails).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.ProductId);
+            });
         }
     }
 }

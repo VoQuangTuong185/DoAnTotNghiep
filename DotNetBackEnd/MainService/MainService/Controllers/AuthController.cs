@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Nest;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -32,12 +33,20 @@ namespace WebAppAPI.Controllers
             _ILog = Log.GetInstance;
             _httpContextAccessor = httpContextAccessor;
         }
-        [HttpGet]
-        [Authorize]
-        public string GetMe()
-        {
-            var userName = _userService.GetMyName();
-            return userName;
+        [HttpGet("check-role-for-login")]
+        public async Task<ApiResult> GetRoleForLogin(string loginName)
+        {            
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _userService.GetRoleForLogin(loginName);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
         }
         [HttpPost("check-valid-token")]
         public async Task<ApiResult> RefreshToken([FromBody] string LoginName)
@@ -119,7 +128,7 @@ namespace WebAppAPI.Controllers
                     if (existedInActiveUser)
                         result.Message = "Tài khoản của bạn đã bị khoá. Hãy liên hệ quản trị viên của web để được hỗ trợ.";
                     else
-                        result.Message = "Không tìm thấy tài khoản";
+                        result.Message = "Thông tin đăng nhập không hợp lệ.";
 
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
@@ -133,7 +142,7 @@ namespace WebAppAPI.Controllers
                     {
                         result.IsSuccess = false;
                         result.HttpStatusCode = 400;
-                        result.Message = "Sai mật khẩu";
+                        result.Message = "Thông tin đăng nhập không hợp lệ.";
                     }
                     else
                     {

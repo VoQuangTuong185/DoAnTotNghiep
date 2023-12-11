@@ -144,7 +144,7 @@ namespace WebAppAPI.Controllers
                     if (existedInActiveUser)
                         result.Message = "Tài khoản của bạn đã bị khoá. Hãy liên hệ quản trị viên của web để được hỗ trợ.";
                     else
-                        result.Message = "Không tìm thấy tài khoản";
+                        result.Message = "Thông tin đăng nhập không hợp lệ.";
 
                     result.IsSuccess = false;
                     result.HttpStatusCode = 400;
@@ -158,7 +158,7 @@ namespace WebAppAPI.Controllers
                     {
                         result.IsSuccess = false;
                         result.HttpStatusCode = 400;
-                        result.Message = "Sai mật khẩu";
+                        result.Message = "Thông tin đăng nhập không hợp lệ.";
                     }
                     else
                     {

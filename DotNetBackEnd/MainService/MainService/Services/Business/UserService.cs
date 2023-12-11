@@ -45,14 +45,21 @@ namespace WebAppAPI.Services.Business
             _httpContextAccessor = httpContextAccessor;
             _messageBusClient = messageBusClient;
         }
-        public string GetMyName()
+        public async Task<bool> GetRoleForLogin(string loginName)
         {
-            var result = string.Empty;
-            if (_httpContextAccessor.HttpContext != null)
+            var loginUser = await _unitOfWork.Repository<User>().Get(x => x.LoginName.ToUpper().TrimStart().TrimEnd() == loginName.ToUpper().TrimStart().TrimEnd() && x.IsActive)
+                                                                .Include(x => x.UserAPIs)
+                                                                .ToListAsync();
+            var listRole = loginUser.FirstOrDefault().UserAPIs;
+            var isAdmin = false;
+            listRole.ForEach(x =>
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
-            }
-            return result;
+                if (x.RoleId == 2 && x.IsActive)
+                {
+                    isAdmin = true;
+                }
+            });
+            return isAdmin;
         }
         public async Task<Option<bool, string>> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user)
         {

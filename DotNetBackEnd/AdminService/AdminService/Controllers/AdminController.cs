@@ -219,6 +219,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpGet("get-existed-product")]
         public async Task<ApiResult> GetExistedProduct(int productId)
         {

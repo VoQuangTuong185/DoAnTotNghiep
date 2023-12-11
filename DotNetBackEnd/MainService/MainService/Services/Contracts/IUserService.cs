@@ -12,7 +12,7 @@ namespace WebAppAPI.Services.Contracts
 {
     public interface IUserService
     {
-        string GetMyName();
+        Task<bool> GetRoleForLogin(string loginName);
         Task<bool> RegisterUser(RegisterUserOldDTO user);
         Task<Option<bool, string>> CheckExistedAndSendConfirmMail(RegisterUserOldDTO user);
         Task<string> SendConfirmCodeRegister(RegisterUserOldDTO user);

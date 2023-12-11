@@ -395,30 +395,24 @@ namespace DoAnTotNghiep.Migrations
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.WebAppAPI.Models.Entities.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Discount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId", "ProductId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -531,11 +525,21 @@ namespace DoAnTotNghiep.Migrations
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.WebAppAPI.Models.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("WebAppAPI.Models.Entities.Order", null)
+                    b.HasOne("WebAppAPI.Models.Entities.Order", "orders")
                         .WithMany("orderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebAppAPI.Models.Entities.Product", "product")
+                        .WithMany("orderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("orders");
+
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("DoAnTotNghiep.Models.Entities.Category", b =>
@@ -565,6 +569,8 @@ namespace DoAnTotNghiep.Migrations
                     b.Navigation("P_carts");
 
                     b.Navigation("feedbacks");
+
+                    b.Navigation("orderDetails");
                 });
 
             modelBuilder.Entity("WebAppAPI.Models.Entities.Role", b =>
