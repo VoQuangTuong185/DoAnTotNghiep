@@ -312,6 +312,7 @@ await: any;
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
         this.userData.isLoggedIn = false;
         this.messageService.add({
           key: 'bc',
