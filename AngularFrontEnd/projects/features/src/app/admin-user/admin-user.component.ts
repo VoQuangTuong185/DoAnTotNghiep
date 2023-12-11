@@ -6,6 +6,7 @@ import { WebsiteAPIService } from '../data/WebsiteAPI.service'
 import { User } from '../data/User.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import jwt_decode, { JwtPayload } from 'jwt-decode'
+import { Event } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user',
@@ -14,6 +15,7 @@ import jwt_decode, { JwtPayload } from 'jwt-decode'
 })
 export class AdminUserComponent {
   dataUsers!: AdminUserDTO[];
+  originalDataUsers!: AdminUserDTO[];
   usersDataCols: any[] = [];
   selectedUsers!: AdminUserDTO;
   dataForCheckingExisted!: AdminUserDTO[];
@@ -27,6 +29,9 @@ export class AdminUserComponent {
   userData = new User();  
   editUserForm!: FormGroup;
   currentUserId!: number;
+  roles!: any[];
+  selectedRole: any = 'all';
+  selectedRoleIndex: number = 0;
   @ViewChild('dt') table!: Table;
 
   constructor(
@@ -50,6 +55,11 @@ export class AdminUserComponent {
     if(localStorage.getItem('authToken') != 'null'){
       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     }  
+    this.roles = [
+      { name: 'Tất cả',  value: 'all'},
+      { name: 'Quản trị viên',  value: 'admin'},
+      { name: 'Khách hàng',  value: 'customer' }
+  ];
   }
   createEmptyUserForm(){
     return this.formBuilder.group({
@@ -70,10 +80,12 @@ export class AdminUserComponent {
   }
   loadDataUsers(){
     this.websiteAPIService.getUsers().subscribe((res:any) => {
-      this.dataUsers = res.data; 
+      this.dataUsers = res.data;
+      this.originalDataUsers = res.data; 
       this.dataForCheckingExisted = res.data;
       this.loading = false;
     });
+    this.selectedRole = 'all';
   }
   ngOnInit() {
     this.loadDataUsers();
@@ -177,5 +189,22 @@ export class AdminUserComponent {
       e.roleId === 2 && e.isActive ? tooltip = 'thu hồi quyền quản trị' : tooltip = 'thêm quyền quản trị';
     })
     return tooltip;
+  }
+  changeRoleUserDisplay(value : any){
+    this.selectedRoleIndex = value.index;
+    switch(value.index) { 
+      case 1: { 
+        this.dataUsers = this.originalDataUsers.filter(x => this.handleButtonSetManager(x) == true)
+        break; 
+      } 
+      case 2: { 
+        this.dataUsers = this.originalDataUsers.filter(x => this.handleButtonSetManager(x) == false)
+        break; 
+      } 
+      default: { 
+        this.dataUsers = this.originalDataUsers; 
+        break; 
+      } 
+   }     
   }
 }

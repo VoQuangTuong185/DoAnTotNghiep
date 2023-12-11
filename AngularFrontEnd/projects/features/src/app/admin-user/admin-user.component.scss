@@ -63,6 +63,10 @@
         }
     }
     
+    .filter-user .p-selectbutton .p-button.p-highlight{
+        background: blue;
+    }
+
     /* Responsive */
     .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
         display: none;
@@ -111,7 +115,7 @@
     padding: 0 1rem;
 }
 .search-box{
-    padding: 1rem;
+    padding: 0 0 1rem 1rem ;
 }
 tr > th {
     width: 10px;
@@ -132,3 +136,6 @@ table {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+.filter-user{
+    padding-top: 1rem;
+}

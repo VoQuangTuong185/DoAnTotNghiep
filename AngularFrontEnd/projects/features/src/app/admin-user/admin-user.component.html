@@ -1,9 +1,14 @@
 <div class="block">
     <p-accordion>
         <p-accordionTab header="Quản lý tài khoản" class="center" [selected]="true">
+            <span class="flex justify-content-center  filter-user">
+                <p-selectButton [options]="roles" [(ngModel)]="selectedRole" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeRoleUserDisplay($event)"></p-selectButton>
+            </span>
             <div class="search-box">
-                <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
+                <span>
+                    <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
                     matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+                </span>
             </div>          
             <div class="displayUsers">
                 <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
