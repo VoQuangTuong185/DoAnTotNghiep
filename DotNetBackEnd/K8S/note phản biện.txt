@@ -1,0 +1,9 @@
+số lượng 10
+
+user 1 đặt 5 (giỏ hàng)
+user 2 đặt 6 (giỏ hàng) => lỗi => đúng
+
+user 1 đặt hàng 5
+user 1 huỷ đơn hàng 5
+
+User 2 đặt 6 => đang chỉ tự động đặt được 4 (đúng phải là 6) => sai

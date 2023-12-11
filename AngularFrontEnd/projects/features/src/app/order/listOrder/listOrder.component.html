@@ -25,9 +25,6 @@
         <p-button *ngIf="this.statusOrderCode === this.enumData.statusOrder.wait.code" label="Huỷ" styleClass="p-button-danger"
           icon="pi pi-times" (click)="confirmCancelOrder(order.id)">
         </p-button>
-        <p-button *ngIf="statusOrderCode === this.enumData.statusOrder.processing.code" label="Hoàn tất" styleClass="p-button-success"
-          [style]="{ 'margin-left': '10px' }" icon="pi pi-check" (click)="confirmSuccessOrder(order.id)">
-        </p-button>
         <p-button label="Chi tiết" icon="pi pi-list" [style]="{ 'margin-left': '10px' }" (click)="openModalOrderDetail(order)">
         </p-button>
         <p-button *ngIf="statusOrderCode === this.enumData.statusOrder.success.code" label="Đánh giá" icon="pi pi-comments" [style]="{ 'margin-left': '10px' }" styleClass="p-button-help" (click)="openFeedback(order)">

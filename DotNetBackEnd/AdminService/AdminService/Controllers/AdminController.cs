@@ -677,7 +677,6 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
-        [Authorize]
         [HttpGet("get-feedback-by-productId")]
         public async Task<ApiResult> GetFeedbackByProductId(int productId)
         {

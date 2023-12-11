@@ -304,18 +304,11 @@ namespace WebAppAPI.Services.Business
                         {
                             var existedProduct = listProduct.Where(y => y.Id == x.ProductId).FirstOrDefault();
                             if (existedProduct.Quanity < x.Quantity)
-                            {
                                 isOverQuantity = true;
-                                x.Quantity = existedProduct.Quanity;
-                            }
                         });
 
                         if (isOverQuantity)
-                        {
-                            _unitOfWork.Repository<Cart>().UpdateRange(existedProductInCart);
-                            await _unitOfWork.SaveChangesAsync();
                             return Option.None<bool, string>("Số lượng bạn muốn mua đang lớn hơn số lượng sẵn có!");
-                        }
 
                         int discount = (int)(user.FirstOrDefault()?.vips != null ? user.FirstOrDefault()?.vips.Discount : 0);
 

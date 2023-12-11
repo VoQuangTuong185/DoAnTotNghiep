@@ -38,14 +38,14 @@ export class AdminUserComponent {
     this.editUserForm = this.createEmptyUserForm();
     this.usersDataCols = [
         { header : 'STT', field : 'id', width:5, type:'number'},
-        { header : 'Họ và tên', field : 'name', width:15, type:'string'},
+        { header : 'Họ và tên', field : 'name', width:18, type:'string'},
         { header : 'Tài khoản', field : 'loginName', width:10, type:'string'},
-        { header : 'Giảm giá VIP', field : 'discount', width:10, type:'percent'},
+        { header : 'Giảm giá VIP', field : 'discount', width:5, type:'percent'},
         { header : 'Địa chỉ email', field : 'email', width:15, type:'string'},
         { header : 'Địa chỉ', field : 'address', width:22, type:'string'},
         { header : 'Số điện thoại', field : 'telNum', width:8, type:'string'},
-        { header : 'Trạng thái', field : 'isActive', width:5, type:'boolean'},
-        { header : 'Thao tác', field : 'action', width:20, type:'button'},
+        { header : 'Trạng thái', field : 'isActive', width:7, type:'boolean'},
+        { header : 'Thao tác', field : 'action', width:15, type:'button'},
     ];
     if(localStorage.getItem('authToken') != 'null'){
       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
