@@ -115,7 +115,7 @@
     padding: 0 1rem;
 }
 .search-box{
-    padding: 0 0 1rem 1rem ;
+    width: fit-content;
 }
 tr > th {
     width: 10px;
@@ -136,6 +136,3 @@ table {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-.filter-user{
-    padding-top: 1rem;
-}

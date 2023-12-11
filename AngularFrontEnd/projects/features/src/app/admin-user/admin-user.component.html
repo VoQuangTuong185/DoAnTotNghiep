@@ -1,15 +1,23 @@
 <div class="block">
     <p-accordion>
         <p-accordionTab header="Quản lý tài khoản" class="center" [selected]="true">
-            <span class="flex justify-content-center  filter-user">
-                <p-selectButton [options]="roles" [(ngModel)]="selectedRole" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeRoleUserDisplay($event)"></p-selectButton>
-            </span>
-            <div class="search-box">
-                <span>
-                    <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
-                    matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
-                </span>
-            </div>          
+            <div class="grid p-fluid mx-2 mt-1">
+                <div class="col-12 md:col-4">
+                    <div class="search-box">
+                        <span>
+                            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
+                            matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+                        </span>
+                    </div>  
+                </div>              
+                <div class="col-12 md:col-4">
+                    <span class="justify-content-center  filter-user">
+                        <p-selectButton [options]="roles" [(ngModel)]="selectedRole" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeRoleUserDisplay($event)"></p-selectButton>
+                    </span>      
+                </div>                       
+                <div class="col-12 md:col-4">
+                </div>
+            </div>    
             <div class="displayUsers">
                 <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
                     [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first" [loading]="loading"
