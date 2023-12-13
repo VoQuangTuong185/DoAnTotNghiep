@@ -1,4 +1,31 @@
 :host ::ng-deep {
+    .card {
+        background: var(--surface-card);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+    html {
+        font-size: 14px;
+    }
+    
+    body {
+        font-family: var(--font-family);
+        font-weight: normal;
+        background: var(--surface-ground);
+        color: var(--text-color);
+        padding: 1rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    canvas{
+        height: 500px !important;
+        width: 500px !important;
+    }
+    p-chart{
+        justify-content: center;
+        display: flex;
+    }
     .mat-mdc-form-field{
         width: 25.5rem;
     }
@@ -63,8 +90,12 @@
         }
     }
     
-    .filter-user .p-selectbutton .p-button.p-highlight{
+    .filter-user1 .p-selectbutton .p-button.p-highlight{
         background: #6f42c1;
+    }
+
+    .filter-user2 .p-selectbutton .p-button.p-highlight{
+        background: #dc3545;
     }
 
     /* Responsive */
@@ -111,28 +142,10 @@
         }
     }
 }
-.displayUsers{
-    padding: 0 1rem;
-}
-.search-box{
-    width: fit-content;
-}
-tr > th {
-    width: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis // This is where the magic happens
+.justify-content-center{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
 }
 
-table {
-    width: 100%;
-    table-layout: fixed;
-  }
-  
-  th, td {
-    max-width: 150px;
-    overflow: hidden;
-    width:auto;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    

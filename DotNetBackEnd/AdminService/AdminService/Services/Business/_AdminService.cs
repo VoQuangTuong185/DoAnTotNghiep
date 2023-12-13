@@ -717,6 +717,48 @@ namespace WebAppAPI.Services.Business
             result.ProvinceCode = int.Parse(splitAdressCode[2]);
             return result;
         }
+        public async Task<IEnumerable<OrderStatistical>> GetOrderStatisticalsByFilter(OrderStatisticalFilter filter)
+        {
+            var result = new List<OrderStatistical>();
+            var existedOrder = await _unitOfWork.Repository<Order>().Get(x => true).ToListAsync();
+            if (filter.Method == "year")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate.Year == filter.DateFrom.Year).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            else if (filter.Method == "day")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate.Day == filter.DateFrom.Day).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            else if (filter.Method == "range")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate >= filter.DateFrom && x.CreatedDate <= filter.DateTo).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            if (!result.Any(x => x.Status == "Cancel")){
+                result.Add(new OrderStatistical("Cancel", 0));
+            }
+            if (!result.Any(x => x.Status == "Processing"))
+            {
+                result.Add(new OrderStatistical("Processing", 0));
+            }
+            if (!result.Any(x => x.Status == "Pending"))
+            {
+                result.Add(new OrderStatistical("Pending", 0));
+            }
+            if (!result.Any(x => x.Status == "Success"))
+            {
+                result.Add(new OrderStatistical("Success", 0));
+            }
+            return result.OrderBy(x => x.Status);
+        }
         #region Private
         string handlePayment(string payment)
         {

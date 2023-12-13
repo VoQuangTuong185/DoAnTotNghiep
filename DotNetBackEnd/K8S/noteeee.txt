@@ -1,12 +1,12 @@
 - sửa người dùng thành khách hàng => done
 - sửa lỗi đặt hàng đã note => done
+- thêm 1 filter chỉ hiển thị những quản trị viên trong trang quản lý tài khoản => done
+
 - báo cáo thống kê (doanh thu)
  + doanh thu: chọn năm (vd: 2023) => tính doanh thu của cả năm được chọn
  + doanh thu theo khoảng thời gian: chọn ngày tháng năm-> ngày tháng năm doanh thu
+ 
 - số lượng đơn theo từng trạng thái
- + số lượng: chọn năm (vd: 2023) => tính doanh thu của cả năm được chọn
- + số lượng theo ngày hiện tại: chọn ngày tháng năm-> ngày tháng năm 
+ + số lượng: chọn năm (vd: 2023) => hiện số lượng đơn của cả năm được chọn
+ + số lượng theo ngày hiện tại: chọn ngày tháng năm -> ngày tháng năm 
  + số lượng theo khoảng thời gian: chọn ngày tháng năm-> ngày tháng năm 
-- thêm 1 filter chỉ hiển thị những quản trị viên trong trang quản lý tài khoản
-
-* bỏ hẵn dòng Bạn là (tự làm)

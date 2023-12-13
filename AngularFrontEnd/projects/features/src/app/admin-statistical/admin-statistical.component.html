@@ -1,0 +1,50 @@
+<div class="block">
+    <div class="grid p-fluid mx-2 mt-1">
+        <div class="col-12 md:col-4">
+        </div>              
+        <div class="col-12 md:col-4">
+            <span class="filter-user1">
+                <p-selectButton [options]="roles" [(ngModel)]="selectedRole" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeRoleUserDisplay($event)"></p-selectButton>
+            </span>      
+        </div>                       
+        <div class="col-12 md:col-4">
+        </div>
+    </div> 
+    <div class="grid p-fluid mx-2">
+        <div class="col-12 md:col-4">
+        </div>              
+        <div class="col-12 md:col-4">
+            <span class="filter-user2">
+                <p-selectButton [options]="typeOrders" [(ngModel)]="selectedTypeOrder" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeOrderDisplay($event)"></p-selectButton>
+            </span>      
+        </div>                       
+        <div class="col-12 md:col-4">
+        </div>
+    </div>  
+    <div *ngIf="selectedRoleIndex == 1">
+        <div *ngIf="selectedOrderIndex == 0">
+            <div class="justify-content-center">
+                <p-calendar [(ngModel)]="yearOrder" view="year" dateFormat="yy" inputId="yearpicker" placeholder="Chọn năm" (onSelect)="onGetData(0)"></p-calendar>
+            </div>   
+            <div class="card flex justify-content-center">
+                <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+            </div>
+        </div>
+        <div *ngIf="selectedOrderIndex == 1">
+            <div class="justify-content-center">
+                <p-calendar [(ngModel)]="dayOrder" placeholder="Chọn ngày" (onSelect)="onGetData(1)"></p-calendar>
+            </div>   
+            <div class="card flex justify-content-center">
+                <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+            </div>
+        </div>
+        <div *ngIf="selectedOrderIndex == 2">
+            <div class="justify-content-center">
+                <p-calendar [(ngModel)]="rangeOrder" selectionMode="range" [readonlyInput]="true" placeholder="Chọn khoảng thời gian" (onClickOutside)="onGetData(2)"></p-calendar>
+            </div>   
+            <div class="card flex justify-content-center">
+                <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+            </div>
+        </div>
+    </div>
+</div>  

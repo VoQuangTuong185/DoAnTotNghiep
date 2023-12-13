@@ -8,6 +8,7 @@
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-brand']" routerLinkActive="active"><b>Nhãn hàng</b></a>
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-user']" routerLinkActive="active"><b>Tài khoản</b></a>
                   <a *ngIf="isAdmin" [routerLink]="['/admin/admin-order']" routerLinkActive="active"><b>Đơn hàng</b></a>
+                  <a *ngIf="isAdmin" [routerLink]="['/admin/admin-statistical']" routerLinkActive="active"><b>Thống kê</b></a>
               </nav>
               <nav *ngIf="currentTab?.includes('/user') || currentTab?.includes('home-page') || currentTab?.includes('product-detail')" class="routing">
                   <a [routerLink]="['/home-page']" routerLinkActive="active"><b>Trang chủ</b></a>

@@ -22,7 +22,6 @@ export class UploadImageComponent {
     let temporaryFile = <File>files[0];
 
     let fileToUpload = new File([<File>files[0]], this.makeString() + "." + temporaryFile.name.split(".", 2)[1]);
-    console.log(fileToUpload)
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
     this.http.post(Constant.libraryApiUrlAdmin() + 'upload-course-image', formData, {reportProgress: true, observe: 'events'})

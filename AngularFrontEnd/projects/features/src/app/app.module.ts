@@ -134,6 +134,9 @@ import { AnimateModule } from 'primeng/animate';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { VipComponent } from './vip/vip.component';
+import { AdminStatisticalComponent } from './admin-statistical/admin-statistical.component';
+import { ChartModule } from 'primeng/chart';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -155,7 +158,8 @@ import { VipComponent } from './vip/vip.component';
     FooterComponent,
     AdminBrandComponent,
     ProductDetailComponent,
-    VipComponent
+    VipComponent,
+    AdminStatisticalComponent
   ],
   imports: [
     BrowserModule,
@@ -289,6 +293,7 @@ import { VipComponent } from './vip/vip.component';
     TreeTableModule,
     AnimateModule,
     CardModule,
+    ChartModule
   ],
   providers: [
     {

@@ -7,6 +7,7 @@ import { CreatProductComponent } from '../create-product/create-product.componen
 import { AdminCategoryComponent } from '../admin-category/admin-category.component';
 import { AdminOrderComponent } from '../admin-order/admin-order.component';
 import { AdminBrandComponent } from '../admin-brand/admin-brand.component';
+import { AdminStatisticalComponent } from '../admin-statistical/admin-statistical.component';
 
 const AdminRoutes: Routes = [
   {
@@ -62,6 +63,11 @@ const AdminRoutes: Routes = [
   {
     path: 'admin-brand',
     component: AdminBrandComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-statistical',
+    component: AdminStatisticalComponent,
     canActivate: [AuthGuard],
   },
 ];
