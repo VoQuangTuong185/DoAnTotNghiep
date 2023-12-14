@@ -81,6 +81,7 @@ export class WebsiteAPIService{
     private urlAdminConfirmOrder = 'confirm-order';
     private urlAdminSuccessOrder = 'success-order';
     private urlGetOrderStatisticalsByFilter = 'get-statisticals-by-filter';
+    private urlGetRevenueStatisticalsByFilter = 'get-revenues-by-filter';
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -285,5 +286,8 @@ export class WebsiteAPIService{
     }
     getOrderStatisticalsByFilter(filter: OrderStatisticalFilter){
         return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlGetOrderStatisticalsByFilter, filter);
+    }
+    getRevenueStatisticalsByFilter(filter: OrderStatisticalFilter){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlGetRevenueStatisticalsByFilter, filter);
     }
 }

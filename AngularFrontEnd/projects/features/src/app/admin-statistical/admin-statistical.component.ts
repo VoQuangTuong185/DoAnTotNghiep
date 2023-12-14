@@ -28,7 +28,14 @@ export class AdminStatisticalComponent {
   rangeOrder!: Date[];
   dayOrder: Date = new Date();
 
+  yearRevenue: Date = new Date();
+  rangeRevenue!: Date[];
+
   revenuesData!: any[];
+
+  dataRevenue: any;
+
+  optionsRevenue: any;
 
   constructor(private websiteAPIService : WebsiteAPIService){
     this.roles = [
@@ -38,41 +45,60 @@ export class AdminStatisticalComponent {
       { name: 'Năm',  value: 'year'},
       { name: 'Ngày',  value: 'day'},
       { name: 'Khoảng thời gian',  value: 'range'}];
+      this.typeRevenues = [
+        { name: 'Năm',  value: 'year'},
+        { name: 'Khoảng thời gian',  value: 'range'}];
     let year = 'year';
-    let filter1 = new OrderStatisticalFilter(year, this.yearOrder, this.yearOrder);       
-    this.loadDataRevenues(filter1);
+    let filter1 = new OrderStatisticalFilter(year, this.subtractDays(1), this.yearOrder);
+    console.log(filter1)
+    let filter2 = new OrderStatisticalFilter(year, this.subtractDays(1), this.yearRevenue);       
+    this.loadDataOrders(filter1);
+    this.loadDataRevenues(filter2);
   }
   changeRoleUserDisplay(value : any){
     this.selectedRoleIndex = value.index;
 
     switch(value.index) { 
         case 1:
-          this.onGetData(0);
+          this.onGetDataOrders(0, true);
           break;
       } 
    }
 
    changeOrderDisplay(value : any){
     this.selectedOrderIndex = value.index;
-    this.onGetData(value.index);
+    this.onGetDataOrders(value.index, false);
    }  
 
-   async onGetData(index: number){
+   async onGetDataOrders(index: number, isFirstLoad: boolean){
     switch(index) { 
       case 0:
         let year = 'year';
-        let filter1 = new OrderStatisticalFilter(year, this.yearOrder, this.yearOrder);       
-        this.loadDataRevenues(filter1);
+        let filter1;
+        if (!isFirstLoad){
+          filter1 = new OrderStatisticalFilter(year, this.yearOrder, this.yearOrder);       
+        }
+        else {
+          filter1 = new OrderStatisticalFilter(year, this.subtractDays(1), this.yearOrder);
+        }
+        this.loadDataOrders(filter1);
         break;
       case 1:
         let day = 'day';
+        console.log(this.dayOrder)
+        if (this.dayOrder == undefined){
+          this.changeDataOrders([],[]);
+        }
         let filter2 = new OrderStatisticalFilter(day, this.dayOrder, this.yearOrder);    
-        this.loadDataRevenues(filter2);
+        this.loadDataOrders(filter2);
         break;
       case 2:
         let range = 'range';
+        if (this.rangeOrder == undefined){
+          this.changeDataOrders([],[]);
+        }
         let filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);    
-        this.loadDataRevenues(filter3);
+        this.loadDataOrders(filter3);
         break;
     } 
    }
@@ -83,25 +109,115 @@ export class AdminStatisticalComponent {
 
       } 
    }  
+
+   async onGetDataRevenue(index: number){
+    switch(index) { 
+      case 0:
+        let year = 'year';
+        let filter1 = new OrderStatisticalFilter(year, this.yearRevenue, this.yearRevenue);       
+        this.loadDataRevenues(filter1);
+        break;
+      case 1:
+        let range = 'range';
+        if (this.rangeOrder == undefined){
+          this.changeDataRevenues([],[]);
+        }
+        let filter3 = new OrderStatisticalFilter(range, this.rangeRevenue[0], this.rangeRevenue[1]);    
+        this.loadDataRevenues(filter3);
+        break;
+    } 
+   }
+   
+   
    ngOnInit() {
 
   }
-  loadDataRevenues(filter : OrderStatisticalFilter){
+  loadDataOrders(filter : OrderStatisticalFilter){
+    let count;
+    let status;
     this.websiteAPIService.getOrderStatisticalsByFilter(filter).subscribe((res:any) => {
-      var result = res.data.map(function(a: { count: any; }) {return a.count;});
-      this.changeData(result);
+      count = res.data.map(function(a: { count: any; }) {return a.count;});
+      status = res.data.map(function(a: { status: any; }) {return a.status;});
+      this.changeDataOrders(count, status);
     });
   }
-  changeData(data: number[]) {
+  changeDataOrders(data: number[], label: string[]) {
+    let dataTable = data == null ? [] : data;
     let changedData = {
-        labels: ['Huỷ', 'Chờ xác nhận', 'Đang xử lý', 'Hoàn tất'],
+        labels: label,
         datasets: [
           {
-            data: data,
-            backgroundColor: [ "#FF0000", "#f441c4", "#4195f4", "#50f442", ],
-            hoverBackgroundColor: [ "#FF0000","#f441c4", "#4195f4", "#50f442", ]
+            data: dataTable,
+            backgroundColor: [ "#4195f4", "#50f442", "#FF0000",  "#f441c4" ],
+            hoverBackgroundColor: [ "#4195f4", "#50f442", "#FF0000",  "#f441c4" ]
           }]
     }
     this.data = Object.assign({}, changedData);
   }
+
+  loadDataRevenues(filter : OrderStatisticalFilter){
+    let month;
+    let totalMoney;
+    this.websiteAPIService.getRevenueStatisticalsByFilter(filter).subscribe((res:any) => {
+      month = res.data.map(function(a: { month: any; }) {return a.month;});
+      totalMoney = res.data.map(function(a: { totalMoney: any; }) {return a.totalMoney;});
+      this.changeDataRevenues(totalMoney, month);
+    });
+  }
+
+  changeDataRevenues(data: number[], label: string[]){
+    let dataTable = data == null ? [] : data;
+    this.dataRevenue = {
+        labels: label,
+        datasets: [
+            {
+                label: 'Thống kê doanh thu',
+                backgroundColor: "#4195f4",
+                borderColor: "#4195f4",
+                data: dataTable
+            }
+        ]
+    };
+
+    this.optionsRevenue = {
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#4195f4"
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: "#686868",
+                    font: {
+                        weight: 400
+                    }
+                },
+                grid: {
+                    color: "#bebebe",
+                    drawBorder: false
+                }
+            },
+            y: {
+                ticks: {
+                    color: "#686868"
+                },
+                grid: {
+                    color: "#bebebe",
+                    drawBorder: false
+                }
+            }
+
+        }
+    };
+  }
+  subtractDays(days: number): Date {
+    let date = new Date();
+    date.setFullYear(date.getFullYear() - days);
+    return date;
+  } 
 }

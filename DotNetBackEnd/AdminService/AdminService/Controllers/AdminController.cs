@@ -718,7 +718,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
-        //[Authorize]
+        [Authorize]
         [HttpPost("get-statisticals-by-filter")]
         public async Task<ApiResult> GetOrderStatisticalsByFilter(OrderStatisticalFilter filter)
         {
@@ -726,6 +726,21 @@ namespace WebAppAPI.Controllers
             try
             {
                 result.Data = await _IAdminService.GetOrderStatisticalsByFilter(filter);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpPost("get-revenues-by-filter")]
+        public async Task<ApiResult> GetRevenuesStatisticalsByFilter(OrderStatisticalFilter filter)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.GetRevenuesStatisticalsByFilter(filter);
             }
             catch (Exception ex)
             {

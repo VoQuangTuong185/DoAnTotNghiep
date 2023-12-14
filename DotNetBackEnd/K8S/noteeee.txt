@@ -1,10 +1,20 @@
+số lượng 10
+
+user 1 đặt 5 (giỏ hàng)
+user 2 đặt 6 (giỏ hàng) => lỗi => đúng
+
+user 1 đặt hàng 5
+user 1 huỷ đơn hàng 5
+
+User 2 đặt 6 => đang chỉ tự động đặt được 4 (đúng phải là 6) => sai
+
 - sửa người dùng thành khách hàng => done
 - sửa lỗi đặt hàng đã note => done
 - thêm 1 filter chỉ hiển thị những quản trị viên trong trang quản lý tài khoản => done
 
 - báo cáo thống kê (doanh thu)
  + doanh thu: chọn năm (vd: 2023) => tính doanh thu của cả năm được chọn
- + doanh thu theo khoảng thời gian: chọn ngày tháng năm-> ngày tháng năm doanh thu
+ + doanh thu theo khoảng thời gian: chọn ngày tháng năm -> ngày tháng năm doanh thu
  
 - số lượng đơn theo từng trạng thái
  + số lượng: chọn năm (vd: 2023) => hiện số lượng đơn của cả năm được chọn

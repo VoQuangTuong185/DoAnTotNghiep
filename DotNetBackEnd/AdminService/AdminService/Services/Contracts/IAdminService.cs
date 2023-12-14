@@ -47,5 +47,6 @@ namespace WebAppAPI.Services.Contracts
         Task<IEnumerable<FeedbackShowDetail>> GetFeedbackByProductId(int ProductId);
         Task<Option<bool, string>> ReplyFeedback(FeedbackShowDetail feedback);
         Task<IEnumerable<OrderStatistical>> GetOrderStatisticalsByFilter(OrderStatisticalFilter filter);
+        Task<IEnumerable<RevenuesStatisticalModel>> GetRevenuesStatisticalsByFilter(OrderStatisticalFilter filter);
     }
 }

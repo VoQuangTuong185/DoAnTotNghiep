@@ -18,9 +18,13 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-    canvas{
+    .orders canvas{
         height: 500px !important;
         width: 500px !important;
+    }
+    .revenue canvas{
+        height: 500px !important;
+        width: 1500px !important;
     }
     p-chart{
         justify-content: center;
