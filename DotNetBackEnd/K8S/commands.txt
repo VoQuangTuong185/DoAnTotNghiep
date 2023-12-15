@@ -18,8 +18,8 @@ kubectl apply -f mainservice-depl.yaml
 
 #adminservice
 docker build -t adminservice .
-docker tag adminservice voquangtuong06022001/adminservice:3.8
-docker push voquangtuong06022001/adminservice:3.8
+docker tag adminservice voquangtuong06022001/adminservice:3.9
+docker push voquangtuong06022001/adminservice:3.9
 kubectl apply -f adminservice-depl.yaml
 
 #mailservice

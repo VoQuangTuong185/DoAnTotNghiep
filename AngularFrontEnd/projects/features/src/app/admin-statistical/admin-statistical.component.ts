@@ -171,7 +171,7 @@ export class AdminStatisticalComponent {
         labels: label,
         datasets: [
             {
-                label: 'Thống kê doanh thu',
+                label: 'Thống kê doanh thu (VND)',
                 backgroundColor: "#4195f4",
                 borderColor: "#4195f4",
                 data: dataTable
