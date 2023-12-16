@@ -1,0 +1,34 @@
+Kính thưa quý thầy cô hội đồng,
+Em tên là VQT, lớp D19CQCNPM02-N
+Hôm nay em xin phép trình bày báo cáo đồ án tốt nghiệp đại học 
+
+flow demo chương trình:
+- 1 trong những ưu điểm của kiến trúc Microservices: 1 service ngừng hoạt động thì các service khác vẫn 
+hoạt động độc lập được: mở web của khách hàng truy cập oke, tắt service bên Docker Desktop => service của 
+admin vẫn xài được.
+- lượt qua các chức năng của admin
+- lượt qua các chức năng của khách hàng
+- đăng ký 1 tài khoản mới (dùng quên mật khẩu để kiểm tra sự tồn tại của email: quangtuong102@gmail.com
+- thao tác mua hàng: 
+ + dùng tài khoản mới: demo nguyên flow mua hàng:
+    * chọn 3sp, số lượng
+	* tính tiền được giảm bao nhiêu
+	* mức ưu đãi đang là 0%
+	* đặt hàng (số lượng sp tồn bị trừ) => chờ xác nhận (gửi mail cho tất cả admin + gửi mail cho khách hàng)
+	* qua admin xác nhận đơn hàng => đang xử lý (gửi mail cho khách hàng)
+	* admin xác nhận đơn hàng => hoàn tất (đang thiếu đối tượng đơn vị vận chuyển sẽ xác nhận ở bước này)
+								(gửi mail cho khách hàng)
+	* mức ưu đãi đang là 5% nếu tổng giá trị đơn hàng >500k
+	* admin xem chi tiết đơn hàng
+	* khách hàng đánh giá sản phẩm
+	* quản trị viên phản hồi đánh giá của sản phẩm
+
+ + một vài testcase thường gặp (nói sơ, nếu thầy cô yêu cầu thì demo)
+	testcase1:  sp vở: số lượng 10
+				user 1 đặt 5 (giỏ hàng)
+				user 2 đặt 6 (giỏ hàng) => lỗi 
+
+	testcase2:  sp vở: số lượng 10
+				user 1 đặt hàng 5
+				user 1 huỷ đơn hàng 5
+				User 2 đặt 6 => thành công

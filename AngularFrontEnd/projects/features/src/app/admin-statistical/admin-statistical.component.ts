@@ -25,11 +25,11 @@ export class AdminStatisticalComponent {
   options: any;
 
   yearOrder: Date = new Date();
-  rangeOrder!: Date[];
+  rangeOrder: Date[] = [new Date(new Date().getFullYear(), new Date().getMonth(), 1), new Date()];
   dayOrder: Date = new Date();
 
   yearRevenue: Date = new Date();
-  rangeRevenue!: Date[];
+  rangeRevenue: Date[] = [new Date(new Date().getFullYear(), new Date().getMonth(), 1), new Date()];
 
   revenuesData!: any[];
 
@@ -50,7 +50,6 @@ export class AdminStatisticalComponent {
         { name: 'Khoảng thời gian',  value: 'range'}];
     let year = 'year';
     let filter1 = new OrderStatisticalFilter(year, this.subtractDays(1), this.yearOrder);
-    console.log(filter1)
     let filter2 = new OrderStatisticalFilter(year, this.subtractDays(1), this.yearRevenue);       
     this.loadDataOrders(filter1);
     this.loadDataRevenues(filter2);
@@ -67,7 +66,7 @@ export class AdminStatisticalComponent {
 
    changeOrderDisplay(value : any){
     this.selectedOrderIndex = value.index;
-    this.onGetDataOrders(value.index, false);
+    this.onGetDataOrders(value.index, true);
    }  
 
    async onGetDataOrders(index: number, isFirstLoad: boolean){
@@ -85,19 +84,18 @@ export class AdminStatisticalComponent {
         break;
       case 1:
         let day = 'day';
-        console.log(this.dayOrder)
         if (this.dayOrder == undefined){
           this.changeDataOrders([],[]);
-        }
-        let filter2 = new OrderStatisticalFilter(day, this.dayOrder, this.yearOrder);    
+        }       
+        let filter2 = new OrderStatisticalFilter(day, this.dayOrder, this.yearOrder);   
         this.loadDataOrders(filter2);
         break;
       case 2:
         let range = 'range';
-        if (this.rangeOrder == undefined){
-          this.changeDataOrders([],[]);
+        let filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);
+        if (this.rangeOrder != undefined){
+          filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);    
         }
-        let filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);    
         this.loadDataOrders(filter3);
         break;
     } 
@@ -105,9 +103,7 @@ export class AdminStatisticalComponent {
    
    changeRevenueDisplay(value : any){
     this.selectedRevenueIndex = value.index;
-    switch(value.index) { 
-
-      } 
+    this.onGetDataRevenue(value.index);
    }  
 
    async onGetDataRevenue(index: number){
@@ -119,9 +115,6 @@ export class AdminStatisticalComponent {
         break;
       case 1:
         let range = 'range';
-        if (this.rangeOrder == undefined){
-          this.changeDataRevenues([],[]);
-        }
         let filter3 = new OrderStatisticalFilter(range, this.rangeRevenue[0], this.rangeRevenue[1]);    
         this.loadDataRevenues(filter3);
         break;

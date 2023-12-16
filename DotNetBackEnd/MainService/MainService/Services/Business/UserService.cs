@@ -727,7 +727,7 @@ namespace WebAppAPI.Services.Business
             .OrderByDescending(x => x.orderDate)
             .ToList();
         }
-        int handleUserVip(IList<Order> allOrder, Order newOrder, List<VIP> allVIP)
+        int handleUserVip(IList<Order> allOrder, Order newOrder, List<VIP> allVIP) 
         {
             var sum = allOrder.Select(x => x.TotalBill).Sum() + newOrder.TotalBill;
             var correctVIP = allVIP.FirstOrDefault(x => (x.PriceFrom <= sum && x.PriceTo >= sum) || (x.PriceFrom <= sum && x.PriceTo == 0));
