@@ -19,7 +19,9 @@ export class UploadImageComponent {
     if (files.length === 0) {
       return;
     }
-    let fileToUpload = <File>files[0];
+    let temporaryFile = <File>files[0];
+
+    let fileToUpload = new File([<File>files[0]], this.makeString() + "." + temporaryFile.name.split(".", 2)[1]);
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
     this.http.post(Constant.libraryApiUrlAdmin() + 'upload-course-image', formData, {reportProgress: true, observe: 'events'})
@@ -32,6 +34,16 @@ export class UploadImageComponent {
         }        
         else if (event.type === HttpEventType.Response) {
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: 'Tải lên ảnh thành công!'});
+          this.http.post(Constant.libraryApiUrlUser() + 'upload-course-image', formData, {reportProgress: true, observe: 'events'})
+          .subscribe({
+            next: (event) => {
+            if (event.type === HttpEventType.UploadProgress){
+              if(event?.loaded && event?.total ) {
+                this.progress = Math.round(100 * event.loaded / event.total)
+              }
+            }    
+          }
+        });
           this.onUploadFinished.emit(event.body);
         }
       },
@@ -40,4 +52,13 @@ export class UploadImageComponent {
       }
     });
   }
+  makeString(): string {
+    let outString: string = '';
+    let inOptions: string = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+      outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
+    }
+    return outString;
+  }
+  result: string = this.makeString();
 }

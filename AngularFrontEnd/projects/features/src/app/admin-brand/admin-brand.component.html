@@ -62,15 +62,18 @@
                             <mat-error *ngIf="brandForm.get('BrandName')?.hasError('required')">
                                 Hãy nhập nhãn hàng!
                             </mat-error>    
+                            <mat-error *ngIf="brandForm.get('BrandName')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 50!
+                            </mat-error>  
                         </mat-form-field>  
                     </div>
                     <div class="category">
                         <mat-form-field appearance="outline" required=""> 
                             <mat-label>Mô tả</mat-label>   
-                            <input matInput formControlName = "Description" name = "Description"> 
-                            <mat-error *ngIf="brandForm.get('BrandName')?.hasError('required')">
-                                Hãy nhập mô tả!
-                            </mat-error>   
+                            <input matInput formControlName = "Description" name = "Description">    
+                            <mat-error *ngIf="brandForm.get('Description')?.hasError('maxlength')">
+                                Số lượng kí tự tối đa là 255!
+                            </mat-error>  
                         </mat-form-field> 
                     </div>       
                 </ng-template>

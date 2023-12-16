@@ -63,6 +63,10 @@
         }
     }
     
+    .filter-user .p-selectbutton .p-button.p-highlight{
+        background: #6f42c1;
+    }
+
     /* Responsive */
     .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
         display: none;
@@ -111,7 +115,7 @@
     padding: 0 1rem;
 }
 .search-box{
-    padding: 1rem;
+    width: fit-content;
 }
 tr > th {
     width: 10px;

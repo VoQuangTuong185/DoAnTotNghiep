@@ -98,6 +98,15 @@ export class ProductDetailComponent implements OnInit {
     this.displayAdminReplyPopup = false;
   }
   sumbitAdminReply(){
+    if(this.adminReplyContent.length > 255){
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Số lượng kí tự tối đa là 255!',
+      });
+      return;
+    }
     if(this.adminReplyContent == '' || this.adminReplyContent == undefined || (this.adminReplyContent != undefined && this.adminReplyContent.trimStart() == '')){
       this.messageService.add({
         key: 'bc',

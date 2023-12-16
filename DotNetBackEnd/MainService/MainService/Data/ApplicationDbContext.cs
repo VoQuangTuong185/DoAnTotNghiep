@@ -43,6 +43,10 @@ namespace WebAppAPI.Data
             {
                 entity.HasKey(pr => pr.Id);
             });
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasKey(or => or.Id);
+            });
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasKey(cr => new { cr.UserId, cr.ProductId });
@@ -55,6 +59,12 @@ namespace WebAppAPI.Data
                 entity.HasOne(fb => fb.users).WithMany(f => f.feedbacks).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.UserId);
                 entity.HasOne(fb => fb.orders).WithMany(f => f.feedbacks).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.OrderId);
                 entity.HasOne(fb => fb.product).WithMany(f => f.feedbacks).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.ProductId);
+            });
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(fb => new { fb.OrderId, fb.ProductId });
+                entity.HasOne(fb => fb.orders).WithMany(f => f.orderDetails).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.OrderId);
+                entity.HasOne(fb => fb.product).WithMany(f => f.orderDetails).HasPrincipalKey(f => f.Id).HasForeignKey(fb => fb.ProductId);
             });
         }
     }

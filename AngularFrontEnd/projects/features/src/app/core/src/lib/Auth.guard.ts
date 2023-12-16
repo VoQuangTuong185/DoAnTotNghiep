@@ -15,9 +15,9 @@ export class AuthGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
     if(localStorage.getItem('authToken') != null && localStorage.getItem('authToken') != 'null' && localStorage.getItem('userRole') != null && localStorage.getItem('userRole') != 'null'){ 
        this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
-       var dateNow = new Date();
+       var dateNow = new Date(); 
        var tokenExpiredDate = new Date(this.userData.expires);
-       let userRole = localStorage.getItem('userRole')!;
+       let userRole = localStorage.getItem('userRole')!; 
        if (dateNow > tokenExpiredDate){
          this.authService.checkValidToken(this.userData.loginName, userRole).subscribe((res: any) => {
            if(res.isSuccess){

@@ -219,6 +219,7 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
+        [Authorize]
         [HttpGet("get-existed-product")]
         public async Task<ApiResult> GetExistedProduct(int productId)
         {
@@ -676,7 +677,6 @@ namespace WebAppAPI.Controllers
             }
             return result;
         }
-        [Authorize]
         [HttpGet("get-feedback-by-productId")]
         public async Task<ApiResult> GetFeedbackByProductId(int productId)
         {
@@ -710,6 +710,37 @@ namespace WebAppAPI.Controllers
                     result.Message = ex;
                     result.IsSuccess = false;
                 });
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [Authorize]
+        [HttpPost("get-statisticals-by-filter")]
+        public async Task<ApiResult> GetOrderStatisticalsByFilter(OrderStatisticalFilter filter)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.GetOrderStatisticalsByFilter(filter);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                _ILog.LogException(ex.Message);
+            }
+            return result;
+        }
+        [HttpPost("get-revenues-by-filter")]
+        public async Task<ApiResult> GetRevenuesStatisticalsByFilter(OrderStatisticalFilter filter)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _IAdminService.GetRevenuesStatisticalsByFilter(filter);
             }
             catch (Exception ex)
             {

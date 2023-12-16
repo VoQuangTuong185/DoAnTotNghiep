@@ -1,6 +1,7 @@
 ﻿using DoAnTotNghiep.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 using WebAppAPI.Models.Bases;
+using WebAppAPI.Models.Entities.WebAppAPI.Models.Entities;
 
 namespace WebAppAPI.Models.Entities
 {
@@ -23,5 +24,6 @@ namespace WebAppAPI.Models.Entities
         public virtual IList<Cart> P_carts { get; set; }
         public string? ImageDetail { get; set; }
         public ICollection<Feedback> feedbacks { get; set; } = new List<Feedback>();
+        public ICollection<OrderDetail> orderDetails { get; set; } = new List<OrderDetail>();
     }
 }

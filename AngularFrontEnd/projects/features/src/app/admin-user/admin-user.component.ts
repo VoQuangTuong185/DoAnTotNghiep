@@ -6,6 +6,7 @@ import { WebsiteAPIService } from '../data/WebsiteAPI.service'
 import { User } from '../data/User.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import jwt_decode, { JwtPayload } from 'jwt-decode'
+import { Event } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user',
@@ -14,6 +15,7 @@ import jwt_decode, { JwtPayload } from 'jwt-decode'
 })
 export class AdminUserComponent {
   dataUsers!: AdminUserDTO[];
+  originalDataUsers!: AdminUserDTO[];
   usersDataCols: any[] = [];
   selectedUsers!: AdminUserDTO;
   dataForCheckingExisted!: AdminUserDTO[];
@@ -27,6 +29,9 @@ export class AdminUserComponent {
   userData = new User();  
   editUserForm!: FormGroup;
   currentUserId!: number;
+  roles!: any[];
+  selectedRole: any = 'all';
+  selectedRoleIndex: number = 0;
   @ViewChild('dt') table!: Table;
 
   constructor(
@@ -38,42 +43,49 @@ export class AdminUserComponent {
     this.editUserForm = this.createEmptyUserForm();
     this.usersDataCols = [
         { header : 'STT', field : 'id', width:5, type:'number'},
-        { header : 'Họ và tên', field : 'name', width:15, type:'string'},
+        { header : 'Họ và tên', field : 'name', width:18, type:'string'},
         { header : 'Tài khoản', field : 'loginName', width:10, type:'string'},
-        { header : 'Giảm giá VIP', field : 'discount', width:10, type:'percent'},
+        { header : 'Giảm giá VIP', field : 'discount', width:5, type:'percent'},
         { header : 'Địa chỉ email', field : 'email', width:15, type:'string'},
         { header : 'Địa chỉ', field : 'address', width:22, type:'string'},
         { header : 'Số điện thoại', field : 'telNum', width:8, type:'string'},
-        { header : 'Trạng thái', field : 'isActive', width:5, type:'boolean'},
-        { header : 'Thao tác', field : 'action', width:20, type:'button'},
+        { header : 'Trạng thái', field : 'isActive', width:7, type:'boolean'},
+        { header : 'Thao tác', field : 'action', width:15, type:'button'},
     ];
     if(localStorage.getItem('authToken') != 'null'){
       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/"));
     }  
+    this.roles = [
+      { name: 'Tất cả',  value: 'all'},
+      { name: 'Quản trị viên',  value: 'admin'},
+      { name: 'Khách hàng',  value: 'customer' }
+  ];
   }
   createEmptyUserForm(){
     return this.formBuilder.group({
-      Name: ["",[Validators.required]],
-      LoginName: ["",[Validators.required]],
-      Email: ["",[Validators.required]],
+      Name: ["",[Validators.required,Validators.maxLength(50)]],
+      LoginName: ["",[Validators.required, Validators.maxLength(50)]],
+      Email: ["",Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
       Tel: ["",Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
   createExistedUserForm(){
     return this.formBuilder.group({
       Id: [this.selectedUsers.id,[Validators.required]],
-      Name: [this.selectedUsers.name,[Validators.required]],
-      LoginName: [this.selectedUsers.loginName,[Validators.required]],
-      Email: [{value: this.selectedUsers.email, disabled: true},[Validators.required]],
+      Name: [this.selectedUsers.name,[Validators.required,Validators.maxLength(50)]],
+      LoginName: [this.selectedUsers.loginName,[Validators.required, Validators.maxLength(50)]],
+      Email: [{value: this.selectedUsers.email, disabled: true},Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
       TelNum: [this.selectedUsers.telNum,Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])]
     })
   }
   loadDataUsers(){
     this.websiteAPIService.getUsers().subscribe((res:any) => {
-      this.dataUsers = res.data; 
+      this.dataUsers = res.data;
+      this.originalDataUsers = res.data; 
       this.dataForCheckingExisted = res.data;
       this.loading = false;
     });
+    this.selectedRole = 'all';
   }
   ngOnInit() {
     this.loadDataUsers();
@@ -124,6 +136,7 @@ export class AdminUserComponent {
     this.websiteAPIService.editUser(this.editUserForm.getRawValue()).subscribe((res:any) =>{
       if(res.data){
         this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
+        this.displayEditUserPopup = false;
         this.loadDataUsers();
       }
       else {
@@ -176,5 +189,22 @@ export class AdminUserComponent {
       e.roleId === 2 && e.isActive ? tooltip = 'thu hồi quyền quản trị' : tooltip = 'thêm quyền quản trị';
     })
     return tooltip;
+  }
+  changeRoleUserDisplay(value : any){
+    this.selectedRoleIndex = value.index;
+    switch(value.index) { 
+      case 1: { 
+        this.dataUsers = this.originalDataUsers.filter(x => this.handleButtonSetManager(x) == true)
+        break; 
+      } 
+      case 2: { 
+        this.dataUsers = this.originalDataUsers.filter(x => this.handleButtonSetManager(x) == false)
+        break; 
+      } 
+      default: { 
+        this.dataUsers = this.originalDataUsers; 
+        break; 
+      } 
+   }     
   }
 }

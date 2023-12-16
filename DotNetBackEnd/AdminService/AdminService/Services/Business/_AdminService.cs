@@ -93,6 +93,8 @@ namespace WebAppAPI.Services.Business
             insertUser.AddressCode = user.WardCode.ToString() + ", " + user.DistrictCode.ToString() + ", " + user.ProvinceCode.ToString();
             insertUser.VipsId = 14;
             _unitOfWork.Repository<User>().Add(insertUser);
+            var mailInformation = new MailPublishedDto("RegisterSuccessfullyEmail", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+            _messageBusClient.PublishMail(mailInformation);
             return _unitOfWork.SaveChanges();
         }
         public async Task<IEnumerable<UserDTO>> GetUsers()
@@ -555,7 +557,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("CancelOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ BỊ HUỶ", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -577,7 +579,7 @@ namespace WebAppAPI.Services.Business
 
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("ConfirmOrder", existedUser.Name, existedUser.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -616,7 +618,7 @@ namespace WebAppAPI.Services.Business
                     _unitOfWork.Repository<Product>().UpdateRange(listProduct);
                     if (await _unitOfWork.SaveChangesAsync())
                     {
-                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", string.Empty, "Mail_Published");
+                        var mailInformation = new MailPublishedDto("SuccessOrder", user.Name, user.Email, "[VĂN PHÒNG PHẨM 2023] ĐƠN HÀNG ĐÃ HOÀN TẤT", "VĂN PHÒNG PHẨM 2023", order.OrderId.ToString(), "Mail_Published");
                         _messageBusClient.PublishMail(mailInformation);
                         return Option.Some<bool, string>(true);
                     }
@@ -713,6 +715,104 @@ namespace WebAppAPI.Services.Business
             result.WardCode = int.Parse(splitAdressCode[0]);
             result.DistrictCode = int.Parse(splitAdressCode[1]);
             result.ProvinceCode = int.Parse(splitAdressCode[2]);
+            return result;
+        }
+        public async Task<IEnumerable<OrderStatistical>> GetOrderStatisticalsByFilter(OrderStatisticalFilter filter)
+        {
+            var result = new List<OrderStatistical>();
+            var existedOrder = await _unitOfWork.Repository<Order>().Get(x => true).ToListAsync();
+            if (filter.Method == "year")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate.Year == filter.DateFrom.AddYears(1).Year).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            else if (filter.Method == "day")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate.Day == filter.DateFrom.Day).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            else if (filter.Method == "range")
+            {
+                var tempResult = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo.AddDays(1)).ToList().GroupBy(order => order.Status)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
+            }
+            if (!result.Any(x => x.Status == "Cancel")){
+                result.Add(new OrderStatistical("Cancel", 0));
+            }
+            if (!result.Any(x => x.Status == "Processing"))
+            {
+                result.Add(new OrderStatistical("Processing", 0));
+            }
+            if (!result.Any(x => x.Status == "Pending"))
+            {
+                result.Add(new OrderStatistical("Pending", 0));
+            }
+            if (!result.Any(x => x.Status == "Success"))
+            {
+                result.Add(new OrderStatistical("Success", 0));
+            }
+            foreach (var item in result)
+            {
+                switch (item.Status)
+                {
+                    case "Cancel":
+                        item.Status = "Đã huỷ";
+                        break;
+                    case "Processing":
+                        item.Status = "Đang xử lý";
+                        break;
+                    case "Pending":
+                        item.Status = "Chờ xác nhận";
+                        break;
+                    case "Success":
+                        item.Status = "Đã hoàn tất";
+                        break;
+                    default:
+                        // code block
+                        break;
+                }
+            }
+            return result.OrderBy(x => x.Status);
+        }
+        public async Task<IEnumerable<RevenuesStatisticalModel>> GetRevenuesStatisticalsByFilter(OrderStatisticalFilter filter)
+        {           
+            var result = new List<RevenuesStatisticalModel>();
+            var tempResult = new List<RevenuesStatistical>();
+            var existedOrder = await _unitOfWork.Repository<Order>().Get(x => true).ToListAsync();
+            if (filter.Method == "year")
+            {
+                var tempResult1 = existedOrder.Where(x => x.CreatedDate.Year == filter.DateFrom.AddYears(1).Year && x.Status == "Success")
+                                        .ToList()
+                                        .GroupBy(order => order.CreatedDate.Month)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                tempResult = tempResult1.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
+                foreach (var item in tempResult)
+                {
+                    item.TotalMoney = (int)existedOrder.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
+                }
+                result = tempResult.Select(x => new RevenuesStatisticalModel("Tháng: " + x.Month.ToString(), x.TotalMoney)).ToList();
+            }
+            else if (filter.Method == "range")
+            {
+                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo.AddDays(1))
+                                        .ToList()
+                                        .GroupBy(order => order.CreatedDate.Month)
+                                        .OrderBy(group => group.Key)
+                                        .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
+                tempResult = tempResult1.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
+                foreach (var item in tempResult)
+                {
+                    item.TotalMoney = (int)existedOrder.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
+                }
+                result = tempResult.Select(x => new RevenuesStatisticalModel("Tháng: " + x.Month.ToString(), x.TotalMoney)).ToList();
+            }
             return result;
         }
         #region Private

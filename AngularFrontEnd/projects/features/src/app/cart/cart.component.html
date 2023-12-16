@@ -76,6 +76,9 @@
                                     <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
                                         Hãy nhập họ và tên!
                                     </mat-error>    
+                                    <mat-error *ngIf="editUserForm.get('Name')?.hasError('maxlength')">
+                                        Số lượng kí tự tối đa là 50!
+                                      </mat-error>  
                                 </mat-form-field>  
                             </div>
                         </td>
@@ -168,7 +171,10 @@
                                     <textarea matInput rows="1" formControlName="Streets"></textarea>
                                     <mat-error *ngIf="editUserForm.get('Streets')?.hasError('required')">
                                     Hãy nhập số nhà, đường!
-                                    </mat-error>
+                                    </mat-error>                
+                                    <mat-error *ngIf="editUserForm.get('Streets')?.hasError('maxlength')">
+                                        Số lượng kí tự tối đa là 50!
+                                      </mat-error> 
                                 </mat-form-field>
                             </div>
                         </td>

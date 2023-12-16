@@ -14,14 +14,14 @@ export class AdminGuard implements CanActivate {
    { 
       this.userData = jwt_decode(localStorage.getItem('authToken')!.replace(/-/g, "+").replace(/_/g, "/")) ;
    }      
-   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {      
+   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {    
       if (this.isAdmin()) {    
         return true;      
       }           
       this.router.navigate(['unauthorize']);      
     return false;      
 }      
-public isAdmin(): boolean {        
+public isAdmin(): boolean {     
    return this.userData.role == UserRole.Admin;
    }
 }  

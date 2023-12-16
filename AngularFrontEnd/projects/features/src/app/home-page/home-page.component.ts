@@ -96,7 +96,7 @@ export class HomePageComponent {
             id: -1,
             categoryName: 'Tất cả',
             image:
-              'https://storage.googleapis.com/ops-shopee-files-live/live/shopee-blog/2020/07/do-dung-hoc-tap-can-thiet-cho-lop-6-thumb-ngang.png',
+              'https://images.toplist.vn/images/800px/cong-ty-van-phong-pham-sang-ha-1136340.jpg',
           },
           ...res.data,
         ];

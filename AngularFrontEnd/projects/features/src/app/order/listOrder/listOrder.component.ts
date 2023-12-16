@@ -159,7 +159,7 @@ export class ListOrderComponent implements OnInit {
     return this.formBuilder.group({
       ProductName : [order.ProductName, Validators.required],
       Votes : [order.Votes, Validators.required],
-      Comments : [order.Comments, ],
+      Comments : [order.Comments, Validators.maxLength(255)],
       ProductId : [order.ProductId, ],
     });
   }
@@ -169,7 +169,7 @@ export class ListOrderComponent implements OnInit {
         key: 'bc',
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Hãy nhập các thông tin bắt buộc (đánh giá điểm cho các sản phẩm trong đơn hàng)!',
+        detail: 'Hãy nhập các thông tin bắt buộc (đánh giá điểm cho các sản phẩm trong đơn hàng) hoặc nhập đúng định dạng yêu cầu!',
       });
       return;
     }

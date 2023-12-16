@@ -1,10 +1,23 @@
 <div class="block">
     <p-accordion>
         <p-accordionTab header="Quản lý tài khoản" class="center" [selected]="true">
-            <div class="search-box">
-                <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
-                    matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
-            </div>          
+            <div class="grid p-fluid mx-2 mt-1">
+                <div class="col-12 md:col-4">
+                    <div class="search-box">
+                        <span>
+                            <input pTooltip="Global Seach" tooltipPosition="bottom" type="text" pInputText placeholder="Tìm kiếm" 
+                            matInput (input)="tdt.filterGlobal($any($event.target).value, 'contains')"/>
+                        </span>
+                    </div>  
+                </div>              
+                <div class="col-12 md:col-4">
+                    <span class="justify-content-center filter-user">
+                        <p-selectButton [options]="roles" [(ngModel)]="selectedRole" [multiple]="false" optionLabel="name" optionValue="value" (onOptionClick)="changeRoleUserDisplay($event)"></p-selectButton>
+                    </span>      
+                </div>                       
+                <div class="col-12 md:col-4">
+                </div>
+            </div>    
             <div class="displayUsers">
                 <p-table #tdt [value]="dataUsers" [columns]="usersDataCols" class="table-content"[rows]="rows"
                     [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first" [loading]="loading"
@@ -34,7 +47,7 @@
                                         (click)="setManagerPermisson(rowData)" [pTooltip]="handleTooltipSetManager(rowData)"></button>
                                     </td> 
                                 </span>
-                                <span *ngSwitchCase="'boolean'" pTooltip="{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}" tooltipPosition="bottom">{{ rowData[col.field] == true ? 'Hiện' : 'Ẩn' }}</span>
+                                <span *ngSwitchCase="'boolean'" pTooltip="{{ rowData[col.field] == true ? 'Hoạt động' : 'Khoá' }}" tooltipPosition="bottom">{{ rowData[col.field] == true ? 'Hoạt động' : 'Khoá' }}</span>
                                 <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom" >{{ rowData[col.field] }}</span> 
                             </span>                   
                             </td>
@@ -58,18 +71,30 @@
                         <input matInput formControlName = "Name" name = "Name" required="">   
                         <mat-error *ngIf="editUserForm.get('Name')?.hasError('required')">
                             Hãy nhập Họ và Tên!
-                        </mat-error>                            
+                        </mat-error>         
+                        <mat-error *ngIf="editUserForm.get('Name')?.hasError('maxlength')">
+                            Số lượng kí tự tối đa là 50!
+                          </mat-error>                     
                     </mat-form-field>
                     <mat-form-field appearance="outline">     
                         <mat-label>Tài Khoản</mat-label>
                         <input matInput formControlName = "LoginName" name = "LoginName" required=""> 
                         <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('required')">
                             Hãy nhập Tài khoản!
-                        </mat-error>        
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('LoginName')?.hasError('maxlength')">
+                            Số lượng kí tự tối đa là 50!
+                          </mat-error>         
                     </mat-form-field>      
                     <mat-form-field appearance="outline" pTooltip="Bạn không thể chỉnh sửa địa chỉ email của người dùng" tooltipPosition="bottom"> 
                         <mat-label>Địa chỉ email</mat-label>   
                         <input matInput formControlName = "Email" name = "Email" required=""> 
+                        <mat-error *ngIf="editUserForm.get('Email')?.hasError('email')">
+                            Địa chỉ email bạn nhập không hợp lệ!
+                        </mat-error>
+                        <mat-error *ngIf="editUserForm.get('Email')?.hasError('maxlength')">
+                          Số lượng kí tự tối đa là 255!
+                        </mat-error>  
                     </mat-form-field>        
                     <mat-form-field appearance="outline"> 
                         <mat-label>Số điện thoại</mat-label>     

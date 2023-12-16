@@ -9,6 +9,7 @@ import { AddressService } from '../data/Address.service';
 import { UpdateCart } from '../data/UpdateCart.model';
 import { CheckValidEmailService } from '../data/CheckValidEmailService';
 import jwt_decode, { JwtPayload } from 'jwt-decode'
+import { CartService } from '../data/Cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -44,7 +45,8 @@ export class CartComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private cartService: CartService
   ) {
     this.provices = [];
     this.districts = [];
@@ -65,13 +67,13 @@ export class CartComponent implements OnInit {
   createExistedUserForm() {
     return this.formBuilder.group({
       UserId: [this.currentUser.id],
-      Name: [this.currentUser.name, [Validators.required]],
-      Email: [{value: this.currentUser.email, disabled: true}, Validators.compose([Validators.required, Validators.email])],
+      Name: [this.currentUser.name, [Validators.required,Validators.maxLength(50)]],
+      Email: [{value: this.currentUser.email, disabled: true}, Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
       TelNum: [this.currentUser.telNum,  Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
       Provinces: [this.existedProvince[0], Validators.required],
       Districts: [this.existedDistrict[0], Validators.required],
       Wards: [this.existedWard[0], Validators.required],
-      Streets: [this.currentUser.streets, Validators.required],
+      Streets: [this.currentUser.streets, [Validators.required,Validators.maxLength(50)]],
       Payment: ['A', Validators.required],
     });
   }
@@ -138,6 +140,7 @@ export class CartComponent implements OnInit {
             if (res.data) {
               this.messageService.add({ key: 'bc', severity: 'success', summary: 'Thành công', detail: res.message, life: 3000});
               this.getCartByUserID();
+              this.cartService.passData(true);
             } else {
               this.messageService.add({ key: 'bc', severity: 'error', summary: 'Lỗi', detail: res.message });
             }

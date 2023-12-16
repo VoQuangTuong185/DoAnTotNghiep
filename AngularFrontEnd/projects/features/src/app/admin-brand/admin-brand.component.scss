@@ -127,3 +127,23 @@
     border-radius: 16px;
     display: block;
 }
+
+tr > th {
+    width: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis // This is where the magic happens
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  th, td {
+    max-width: 150px;
+    overflow: hidden;
+    width:auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }

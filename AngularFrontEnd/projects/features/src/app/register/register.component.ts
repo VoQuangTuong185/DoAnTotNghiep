@@ -50,36 +50,36 @@ export class RegisterComponent {
     }
     createEmptyRegisterForm() {
       return this.formBuilder.group({
-        Name: ['',Validators.required],
-        LoginName: ['',Validators.required],
-        Email: ['',Validators.compose([Validators.required, Validators.email])],
+        Name: ['',[Validators.required,Validators.maxLength(50)]],
+        LoginName: ['',[Validators.required, Validators.maxLength(50)]],
+        Email: ['',Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
         Provinces: ['',Validators.required],
         Districts: ['',Validators.required],
         Wards: ['',Validators.required],
         ProvinceCode: ['',Validators.required],
         DistrictCode: ['',Validators.required],
         WardCode: ['',Validators.required],
-        Address: ['',Validators.required],
+        Address: ['',[Validators.required,Validators.maxLength(50)]],
         TelNum: ['',Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
-        Password: ['',Validators.required],
+        Password: ['',[Validators.required,Validators.maxLength(50)]],
         ConfirmPassword: ['',Validators.required],
       })
     }
     createExistedregisterForm() {
       return this.formBuilder.group({
-        Name: ['',Validators.required],
-        LoginName: ['',Validators.required],
-        Email: ['',Validators.compose([Validators.required, Validators.email])],
+        Name: ['',[Validators.required,Validators.maxLength(50)]],
+        LoginName: ['',[Validators.required,Validators.maxLength(50)]],
+        Email: ['',Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
         Provinces: [this.provices,Validators.required],
         Districts: [this.districts,Validators.required],
         Wards: [this.wards,Validators.required],
         ProvinceCode: [this.provinceSelected.code,Validators.required],
         DistrictCode: [this.districtSelected.code,Validators.required],
         WardCode: [this.wardSelected.code,Validators.required],
-        Address: ['',Validators.required],
+        Address: ['',[Validators.required,Validators.maxLength(50)]],
         TelNum: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
-        Password: ['',Validators.required],
-        ConfirmPassword: ['',Validators.required],
+        Password: ['',[Validators.required,Validators.maxLength(50)]],
+        ConfirmPassword: ['',[Validators.required,Validators.maxLength(50)]],
       })
     }
   ngOnInit() {

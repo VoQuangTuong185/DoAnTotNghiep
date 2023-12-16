@@ -16,11 +16,11 @@ currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {tota
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
         <td *ngFor="let col of columns">
         <span [ngSwitch]="col.type">
-          <span *ngSwitchCase="'stt'" tooltipPosition="bottom">{{rowIndex + 1}}
+          <span *ngSwitchCase="'stt'" tooltipPosition="bottom" pTooltip="{{rowIndex + 1}}">{{rowIndex + 1}}
           </span>
-          <span *ngSwitchCase="'money'" tooltipPosition="bottom">{{rowData[col.field] | currency : "VND"}}
+          <span *ngSwitchCase="'money'" tooltipPosition="bottom" pTooltip="{{rowData[col.field]}}">{{rowData[col.field] | currency : "VND"}}
           </span>
-          <span *ngSwitchCase="'percent'" tooltipPosition="bottom">{{rowData[col.field] }}%
+          <span *ngSwitchCase="'percent'" tooltipPosition="bottom" pTooltip="{{rowData[col.field]}}">{{rowData[col.field] }}%
           </span>
           <span *ngSwitchCase="'button'" class="button"> 
               <td>
@@ -37,9 +37,9 @@ currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {tota
                   (click)="openModalOrderDetail(rowData)"></button> 
               </td> 
             </span>
-            <span *ngSwitchCase="'date'">{{ rowData[col.field] | date : "hh:mm:ss a, dd/MM/yyyy" }} 
+            <span *ngSwitchCase="'date'" pTooltip="{{rowData[col.field]}}">{{ rowData[col.field] | date : "hh:mm:ss a, dd/MM/yyyy" }} 
             </span> 
-            <span *ngSwitchDefault>{{ rowData[col.field] }}</span> 
+            <span *ngSwitchDefault pTooltip="{{rowData[col.field]}}">{{ rowData[col.field] }}</span> 
         </span>                   
         </td>
     </tr>

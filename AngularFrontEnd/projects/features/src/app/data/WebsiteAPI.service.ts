@@ -14,6 +14,7 @@ import { UpdateCart } from './UpdateCart.model';
 import { FeedbackDTO } from './FeedbackDTO.model.js';
 import { FeedbackDetailShow } from './FeedbackDetailShow.model';
 import { OrderAdminModel } from './OrderAdminModel';
+import { OrderStatisticalFilter } from './OrderStatisticalFilter';
 @Injectable({
   providedIn: 'root',
 })
@@ -79,6 +80,8 @@ export class WebsiteAPIService{
     private urlAdminCancelOrder = 'cancel-order';
     private urlAdminConfirmOrder = 'confirm-order';
     private urlAdminSuccessOrder = 'success-order';
+    private urlGetOrderStatisticalsByFilter = 'get-statisticals-by-filter';
+    private urlGetRevenueStatisticalsByFilter = 'get-revenues-by-filter';
 
     constructor(private http: HttpClient){
         this.httpHeaders = new HttpHeaders({
@@ -280,5 +283,11 @@ export class WebsiteAPIService{
     }
     replyFeedback(feedback: FeedbackDetailShow){
         return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlReplyFeedback, feedback);
+    }
+    getOrderStatisticalsByFilter(filter: OrderStatisticalFilter){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlGetOrderStatisticalsByFilter, filter);
+    }
+    getRevenueStatisticalsByFilter(filter: OrderStatisticalFilter){
+        return this.http.post<any>(Constant.libraryApiUrlAdmin() + this.urlGetRevenueStatisticalsByFilter, filter);
     }
 }

@@ -46,8 +46,8 @@ export class LoginComponent {
   }
   createEmptyLoginForm() {
     return this.formBuilder.group({
-      LoginUser: ['', Validators.required],
-      Password: ['', Validators.required],
+      LoginUser: ['', [Validators.required, Validators.maxLength(50)]],
+      Password: ['', [Validators.required, Validators.maxLength(50)]],
     });
   }
   ngOnInit() {

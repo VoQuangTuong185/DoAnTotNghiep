@@ -18,8 +18,8 @@ export class UserGuard implements CanActivate {
       if (this.isUser()) {    
         return true;      
       }           
-      this.router.navigate(['admin']);      
-    return false;      
+         this.router.navigate(['admin']);      
+      return false;      
 }      
 public isUser(): boolean {        
    return this.userData.role == UserRole.User;

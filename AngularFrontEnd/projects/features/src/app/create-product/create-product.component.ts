@@ -50,16 +50,16 @@ export class CreatProductComponent {
   createEmptyCourseForm(){
     return this.formBuilder.group({
       Id: [{value: '', disabled: true},Validators.required],
-      ProductName: ['',Validators.required],
-      Description: [''],
+      ProductName: ['',[Validators.required, Validators.maxLength(255)]],
+      Description: ['', Validators.maxLength(255)],
       BrandName: ['',Validators.required],
       BrandId: [{value: null, disabled: true},Validators.required],
       CategoryId: [{value: this.existedCategoryId, disabled:true}, Validators.required],
       SoldQuantity: [{value: null, disabled: true}],
       Quanity: [null, [Validators.required, Validators.max(1000), Validators.min(0)]],
-      Discount: [null, [Validators.required, Validators.max(100), Validators.min(1)]],
-      Price: [null],
-      Image: [''],
+      Discount: [null, [Validators.required, Validators.max(99), Validators.min(0)]],
+      Price: [null, Validators.min(1000)],
+      Image: ['', Validators.required],
       IsActive: [true],
       ImageDetail: [''],
     })
@@ -67,15 +67,15 @@ export class CreatProductComponent {
   createExistedCourseForm(data : any){
     return this.formBuilder.group({
       Id: [{value: data.id, disabled:true},[Validators.required]],
-      ProductName: [data.productName,[Validators.required]],
-      Description: [data.description],
-      BrandName: [data.brand.brandName,Validators.required],
+      ProductName: [data.productName,[Validators.required, Validators.maxLength(255)]],
+      Description: [data.description, [Validators.maxLength(255)]],
+      BrandName: [data.brand.brandName,[Validators.required]],
       BrandId: [{value: data.brandId, disabled: true}, [Validators.required]],
       CategoryId: [{value: data.categoryId, disabled: true},[Validators.required]],
       SoldQuantity: [{value: data.soldQuantity, disabled:true},[Validators.required]],
       Quanity: [data.quanity, [Validators.required, Validators.max(100), Validators.min(0)]],
-      Discount: [data.discount,[Validators.required, Validators.max(100), Validators.min(1)]],
-      Price: [data.price, [Validators.required]],
+      Discount: [data.discount,[Validators.required, Validators.max(99), Validators.min(0)]],
+      Price: [data.price, [Validators.required, Validators.min(1000)]],
       Image: [data.image, [Validators.required]],
       ImageDetail: [data.imageDetail],
     })
@@ -103,10 +103,12 @@ export class CreatProductComponent {
       });
       return;
     }
+    var categoryId = sessionStorage.getItem('currentCategoryId')
     if(this.existedProductId) {  
       this.websiteAPIService.updateProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
+          this.router.navigate(['/admin/admin-category/admin-product/'+ categoryId]);
         }
         else {
           this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});
@@ -117,6 +119,7 @@ export class CreatProductComponent {
       this.websiteAPIService.createProduct(this.productForm.getRawValue()).subscribe((res:any) =>{
         if(res.isSuccess){
           this.messageService.add({key: 'bc', severity:'success', summary: 'Thành công', detail: res.message});
+          this.router.navigate(['/admin/admin-category/admin-product/'+ categoryId]);
         }
         else {
           this.messageService.add({key: 'bc', severity:'error', summary: 'Lỗi', detail: res.message});

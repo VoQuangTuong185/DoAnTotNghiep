@@ -10,15 +10,15 @@
             </div>  
             <div class="displayUsers">
                 <p-table #tdt [value]="dataProducts" [columns]="productsDataCols" responsiveLayout="scroll" class="table-content" [paginator]="true" [rows]="rows"
-                    [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first"
-                    [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
+                [virtualRowHeight]="340" [paginator]="true" [showCurrentPageReport]="true" [(first)]="first"
+                [resizableColumns]="true" [reorderableColumns]="true" [columnResizeMode]="'expand'"
                     [globalFilterFields]="['id','productName','price','discount','description','soldQuantity']"
                     [rowsPerPageOptions]="[5, 10, 20]"
                     currentPageReportTemplate="Hiển thị {first} - {last} trong tổng số {totalRecords} dữ liệu">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th pReorderableColumn pResizableColumn *ngFor="let col of columns"
-                                [style.width]="col.width + '%'">
+                                [style.width]="col.width + 'px'">
                                 <span>{{ col.header }}</span>
                             </th>
                         </tr>

@@ -62,8 +62,11 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                 {
                     switch (categoryPublishedDto.Business)
                     {
-                        case "CreateOrder":
+                        case "CreateOrderAdmin":
                             await _mailContent.SendMailCreateOrderToAdmin(categoryPublishedDto);
+                            break;
+                        case "CreateOrderUser":
+                            await _mailContent.SendMailCreateOrderToUser(categoryPublishedDto);
                             break;
                         case "CancelOrder":
                             await _mailContent.SendMailCancelOrder(categoryPublishedDto);
@@ -85,6 +88,9 @@ namespace THUCTAPTOTNGHIEP.EventProcessing
                             break;
                         case "SuccessOrder":
                             await _mailContent.SendMailSuccessOrder(categoryPublishedDto);
+                            break;
+                        case "RegisterSuccessfullyEmail":
+                            await _mailContent.SendMailSuccessRegister(categoryPublishedDto);
                             break;
                         default:
                             break;
