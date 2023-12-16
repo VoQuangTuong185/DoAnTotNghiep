@@ -20,7 +20,7 @@ export class AdminListOrderComponent implements OnInit {
   loading: boolean = false;
   @Input() statusOrderCode: string | undefined;
   ordersDataCols:any[] = [];
-  first:number = 10;
+  first:number = 0;
   rows:number = 10;
   userData = new User();
   constructor(

@@ -12,7 +12,7 @@ export class AdminBrandComponent {
   brandsDataCols:any[] = [];
   brandForm!: FormGroup;
   dataBrand!: any[];
-  first:number = 10;
+  first:number = 0;
   rows:number = 10;
   displayEditBrandPopup :boolean = false;
   submitted: boolean = false;
