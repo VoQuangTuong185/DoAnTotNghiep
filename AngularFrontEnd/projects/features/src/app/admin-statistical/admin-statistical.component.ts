@@ -26,7 +26,7 @@ export class AdminStatisticalComponent {
 
   yearOrder: Date = new Date();
   rangeOrder: Date[] = [new Date(new Date().getFullYear(), new Date().getMonth(), 1), new Date()];
-  dayOrder: Date = new Date();
+  dayOrder: Date = new Date(); 
 
   yearRevenue: Date = new Date();
   rangeRevenue: Date[] = [new Date(new Date().getFullYear(), new Date().getMonth(), 1), new Date()];
@@ -84,18 +84,17 @@ export class AdminStatisticalComponent {
         break;
       case 1:
         let day = 'day';
+        console.log(this.dayOrder)
         if (this.dayOrder == undefined){
           this.changeDataOrders([],[]);
         }       
-        let filter2 = new OrderStatisticalFilter(day, this.dayOrder, this.yearOrder);   
+        let filter2 = new OrderStatisticalFilter(day, this.addHours(this.dayOrder, 7), this.yearOrder);  
+        console.log(filter2) 
         this.loadDataOrders(filter2);
         break;
       case 2:
         let range = 'range';
-        let filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);
-        if (this.rangeOrder != undefined){
-          filter3 = new OrderStatisticalFilter(range, this.rangeOrder[0], this.rangeOrder[1]);    
-        }
+        let filter3 = new OrderStatisticalFilter(range, this.addHours(this.rangeOrder[0], 7), this.addHours(this.rangeOrder[1], 7));
         this.loadDataOrders(filter3);
         break;
     } 
@@ -115,7 +114,7 @@ export class AdminStatisticalComponent {
         break;
       case 1:
         let range = 'range';
-        let filter3 = new OrderStatisticalFilter(range, this.rangeRevenue[0], this.rangeRevenue[1]);    
+        let filter3 = new OrderStatisticalFilter(range, this.addHours(this.rangeRevenue[0], 7), this.addHours(this.rangeRevenue[1], 7));    
         this.loadDataRevenues(filter3);
         break;
     } 
@@ -211,6 +210,10 @@ export class AdminStatisticalComponent {
   subtractDays(days: number): Date {
     let date = new Date();
     date.setFullYear(date.getFullYear() - days);
+    return date;
+  } 
+  addHours(date: Date ,hours: number): Date {
+    date.setHours(date.getHours() + hours);
     return date;
   } 
 }

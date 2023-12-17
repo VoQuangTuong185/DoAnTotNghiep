@@ -737,7 +737,7 @@ namespace WebAppAPI.Services.Business
             }
             else if (filter.Method == "range")
             {
-                var tempResult = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo.AddDays(1)).ToList().GroupBy(order => order.Status)
+                var tempResult = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo).ToList().GroupBy(order => order.Status)
                                         .OrderBy(group => group.Key)
                                         .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
                 result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
@@ -801,7 +801,7 @@ namespace WebAppAPI.Services.Business
             }
             else if (filter.Method == "range")
             {
-                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo.AddDays(1))
+                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo)
                                         .ToList()
                                         .GroupBy(order => order.CreatedDate.Month)
                                         .OrderBy(group => group.Key)

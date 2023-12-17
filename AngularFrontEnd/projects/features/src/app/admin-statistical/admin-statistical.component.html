@@ -35,7 +35,7 @@
         </div>
         <div *ngIf="selectedOrderIndex == 1">
             <div class="justify-content-center">
-                <p-calendar [(ngModel)]="dayOrder" placeholder="Chọn ngày" (onSelect)="onGetDataOrders(1, false)"></p-calendar>
+                <p-calendar [(ngModel)]="dayOrder" placeholder="Chọn ngày" (onSelect)="onGetDataOrders(1, true)"></p-calendar>
             </div>   
             <div class="card flex justify-content-center">
                 <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
