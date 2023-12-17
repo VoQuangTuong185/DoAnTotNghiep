@@ -1,6 +1,115 @@
+Slide 1:
 - Kính thưa quý thầy cô hội đồng,
 - Em tên là VQT, lớp D19CQCNPM02-N
 - Hôm nay em xin phép trình bày báo cáo đồ án tốt nghiệp đại học 
 - Tên đề tài của em là: Xây dựng ứng dụng kinh doanh văn phòng phẩm
--
 
+Slide 2:
+- Sau đây, em xin phép trình bày về tóm tắt nội dung của đề tài. 
+- Đề tài của em gồm 4 phần chính: 
+	+ Phần 1: Đề tài: 
+		Em sẽ giới thiệu tổng quan về đề tài, cũng như lý do khiến em chọn đề tài này
+	+ Phần 2: Kiến trúc hệ thống: 
+		Em sẽ trình bày về kiến trúc và các công nghệ được sử dụng trong đề tài
+	+ Phần 3: Phân tích và thiết kế ứng dụng:
+		Em sẽ trình bày về nghiệp vụ của ứng dụng web, và quy trình thiết kế ứng dụng
+	+ và cuối cùng là Phần 4: Demo sản phẩm và đánh giá
+		Em sẽ thực nghiệm chương trình, đánh giá và đưa ra kết luận
+		
+Slide 3:
+Đầu tiên, em xin phép trình bày về phần 1: Giới thiệu về đề tài, và nêu lý do khiến em chọn đề tài
+
+Slide 4:
+- Đề tài mà em chọn là xây dựng ứng dụng kinh doanh văn phòng phẩm
+- Lý do mà em chọn đề tài này chính là:
+	+ Em nhận thấy hiện nay, xu hướng mua hàng trực tuyến khá phát triển, cùng với sự phát triển của ngành Logictist, 
+	thời gian giao hàng rất nhanh, thường là 1-2 ngày tuỳ thuộc vào khoảng cách,tạo sự tiện lợi cho khách hàng khi mua sắm, 
+	thay vì phải ra cửa hàng vật lý, bây giờ họ chỉ cần thông qua các thiết bị như điện thoại, máy tính cá nhân là đã có thể 
+	chọn và mua được sản phẩm mà mình mong muốn
+	+ Việc một cửa hàng có ứng dụng web riêng, sẽ tăng sự uy tín cũng như độ nhận hạng thương hiệu cho cửa hàng.
+	+ Có các tính năng hỗ trợ quản lý khách hàng, linh động trong các chương trình ưu đãi
+	+ Tránh 1 số khoản phí so với việc dùng và đăng bán sản phẩm lên các sàn thương mại điện tử như Shopee, Lazada,...
+	+ Kiến trúc được lựa chọn là Microservice với các ưu điểm:
+		* phân chia ứng dụng thành các service nhỏ với các nghiệp vụ riêng biệt nhằm dễ dàng nắm nghiệp vụ
+		* bảo trì và nâng cấp service nhanh
+		* dễ mở rộng khi quy mô trở nên phức tạp
+		* độ chịu lỗi cao
+		
+Slide 5: 
+- Tiếp theo em xin phép trình bày về mục đích và mục tiêu của đề tài
+	+ Mục đích: 
+		* Nghiên cứu và xây dựng ứng dụng web lĩnh vực thương mại điện tử có các chức năng cần thiết, dành cho quản trị viên và khách mua hàng
+	+ Mục tiêu:
+		* Ứng dụng web phải đảm bảo các yêu cầu như:
+			- Đầy đủ các tiện ích
+			- Giao diện thân thiện, dễ sử dụng 
+			- Đảm bảo tính bảo mật thông tin khách hàng, hoạt động ổn định và có hiệu năng cao
+			- Vận dụng các công nghệ hiện đại 1 cách sáng tạo
+
+Slide 6: 
+- Tiếp theo, em xin phép trình bày về kiến trúc của hệ thống
+
+Slide 7:
+- Đầu tiên là về kiến trúc:
+	+ Kiến trúc mà em lựa chọn là Microservice
+	+ Kiến trúc microservices là một kiểu kiến trúc áp dụng việc chia các module trong phần mềm thành các service nhỏ.
+	+ Mỗi service có thể có nghiệp vụ và được sử dụng với mỗi công nghệ khác nhau 
+	
+Slide 8:
+- Sau đây, em sẽ trình bày về ưu và nhược điểm của kiến trúc Microservice, khi so với 1 kiến trúc khác là Monolithic
+- Về ưu điểm:
+	+ Việc phân chia ứng dụng thành các services nhỏ, mỗi services đảm nhiệm 1 nghiệp vụ, giúp cho lập trình viên có thể nắm nghiệp vụ của
+	ứng dụng 1 cách dễ dàng
+	+ Dễ mở rộng quy mô khi hệ thống trở nên phức tạp
+	+ Chống chịu lỗi tốt: vì mỗi service hoạt động là độc lập, nên trong tình huống một trong các services bị ngừng hoạt động, thì các services khác sẽ 
+	không bị ảnh hưởng
+	+ Mỗi service có thể dùng 1 ngôn ngữ, công nghệ khác nhau 
+	+ Các service được bảo trì và triển khai 1 cách độc lập mà không ảnh hưởng đến các services khác (chỉ sửa lỗi và triển khai nó trên
+	service tương ứng)
+- Tuy nhiên, kiến trúc này vẫn còn có số nhược điểm như:
+	+ Giao tiếp giữa các service trở nên phức tạp, và có độ trễ cao
+	+ Phức tạp về bảo mật: cần có thêm 1 services để đảm bảo sự bảo mật khi giao tiếp giữa services
+	+ Tăng chi phí triển khai dự án: cần một đội ngũ phát triển có chuyên môn cao và nhiều kinh nghiệm trong việc chia ứng dụng thành 
+	các service như thế nào là hợp lý. Nếu các service lớn thì ko khai thác được hết ưu điểm, còn nhỏ quá thì thành nano-services, gây khó 
+	khăn cho việc giao tiếp và quản lý services.
+
+Slide 9:
+- Sau đây là mô hình microservices mà em đã phân chia và cách các services giao tiếp với nhau 
+- Em sử dụng Docker làm nền tảng container hoá và Kubernetes làm bộ điều phối container
+- Ứng dụng của em được tách và tổ chức thành 3 services:
+	+ MainService: dành cho khách hàng
+	+ AdminService: dành cho quản trị viên
+	+ MailService: dành cho việc gửi mail
+Cả 3 service đều được viết bằng ngôn ngữ C# (.NET Framework) và dùng chung 1 cơ sở dữ liệu
+- MainService và AdminService sẽ giao tiếp để gửi yêu cầu đến MailService để thực hiện gửi mail thông qua MessageBus (RabbitMQ)
+
+Slide 10: 
+- Sau đây em sẽ trình bày về các công nghệ được sử dụng trong đề tài:
+	+ Về xây dựng giao diện front-end: sử dụng Angular Framework
+	+ Về xây dưng server back-end: sử dụng .NET Framework
+	+ Về hệ quản trị cơ sở dữ liệu: sử dụng Microsoft SQL Server
+	+ Về quản lý Microservice: sử dụng Kubernetes, RabbitMQ
+	+ Cuối cùng em sử dụng JWT (Json Web Token) để hỗ trợ việc xác thực người dùng
+- Cùng với các công cụ lập trình, em có liệt kê trên màn hình ạ
+
+Slide 11: 
+- Sau đây em xin phép trình bày về Phân tích và thiết kế ứng dụng
+- Ứng dụng web dành cho 2 đối tượng là quản trị viên và khách mua hàng
+- Các chức năng chung dành cho cả 2 đối tượng như
+	+ Đăng nhập, đăng ký, quên mật khẩu, cập nhật thông tin cá nhân
+- Quản trị viên có các chức năng như:
+	+ Quản lý nhãn hàng
+	+ Quản lý danh mục 
+	+ Quản lý sản phẩm 
+	+ Quản lý tài khoản
+	+ Quản lý đơn hàng
+	+ Xem thống kê doanh thu, thống kê đơn hàng theo các trạng thái
+	+ Phản hồi lại đánh giá sản phẩm của khách hàng
+- Khách mua hàng có các chức năng như:
+	+ Xem sản phẩm
+	+ Quản lý giỏ hàng
+	+ Đặt hàng
+	+ Quản lý đơn hàng
+	+ Đánh giá sản phẩm sau khi hoàn tất đơn hàng
+
+Slide 12: 
