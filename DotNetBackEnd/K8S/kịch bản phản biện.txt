@@ -52,7 +52,7 @@ Slide 6:
 Slide 7:
 - Đầu tiên là về kiến trúc:
 	+ Kiến trúc mà em lựa chọn là Microservice
-	+ Kiến trúc microservices là một kiểu kiến trúc áp dụng việc chia các module trong phần mềm thành các service nhỏ.
+	+ Kiến trúc microservices là một kiểu kiến trúc áp dụng việc chia ứng dụng thành các service nhỏ.
 	+ Mỗi service có thể có nghiệp vụ và được sử dụng với mỗi công nghệ khác nhau 
 	
 Slide 8:
@@ -127,7 +127,7 @@ Slide 14:
 
 Slide 15: 
 - Sau đây em sẽ demo ứng dụng
-- Đầu tiên, em sẽ demo về 1 ưu điểm khiến sản phẩm em khác biệt so với các sản phẩm trên thị trường, 
+- Đầu tiên, em sẽ demo về 1 ưu điểm khiến sản phẩm đề tài của em khác biệt so với hầu hếtcác sản phẩm trên thị trường, 
 là một trong những ưu điểm của kiến trúc microservices đó là mỗi services đảm nhiệm 1 nghiệp vụ, và các services này hoạt động 1 cách độc lập, 
 không bị ảnh hưởng khi một hoặc nhiều services bị lỗi.
 - sau đây em sẽ demo về ưu điểm đó:
