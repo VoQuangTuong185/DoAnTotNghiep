@@ -61,8 +61,8 @@ Slide 8:
 	+ Việc phân chia ứng dụng thành các services nhỏ, mỗi services đảm nhiệm 1 nghiệp vụ, giúp cho lập trình viên có thể nắm nghiệp vụ của
 	ứng dụng 1 cách dễ dàng
 	+ Dễ mở rộng quy mô khi hệ thống trở nên phức tạp
-	+ Chống chịu lỗi tốt: vì mỗi service hoạt động là độc lập, nên trong tình huống một trong các services bị ngừng hoạt động, thì các services khác sẽ 
-	không bị ảnh hưởng
+	+ Chống chịu lỗi tốt: vì mỗi service hoạt động là độc lập, nên trong tình huống một trong các services bị ngừng hoạt động, 
+	thì các services khác sẽ không bị ảnh hưởng
 	+ Mỗi service có thể dùng 1 ngôn ngữ, công nghệ khác nhau 
 	+ Các service được bảo trì và triển khai 1 cách độc lập mà không ảnh hưởng đến các services khác (chỉ sửa lỗi và triển khai nó trên
 	service tương ứng)
@@ -94,6 +94,8 @@ Slide 10:
 
 Slide 11: 
 - Sau đây em xin phép trình bày về Phân tích và thiết kế ứng dụng
+
+Slide 12:
 - Ứng dụng web dành cho 2 đối tượng là quản trị viên và khách mua hàng
 - Các chức năng chung dành cho cả 2 đối tượng như
 	+ Đăng nhập, đăng ký, quên mật khẩu, cập nhật thông tin cá nhân
@@ -105,6 +107,8 @@ Slide 11:
 	+ Quản lý đơn hàng
 	+ Xem thống kê doanh thu, thống kê đơn hàng theo các trạng thái
 	+ Phản hồi lại đánh giá sản phẩm của khách hàng
+	
+Slide 13:
 - Khách mua hàng có các chức năng như:
 	+ Xem sản phẩm
 	+ Quản lý giỏ hàng
@@ -112,4 +116,138 @@ Slide 11:
 	+ Quản lý đơn hàng
 	+ Đánh giá sản phẩm sau khi hoàn tất đơn hàng
 
-Slide 12: 
+Slide 14: 
+- Về thiết kế cơ sở dữ liệu:
+	+ Em thiết kế các bảng Users, UsersAPI, Roles và Vips để hỗ trợ cho việc đăng nhập vào ứng dụng web, lưu trữ thông tin tài khoản,
+	và tính năng tích luỹ điểm ưu đãi cho khách hàng
+	+ Các bảng Products, Categories, Brands để quản lý về thông tin của sản phẩm, mỗi sản phẩm sẽ thuộc 1 nhãn hàng và 1 danh mục nhất định
+	+ Các bảng Carts, Orders và OrderDetails dành cho chức năng đặt hàng
+	+ Cuốu cùng là bảng Feedbacks: dành cho chức năng khách hàng đánh giá sản phẩm sau khi hoàn tất đơn hàng, và quản trị viên có thể 
+	phản hồi đánh giá đó của khách hàng
+
+Slide 15: 
+- Sau đây em sẽ demo ứng dụng
+- Đầu tiên, em sẽ demo về 1 ưu điểm khiến sản phẩm em khác biệt so với các sản phẩm trên thị trường, 
+là một trong những ưu điểm của kiến trúc microservices đó là mỗi services đảm nhiệm 1 nghiệp vụ, và các services này hoạt động 1 cách độc lập, 
+không bị ảnh hưởng khi một hoặc nhiều services bị lỗi.
+- sau đây em sẽ demo về ưu điểm đó:
+	+ đầu tiên là em đang có 2 services, 1 dành cho khách hàng, 1 dành cho quản trị viên
+	+ vào trình duyệt opera mở ứng dụng web với người dùng là khách hàng, hoạt động bình thường
+	+ vào trình duyệt chrome mở ứng dụng web với người dùng là quản trị viên, hoạt động bình thường
+	+ vào Docker Desktop là công cụ quản lý các services, tạm ngừng services khách hàng
+	+ qua opera => khách hàng không thể sử dụng tiếp được
+	+ qua edge => quản trị viên vẫn sử dụng được bình thường
+=> đây là một trong các chức năng hay trong đề tài của em
+Bật lại services khách hàng
+
+- Tiếp theo, em xin phép demo tổng quan ứng dụng
+- Khi khách hàng truy cập vào web với tư cách là khách (tức là chưa đăng nhập tài khoản)
+	+ Họ có thể 
+		- truy cập được trang chủ để xem các sản phẩm
+		- tìm kiếm sản phẩm thông qua tên
+		- xem chi tiết được sản phẩm 
+		- xem được các đánh giá sản phẩm của các khách hàng đã mua hàng
+		=> nếu họ muốn mua hàng, thì họ cần đăng nhập tài khoản, trường hợp họ chưa có tài khoản, thì họ cần đăng ký tài khoản
+- Quản trị viên sẽ có các chức năng, và giao diện của các chức năng sẽ như sau:
+	+ Quản lý danh mục
+	+ Trong từng danh mục, quản lý các sản phẩm thuộc danh mục
+	+ Quản lý nhãn hàng
+	+ Quản lý tài khoản
+	+ Quản lý đơn hàng
+	+ Thống kê (doanh thu và đơn hàng theo trạng thái)
+- Khách hàng có chức năng chính là đặt hàng
+	+ Chuẩn bị sẵn 1 tài khoản mới, chưa từng mua hàng
+	+ Nói nhanh về mục ưu đãi khách hàng VIP, mở trang VIP lên (hiện tại đang là -0%)
+		- Ứng dụng sẽ ghi nhận đơn hàng hoàn tất của khách hàng, và dựa vào thông tin số điện thoại để tạo thẻ thành viên VIP cho khách hàng,
+		khi đạt 1 mức tiền, ứng dụng sẽ tự động giảm trực tiếp phần trăm tương ứng cho đơn hàng tiếp theo của khách hàng. => đây là một chức năng hay
+		trong đề tài của em.
+	+ Ghi nhận số lượng sản phẩm sẵn có trước khi khách hàng mua hàng (sẽ giảm khi khách hàng đặt hàng, còn khi khách hàng mới thêm vào giỏ hàng
+	thì chưa cần giảm số lượng)
+	+ Qua trình duyệt Chrome, vào ứng dụng bằng người dùng là quản trị viên
+	+ Vào mục Doanh thu trong ngày: ghi nhận doanh thu hiện tại
+	+ Vào mục quản lý đơn hàng: phần Chờ xác nhận: ghi nhận đơn hàng gần nhất
+	+ Mô tả tình huống mua hàng của khách hàng:
+		- Ra trang chủ: 
+			* chọn 1 sản phẩm đang bán chạy nhất trong tháng: Vở doaremon
+			* Số lượng sẵn có đang là 2
+			* ghi nhận lại số sản phẩm còn lại: 2
+			* tăng số lượng không được, nhập là 3 thì ứng dụng tự điều chỉnh xuống số lượng cho phép là 2 
+			* bấm thêm vào giỏ hàng
+			* trên thanh phía trên giỏ hàng từ 0 -> 1
+		- Xuống phần phân loại sản phẩm theo danh mục
+			* tìm đến danh mục "BALO HỌC SINH", 
+			* chọn "Ba lô học sinh Playful TP-BP056/FR", 
+			* xem qua 1 số thông tin của sản phẩm
+			* bấm vào nút xem chi tiết để xem đánh giá
+			* bấm "Mua ngay" để thêm 1 sản phẩm và chuyển hướng đến giỏ hàng
+		- trong trang giỏ hàng:
+			* trên thanh tìm kiếm sản phẩm: gõ từ khoá "bút máy"
+			* chọn sản phẩm
+			* bấm mua hàng luôn
+		- trong trang giỏ hàng:
+			* kiểm tra mục tính tiền, có trừ giảm giá % ưu đãi thành viên
+		- trong trang giỏ hàng:
+			* điều chỉnh số lượng cho Vở doaremon lên 3 => báo lỗi, để nguyên 2
+			* điều chỉnh số lượng sản phẩm "Bút máy Điểm 10 TP-FTC02" lên 2
+			* không mua "Ba lô học sinh Playful TP-BP056/FR" nữa, xoá sản phẩm ra khỏi giỏ hàng
+			* phần tính tiền cho đơn hàng được cập nhật ngay tức thì
+		- kiểm tra các thông tin, bấm Xác nhận đặt hàng:
+			* Các thông tin nhận hàng được tự động theo như thông tin mà khách hàng cung cấp khi đăng ký tài khoản, ở bước này khách hàng có thể 
+			điều chỉnh như địa chỉ nhận hàng
+		- Sau khi đặt hàng:
+			# Quản trị viên cần: 
+				* mở sẵn tab quản lý tài khoản tài khoản, filter quản trị viên, có 2 người, ghi nhận 2 địa chỉ email của 2 người này
+				* ứng dụng sẽ gửi mail thông báo có đơn hàng mới cho tất cả các quản trị viên hiện tại
+				* show nội dung mail, có Link quản lý đơn hàng, click vào đây để đến trang quản lý đơn hàng, lúc này quản trị viên có thể Xác nhận/Huỷ
+					đơn hàng.
+			# Khách hàng cần:	
+				* vào giỏ hàng: các sản phẩm sẽ tự động được xoá đi 
+				* số lượng sẵn có của sản phẩm bị trừ đi
+				* mở sẵn 2 tab gmail của 2 địa chỉ mail này, show nội dung mail
+				* ứng dụng đồng thời gửi mail thông báo cho khách hàng (mở sẵn tab gmail của tài khoản này), show nội dung, click vào Link đơn hàng
+				trong mail để đến trang quản lý đơn hàng 
+				* Lúc này, khách hàng sẽ thấy xuất hiện đơn hàng mới ở mục chờ xác nhận
+				* Ở trạng thái này, khách hàng hoàn toàn có thể xem lại thông tin đơn hàng, và thao tác huỷ nếu muốn
+		- Sau khi đặt hàng 2:
+			# Quản trị viên cần:
+				* đang ở trang quản lý đơn hàng
+				* bấm xác nhận đơn hàng
+				* đơn hàng được chuyển sang trạng thái Đang xử lý
+				* ở trạng thái này, chỉ có đơn vị vận chuyển mới thay đổi được trạng thái đơn hàng (hiện tại đang cho phép quản trị viên
+				thao tác vì thiếu đối tượng đơn vị vận chuyển, sẽ được thêm ở phần hướng phát triển)
+			# Khách hàng cần:
+				* có email gửi đến khách hàng, nhằm thông báo đơn hàng đã được xác nhận và đang giao cho đơn vị vận chuyển
+				* ở trạng thái này, khách hàng ko thể huỷ đơn hàng được nữa, chỉ xem được chi tiết đơn hàng
+		- Sau khi đặt hàng 3:
+			# Quản trị viên cần:
+				* đang ở trang quản lý đơn hàng
+				* bấm Hoàn tất đơn hàng
+				* lúc này quản trị viên sẽ thấy đơn hàng được chuyển sang trạng thái Hoàn tất
+				* lúc này quản trị viên vào mục Thống kê doanh thu, chọn theo ngày, sẽ thấy doanh thu được tăng 1 lượng tiền đúng như tổng tiền của
+				đơn hàng vừa hoàn tất
+			# Khách hàng cần:
+				* lúc này có mail thông báo gửi đến khách hàng => show nội dung mail
+				* phần % vip được cập nhật theo mức tiền của đơn hàng
+				* đơn hàng được chuyển sang trạng thái hoàn tất
+				* tại trạng thái này, khách hàng có thể xem chi tiết đơn hàng và đánh giá cho từng sản phẩm có trong đơn hàng
+				* sau khi đánh giá thành công, tìm kiếm sản phẩm đó trên thanh tìm kiếm, thấy đánh giá của mình
+		- Sau khi đặt hàng 4:
+			# Quản trị viên cần:
+				* có thể vào xem sản phẩm, thấy đánh giá mới của khách hàng, 
+				* bấm phản hồi để phản hồi đánh giá
+				* xem kết quả sau khi gửi phản hồi đi!!
+			# Khách hàng cần:
+				* mô phỏng họ mua đơn hàng tiếp theo
+				* trong giỏ hàng, mục tổng tiền, đơn hàng được giảm tiền đúng % ưu đãi vip mà họ đang có => đây là một trong những chức năng hay trong 
+				đề tài của em
+				
+=> toàn bộ chức năng chính của đề tài đã em demo xong. 
+Do kiến thức còn hạn hẹp, nên em không tránh khỏi những thiếu sót trong cách hiểu vấn đề và trình bày. 
+Em rất mong nhận được những ý kiến nhận xét và góp ý của quý thầy cô
+Em xin cám ơn quý thầy cô hội đồng đã lắng nghe bài báo cáo đề tài tốt nghiệp của em ạ
+				
+
+			
+			
+			
+		

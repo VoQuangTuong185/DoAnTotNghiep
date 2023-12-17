@@ -58,7 +58,7 @@
                 <p style="text-align: center;">Tổng giá trị sản phẩm : <b style="color: black;">{{ getTotalMoney() | currency : "VND" }}</b></p>
                 <p style="text-align: center;">Giảm giá (VIP - {{currentUser.discount}}%) : <b style="color: red;">{{ (getTotalMoney() * currentUser.discount) / 100 | currency : "VND" }}</b></p>
                 <p style="text-align: center;">Tổng hóa đơn : <b style="color: green;">{{getTotalMoney() - (getTotalMoney() * ((currentUser.discount) / 100)) | currency : "VND" }}</b></p>
-                <button [disabled]="products.length == 0" pButton label="Xác nhận đơn hàng" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
+                <button [disabled]="products.length == 0" pButton label="Xác nhận đặt hàng" class="p-button-success btnBuy" (click)="showViewConfirm()"></button>
             </ng-template>
         </p-table>
     </div>

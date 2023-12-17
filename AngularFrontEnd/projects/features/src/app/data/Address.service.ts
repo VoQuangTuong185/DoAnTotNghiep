@@ -6,8 +6,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';;
   providedIn: 'root'
 })
 export class AddressService {
-  ProvincesUri: string = 'https://pprovinces.open-api.vn/api/p/';
-  DistrictsUri: string = 'https://pprovinces.open-api.vn/api/d/';
+  ProvincesUri: string = 'https://provinces.open-api.vn/api/p/';
+  DistrictsUri: string = 'https://provinces.open-api.vn/api/d/';
 
   constructor(private httpClient: HttpClient) { 
   }
