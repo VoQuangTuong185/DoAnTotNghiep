@@ -16,6 +16,6 @@ namespace WebAppAPI.DTO
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public bool IsActive { get; set; } = true;
-        public string[]? ImageDetail { get; set; }
+        public string[]? ImageDetail { get; set; } = null;
     }
 }

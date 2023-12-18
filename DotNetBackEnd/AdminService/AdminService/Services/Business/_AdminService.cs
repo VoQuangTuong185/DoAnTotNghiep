@@ -229,7 +229,7 @@ namespace WebAppAPI.Services.Business
                         existedProduct.Quanity = product.Quanity;
                         existedProduct.CategoryId = product.CategoryId;
                         existedProduct.BrandId = product.BrandId;
-                        existedProduct.ImageDetail = String.Join(",", product.ImageDetail);
+                        existedProduct.ImageDetail = product.ImageDetail != null ? String.Join(",", product.ImageDetail) : string.Empty;
 
                         _unitOfWork.Repository<Product>().Update(existedProduct);
                         if (await _unitOfWork.SaveChangesAsync())
