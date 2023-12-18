@@ -788,28 +788,28 @@ namespace WebAppAPI.Services.Business
             if (filter.Method == "year")
             {
                 var tempResult1 = existedOrder.Where(x => x.CreatedDate.Year == filter.DateFrom.AddYears(1).Year && x.Status == "Success")
-                                        .ToList()
-                                        .GroupBy(order => order.CreatedDate.Month)
+                                        .ToList();
+                var GroupByResult = tempResult1.GroupBy(order => order.CreatedDate.Month)
                                         .OrderBy(group => group.Key)
                                         .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
-                tempResult = tempResult1.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
+                tempResult = GroupByResult.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
                 foreach (var item in tempResult)
                 {
-                    item.TotalMoney = (int)existedOrder.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
+                    item.TotalMoney = (int)tempResult1.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
                 }
                 result = tempResult.Select(x => new RevenuesStatisticalModel("Tháng: " + x.Month.ToString(), x.TotalMoney)).ToList();
             }
             else if (filter.Method == "range")
             {
-                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom && x.CreatedDate < filter.DateTo)
-                                        .ToList()
-                                        .GroupBy(order => order.CreatedDate.Month)
+                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom.AddHours(-7) && x.CreatedDate < filter.DateTo.AddDays(1).AddHours(-7))
+                                        .ToList();
+                var GroupByResult = tempResult1.GroupBy(order => order.CreatedDate.Month)
                                         .OrderBy(group => group.Key)
                                         .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
-                tempResult = tempResult1.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
+                tempResult = GroupByResult.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
                 foreach (var item in tempResult)
                 {
-                    item.TotalMoney = (int)existedOrder.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
+                    item.TotalMoney = (int)tempResult1.Where(x => x.Status == "Success" && x.CreatedDate.Month == item.Month).Select(x => x.TotalBill).Sum();
                 }
                 result = tempResult.Select(x => new RevenuesStatisticalModel("Tháng: " + x.Month.ToString(), x.TotalMoney)).ToList();
             }
