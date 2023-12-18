@@ -730,7 +730,7 @@ namespace WebAppAPI.Services.Business
             }
             else if (filter.Method == "day")
             {
-                var tempResult = existedOrder.Where(x => x.CreatedDate.Day == filter.DateFrom.Day).ToList().GroupBy(order => order.Status)
+                var tempResult = existedOrder.Where(x => x.CreatedDate.Day == filter.DateFrom.Day && x.CreatedDate.Month == filter.DateFrom.Month).ToList().GroupBy(order => order.Status)
                                         .OrderBy(group => group.Key)
                                         .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
                 result = tempResult.Select(x => new OrderStatistical(x.Item1, x.Item2)).ToList();
@@ -801,9 +801,9 @@ namespace WebAppAPI.Services.Business
             }
             else if (filter.Method == "range")
             {
-                var tempResult1 = existedOrder.Where(x => x.CreatedDate > filter.DateFrom.AddHours(-7) && x.CreatedDate < filter.DateTo.AddDays(1).AddHours(-7))
+                var tempResult1 = existedOrder.Where(x => x.Status == "Success" && x.CreatedDate > filter.DateFrom.AddHours(-7) && x.CreatedDate < filter.DateTo.AddDays(1).AddHours(-7))
                                         .ToList();
-                var GroupByResult = tempResult1.GroupBy(order => order.CreatedDate.Month)
+                var GroupByResult = tempResult1.GroupBy(order => order.CreatedDate.Month) 
                                         .OrderBy(group => group.Key)
                                         .Select(group => Tuple.Create(group.Key, group.Count())).ToList();
                 tempResult = GroupByResult.Select(x => new RevenuesStatistical(x.Item1, x.Item2, 0)).ToList();
